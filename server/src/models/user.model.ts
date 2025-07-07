@@ -1,19 +1,50 @@
 import mongoose, { Schema } from "mongoose"
 
 const userSchema = new Schema({
-    username: String,
-    fullName: String,
-    avatar: String,
-    bannerImage: String,
-    devName: String,
-    bio: String,
-    skills: [String],
-    address: String,
-    porfolioLink: String,
-    posts: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "post"
-    }],
+    username: {
+        type: String,
+        minLength: [5, "Atleast 5 character"],
+        required: true,
+        trim: true,
+        unique: true,
+    },
+    fullName: {
+        type: String,
+        minLength: [8, "Atleast 8 character"],
+        required: true,
+    },
+    email: {
+        type: String,
+        minLength: [8, "Atleast 8 character"],
+        required: true,
+        trim: true,
+        unique: true,
+    },
+    profilePic: {
+        type: String,
+        default: "profilePic.png"
+    },
+    bannerImage: {
+        type: String,
+        default: "bannerImage.png"
+    },
+    headline: {
+        type: String,
+        minLength: [5, "Atleast 5 Character"]
+    },
+    bio: {
+        type: String,
+        minLength: [10, "Atleast 10 Character"],
+        maxLength: [500, "Not more than 500 characters"]
+    },
+    skills: {
+        type: [String],
+        default: []
+    },
+    address: {
+        type: String
+    },
+    portfolioLink: String,
     following: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
@@ -21,6 +52,10 @@ const userSchema = new Schema({
     follower: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
+    }],
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "post"
     }],
     projects: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -32,3 +67,6 @@ const userSchema = new Schema({
 })
 
 
+const userModal = mongoose.model("user", userSchema);
+
+export default userModal
