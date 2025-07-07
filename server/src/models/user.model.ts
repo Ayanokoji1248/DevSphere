@@ -20,6 +20,12 @@ const userSchema = new Schema({
         trim: true,
         unique: true,
     },
+    password: {
+        type: String,
+        minLength: [6, "Atleast 6 character"],
+        required: true,
+        trim: true
+    },
     profilePic: {
         type: String,
         default: "profilePic.png"
