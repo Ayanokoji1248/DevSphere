@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 
 const RegsiterPage = () => {
     return (
-        <div className="text-white border-[1px] border-zinc-500 shadow rounded-xl w-108 font-[Albert_Sans] flex flex-col justify-center p-5 gap-7 py-8">
+        <div className="text-white border-[1px] border-zinc-500 shadow rounded-xl w-96 font-[Albert_Sans] flex flex-col justify-center p-5 gap-7 py-8">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Join DevSphere</h1>
                 <p className="text-sm font-medium text-zinc-500">Create your developer profile and start connecting</p>
