@@ -52,3 +52,52 @@ export const userRegister = async (req: Request, res: Response, next: NextFuncti
         return
     }
 }
+
+export const userLogin = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const { email, password } = req.body;
+
+        const user = await userModal.findOne({ email })
+
+        if (!user) {
+            res.status(400).json({
+                message: "Invalid Credentials"
+            })
+            return
+        }
+
+        const passValid = await bcrypt.compare(password, user.password);
+
+        if (!passValid) {
+            res.status(400).json({
+                message: "Invalid Credentials"
+            })
+            return
+        }
+
+        const token = jwt.sign({
+            id: user._id,
+            username: user.username
+        }, process.env.JWT_SECRET as string)
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            sameSite: "strict"
+        })
+
+        const { password: _, ...userData } = user.toObject()
+
+        res.status(200).json({
+            user: userData
+        })
+        return
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+        return
+    }
+}
