@@ -5,7 +5,7 @@ import z from "zod";
 
 const postValidationSchema = z.object({
     content: z.string().min(5, "Atleast 5 character long"),
-    code: z.string().min(1, "Field Required").optional(),
+    code: z.string().optional(),
     image: z.string().url().optional(),
     link: z.string().url().optional(),
     tags: z.array(z.string())
