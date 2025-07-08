@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route";
 import { dbConnect } from "./config/dbConnection";
 import userRouter from "./routes/user.route";
+import postRouter from "./routes/post.route";
 const app = express()
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cookieParser())
 
 app.use("/api/auth", authRouter)
 app.use('/api/user/', userRouter)
+app.use('/api/post/', postRouter)
 
 async function main() {
 

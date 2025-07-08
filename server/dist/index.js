@@ -18,6 +18,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const auth_route_1 = __importDefault(require("./routes/auth.route"));
 const dbConnection_1 = require("./config/dbConnection");
 const user_route_1 = __importDefault(require("./routes/user.route"));
+const post_route_1 = __importDefault(require("./routes/post.route"));
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -25,6 +26,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_parser_1.default)());
 app.use("/api/auth", auth_route_1.default);
 app.use('/api/user/', user_route_1.default);
+app.use('/api/post/', post_route_1.default);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield (0, dbConnection_1.dbConnect)();
