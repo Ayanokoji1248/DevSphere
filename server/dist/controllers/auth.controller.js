@@ -27,9 +27,27 @@ exports.logout = exports.userLogin = exports.userRegister = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const zod_1 = __importDefault(require("zod"));
+const registerSchema = zod_1.default.object({
+    fullName: zod_1.default.string().min(5, "Atleast 5 character long"),
+    email: zod_1.default.string().email("Invalid Email format"),
+    username: zod_1.default.string().min(5, "Atleast 5 character long"),
+    password: zod_1.default.string().min(5, "Atleast 5 character long"),
+});
+const loginSchema = registerSchema.pick({
+    email: true,
+    password: true
+});
 const userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, email, password, fullName } = req.body;
+        const validate = registerSchema.safeParse(req.body);
+        if (!validate.success) {
+            res.status(400).json({
+                errors: validate.error.flatten().fieldErrors
+            });
+            return;
+        }
         const userExist = yield user_model_1.default.findOne({
             $or: [
                 { email: email },
@@ -72,6 +90,13 @@ exports.userRegister = userRegister;
 const userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
+        const validate = registerSchema.safeParse(req.body);
+        if (!validate.success) {
+            res.status(400).json({
+                errors: validate.error.flatten().formErrors
+            });
+            return;
+        }
         const user = yield user_model_1.default.findOne({ email });
         if (!user) {
             res.status(400).json({
