@@ -1,10 +1,11 @@
-import { Heart, MessageCircle, Share } from "lucide-react"
+import { CodeXml, Heart, Link, MessageCircle, Share } from "lucide-react"
+import { TbPhoto } from "react-icons/tb"
 
 
 const HomePage = () => {
     return (
         <div className='w-full min-h-screen'>
-            <div className='border-2 rounded-xl text-white'>
+            <div className='border-2 border-zinc-600 rounded-xl text-white'>
                 <div className='p-5 flex gap-5'>
                     <div className=''>
                         <div className='w-12 h-12 flex shrink-0 bg-zinc-300 rounded-full'></div>
@@ -14,11 +15,11 @@ const HomePage = () => {
 
                         <div className='flex justify-between items-center p-2'>
                             <div className='flex gap-5'>
-                                <button className='text-sm font-[Albert_Sans] font-medium px-4 py-2 rounded-md border-2'>Code</button>
-                                <button className='text-sm font-[Albert_Sans] font-medium px-4 py-2 rounded-md border-2'>Media</button>
-                                <button className='text-sm font-[Albert_Sans] font-medium px-4 py-2 rounded-md border-2'>Link</button>
+                                <button className='text-sm font-[Albert_Sans] font-medium px-4 py-2 rounded-md border-2 flex items-center gap-2 hover:border-green-500 cursor-pointer transition-all duration-300 hover:bg-green-700/30'><CodeXml size={18} /> Code</button>
+                                <button className='text-sm font-[Albert_Sans] font-medium px-4 py-2 rounded-md border-2 flex gap-2 items-center hover:border-blue-500 hover:bg-blue-700/30 cursor-pointer transition-all duration-300'><TbPhoto size={18} /> Media</button>
+                                <button className='text-sm font-[Albert_Sans] font-medium px-4 py-2 rounded-md border-2 flex items-center gap-3 cursor-pointer hover:border-pink-500 hover:bg-pink-700/30 transition-all duration-300'><Link size={18} /> Link</button>
                             </div>
-                            <button className='bg-white text-black px-6 py-2 text-lg font-medium rounded-md'>Post</button>
+                            <button className='bg-[#9400FF] text-white cursor-pointer px-6 py-2 text-lg font-medium rounded-md hover:bg-[#7E30E1] transition-all duration-300 hover:-translate-y-0.5'>Post</button>
                         </div>
                     </div>
                 </div>
