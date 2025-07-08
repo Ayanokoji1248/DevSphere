@@ -1,0 +1,57 @@
+import { PlusCircle } from "lucide-react"
+import { Outlet } from "react-router-dom"
+
+
+const MainLayout = () => {
+    return (
+        <div className="bg-black">
+            <div className="md:w-[90%] min-h-screen  mx-auto flex gap-5 relative">
+                <div className="md:w-[25%] h-screen sticky p-3 pt-8 px-4 hidden md:block">
+                    <div className="border-2 p-5 flex flex-col gap-3 rounded-lg text-white">
+                        <div className="flex gap-3 items-center">
+                            <div className="w-10 h-10 bg-zinc-700 rounded-full flex shrink-0"></div>
+                            <div className="font-[Albert_Sans] flex flex-col">
+                                <h1 className="font-bold text-lg tracking-tighter">Krish Prajapati</h1>
+                                <p className="text-sm font-medium text-zinc-500">@krishdev</p>
+                            </div>
+                        </div>
+                        <div className="px-3 font-[Albert_Sans]">
+                            <div className="flex justify-between">
+                                <h1>Following</h1>
+                                <p className="font-bold">12</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <h1>Follower</h1>
+                                <p className="font-bold">32</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <h1>Post</h1>
+                                <p className="font-bold">3</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <h1>Project</h1>
+                                <p className="font-bold">6</p>
+                            </div>
+                        </div>
+                        <button className="bg-white text-black p-3 py-2 rounded-md font-medium cursor-pointer font-[Albert_Sans]">View Profile</button>
+                    </div>
+                </div>
+                <div className="md:w-[45%] pt-4">
+                    <Outlet />
+                </div>
+                <div className="md:w-[30%] hidden md:block h-screen border-2 p-7">
+                    <div className="border-2 p-5 flex flex-col gap-4 rounded-xl text-white">
+                        <h1 className="text-3xl font-medium">Quick Actions</h1>
+                        <div className="flex flex-col gap-2">
+                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter bg-white text-black rounded-md cursor-pointer"> AI Code Review</button>
+                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer flex justify-center items-center gap-3"><PlusCircle strokeWidth={2} /> New Post</button>
+                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Showcase Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default MainLayout
