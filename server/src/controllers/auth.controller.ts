@@ -3,9 +3,32 @@ import userModal from "../models/user.model"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
+import z from "zod";
+
+const registerSchema = z.object({
+    fullName: z.string().min(5, "Atleast 5 character long"),
+    email: z.string().email("Invalid Email format"),
+    username: z.string().min(5, "Atleast 5 character long"),
+    password: z.string().min(5, "Atleast 5 character long"),
+})
+
+const loginSchema = registerSchema.pick({
+    email: true,
+    password: true
+})
+
 export const userRegister = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { username, email, password, fullName } = req.body
+
+        const validate = registerSchema.safeParse(req.body);
+
+        if (!validate.success) {
+            res.status(400).json({
+                errors: validate.error.flatten().fieldErrors
+            })
+            return
+        }
 
         const userExist = await userModal.findOne({
             $or: [
@@ -57,6 +80,15 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
     try {
 
         const { email, password } = req.body;
+
+        const validate = registerSchema.safeParse(req.body)
+
+        if (!validate.success) {
+            res.status(400).json({
+                errors: validate.error.flatten().formErrors
+            })
+            return
+        }
 
         const user = await userModal.findOne({ email })
 
