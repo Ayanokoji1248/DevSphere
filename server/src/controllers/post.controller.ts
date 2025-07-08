@@ -1,6 +1,15 @@
 import { Request, Response, NextFunction } from "express"
 import mongoose from "mongoose";
 import postModel from "../models/post.model";
+import z from "zod";
+
+const postValidationSchema = z.object({
+    content: z.string().min(5, "Atleast 5 character long"),
+    code: z.string().min(1, "Field Required").optional(),
+    image: z.string().url().optional(),
+    link: z.string().url().optional(),
+    tags: z.array(z.string())
+})
 
 export const createPost = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -8,6 +17,15 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
         const userId = req.user.id;
 
         const { content, code, image, link, tags } = req.body
+
+        const validate = postValidationSchema.safeParse(req.body);
+
+        if (!validate.success) {
+            res.status(400).json({
+                errors: validate.error.flatten().fieldErrors
+            })
+            return
+        }
 
         if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
             res.status(400).json({
