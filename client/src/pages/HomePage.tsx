@@ -1,11 +1,14 @@
 import { CodeXml, Heart, Link, MessageCircle, Share } from "lucide-react"
 import { TbPhoto } from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
+import userStore from "../store/userStore"
 
 
 const HomePage = () => {
-
+    const { user } = userStore()
     const navigate = useNavigate()
+
+    console.log(user)
 
     return (
         <div className='w-full min-h-screen'>

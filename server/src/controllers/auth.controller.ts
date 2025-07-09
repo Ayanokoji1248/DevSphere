@@ -81,7 +81,7 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
 
         const { email, password } = req.body;
 
-        const validate = registerSchema.safeParse(req.body)
+        const validate = loginSchema.safeParse(req.body)
 
         if (!validate.success) {
             res.status(400).json({

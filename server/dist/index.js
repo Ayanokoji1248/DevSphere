@@ -19,8 +19,14 @@ const auth_route_1 = __importDefault(require("./routes/auth.route"));
 const dbConnection_1 = require("./config/dbConnection");
 const user_route_1 = __importDefault(require("./routes/user.route"));
 const post_route_1 = __importDefault(require("./routes/post.route"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 dotenv_1.default.config();
+// you should add origin here and other config too
+app.use((0, cors_1.default)({
+    origin: "http://localhost:5173",
+    credentials: true, // this is most important because we are using cookie based authentication
+}));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_parser_1.default)());

@@ -5,13 +5,20 @@ import authRouter from "./routes/auth.route";
 import { dbConnect } from "./config/dbConnection";
 import userRouter from "./routes/user.route";
 import postRouter from "./routes/post.route";
+import cors from "cors"
 const app = express()
 
 dotenv.config();
 
+// you should add origin here and other config too
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials: true, // this is most important because we are using cookie based authentication
+}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
+
 
 
 app.use("/api/auth", authRouter)
