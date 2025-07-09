@@ -65,7 +65,7 @@ const LoginPage = () => {
 
                     <button onClick={handleLogin} className="bg-white mt-2 text-black p-2 rounded-md font-medium cursor-pointer hover:bg-zinc-200 transition-all duration-300">Login</button>
 
-                    <p className="text-sm">Already have an account? <NavLink to={'/register'} className="font-bold text-blue-500">Login</NavLink></p>
+                    <p className="text-sm">Don't have an account? <NavLink to={'/register'} className="font-bold text-blue-500">Register</NavLink></p>
 
                 </div>
 

@@ -1,10 +1,12 @@
 import { CodeXml } from "lucide-react"
 import { NavLink, useNavigate } from "react-router-dom"
+import userStore from "../store/userStore"
 
 const NavBar = () => {
     const navigate = useNavigate()
+    const { user } = userStore();
     return (
-        <div className="w-full h-16 fixed bg-black border-b-[1px] border-zinc-600 z-[99]">
+        <div className="w-full h-16 fixed bg-black border-b-[1px] border-zinc-600 z-[99] px-5 md:px-0">
             <div className="max-w-7xl h-full mx-auto border-white flex items-center justify-between">
                 {/* Logo */}
                 <div className="text-white flex items-center gap-2">
@@ -12,7 +14,7 @@ const NavBar = () => {
                     <h1 className="text-2xl font-bold font-[Albert_Sans]">DevSphere</h1>
                 </div>
 
-                <div className="font-[Albert_Sans] text-white flex gap-8 ">
+                <div className="font-[Albert_Sans] text-white gap-8 hidden md:flex">
                     <NavLink
                         to="/home"
                         className={({ isActive }) =>
@@ -52,7 +54,11 @@ const NavBar = () => {
                 </div>
 
                 <div className="text-white font-[Albert_Sans]">
-                    <button onClick={() => navigate('/register')} className="bg-[linear-gradient(-20deg,#b721ff_0%,#21d4fd_100%)] p-2 px-4 font-medium tracking-tight rounded-md cursor-pointer hover:-translate-y-0.5 transition-all duration-300">Get Started</button>
+                    {user ?
+                        <div className="bg-white w-10 h-10 rounded-full"></div>
+                        :
+                        <button onClick={() => navigate('/register')} className="bg-[linear-gradient(-20deg,#b721ff_0%,#21d4fd_100%)] p-2 px-4 font-medium tracking-tight rounded-md cursor-pointer hover:-translate-y-0.5 transition-all duration-300">Get Started</button>
+                    }
                 </div>
             </div>
         </div>
