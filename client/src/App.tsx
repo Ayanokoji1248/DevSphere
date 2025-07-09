@@ -9,6 +9,7 @@ import { useEffect } from "react"
 import axios from "axios"
 import { BACKEND_URL } from "./utils"
 import userStore from "./store/userStore"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 
 const App = () => {
@@ -42,10 +43,13 @@ const App = () => {
       <Route element={<MainLayout />}>
         <Route path="/home" element={<HomePage />} />
         {/* this will be authenticated routes */}
-        <Route path="create-post" element={<CreatePostPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="create-post" element={<CreatePostPage />} />
+        </Route>
+
       </Route>
 
-    </Routes>
+    </Routes >
   )
 }
 
