@@ -25,19 +25,19 @@ const MainLayout = () => {
                             <div className="px-3 font-[Albert_Sans]">
                                 <div className="flex justify-between">
                                     <h1>Following</h1>
-                                    <p className="font-bold">12</p>
+                                    <p className="font-bold">{user.following.length}</p>
                                 </div>
                                 <div className="flex justify-between">
                                     <h1>Follower</h1>
-                                    <p className="font-bold">32</p>
+                                    <p className="font-bold">{user.follower.length}</p>
                                 </div>
                                 <div className="flex justify-between">
                                     <h1>Post</h1>
-                                    <p className="font-bold">3</p>
+                                    <p className="font-bold">{user.posts.length}</p>
                                 </div>
                                 <div className="flex justify-between">
                                     <h1>Project</h1>
-                                    <p className="font-bold">6</p>
+                                    <p className="font-bold">{user.projects.length}</p>
                                 </div>
                             </div>
                             <button className="bg-[#0D92F4] hover:bg-blue-500 transition-all duration-300 hover:-translate-y-0.5 text-white p-3 py-2 rounded-md font-medium cursor-pointer font-[Albert_Sans]">View Profile</button>
