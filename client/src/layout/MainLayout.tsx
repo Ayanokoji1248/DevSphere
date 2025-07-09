@@ -1,11 +1,13 @@
 import { PlusCircle } from "lucide-react"
 import { Outlet } from "react-router-dom"
+import NavBar from "../components/NavBar"
 
 
 const MainLayout = () => {
     return (
         <div className="bg-black">
-            <div className="md:w-[90%] min-h-screen  mx-auto flex gap-5 relative">
+            <NavBar />
+            <div className="md:w-[90%] min-h-screen  mx-auto flex gap-5 relative pt-18">
                 <div className="md:w-[25%] h-screen sticky p-3 pt-8 px-4 hidden md:block">
                     <div className="border-[1px] border-zinc-500 p-5 flex flex-col gap-3 rounded-lg text-white">
                         <div className="flex gap-3 items-center">
