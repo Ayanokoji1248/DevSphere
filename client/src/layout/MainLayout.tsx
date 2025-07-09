@@ -38,7 +38,7 @@ const MainLayout = () => {
                         <button className="bg-[#0D92F4] hover:bg-blue-500 transition-all duration-300 hover:-translate-y-0.5 text-white p-3 py-2 rounded-md font-medium cursor-pointer font-[Albert_Sans]">View Profile</button>
                     </div>
                 </div>
-                <div className="md:w-[45%] pt-4">
+                <div className="md:w-[45%] w-full pt-4">
                     <Outlet />
                 </div>
                 <div className="md:w-[30%] hidden md:block h-screen border-2 p-7">
