@@ -5,7 +5,7 @@ const NavBar = () => {
     const navigate = useNavigate()
     return (
         <div className="w-full h-16 fixed bg-black border-b-[1px] border-zinc-600 z-[99]">
-            <div className="border-2 max-w-7xl h-full mx-auto border-white flex items-center justify-between">
+            <div className="max-w-7xl h-full mx-auto border-white flex items-center justify-between">
                 {/* Logo */}
                 <div className="text-white flex items-center gap-2">
                     <div className="p-1.5 bg-[linear-gradient(-20deg,#b721ff_0%,#21d4fd_100%)] rounded-md"><CodeXml /></div>
