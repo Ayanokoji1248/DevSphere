@@ -1,6 +1,6 @@
-import axios from "axios"
+import axios, { isAxiosError } from "axios"
 import { useState } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { BACKEND_URL } from "../utils"
 import toast, { Toaster } from "react-hot-toast"
 import userStore from "../store/userStore"
@@ -8,6 +8,8 @@ import userStore from "../store/userStore"
 const LoginPage = () => {
 
     const { setUser } = userStore();
+
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -18,11 +20,25 @@ const LoginPage = () => {
                 email,
                 password
             }, { withCredentials: true })
-            console.log(response.data.user)
+            // console.log(response.data.user)
             setUser(response.data.user)
-            toast.success("Login Successful")
+            setEmail("");
+            setPassword("")
+            toast.success("Login Successful", {
+                duration: 1000
+            })
+            setTimeout(() => {
+                navigate('/home')
+            }, 1500)
         } catch (error) {
+            if (isAxiosError(error)) {
+                toast.error(error.response?.data.message || "Something Went Wrong", {
+                    duration: 2000
+                })
+            }
             console.log(error)
+            setEmail("")
+            setPassword("")
         }
     }
 
