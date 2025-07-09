@@ -2,13 +2,14 @@ import { Request, Response, NextFunction } from "express"
 import mongoose from "mongoose";
 import postModel from "../models/post.model";
 import z from "zod";
+import userModal from "../models/user.model";
 
 const postValidationSchema = z.object({
-    content: z.string().min(5, "Atleast 5 character long"),
+    content: z.string().trim().min(5, "Atleast 5 character long"),
     code: z.string().optional(),
     image: z.string().url().optional(),
     link: z.string().url().optional(),
-    tags: z.array(z.string())
+    tags: z.array(z.string()).optional()
 })
 
 export const createPost = async (req: Request, res: Response, next: NextFunction) => {
@@ -34,6 +35,8 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
             return
         }
 
+        const user = await userModal.findById(userId).select("-password")
+
         const post = await postModel.create({
             user: userId,
             content,
@@ -43,9 +46,12 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
             tags
         })
 
+        user?.posts.push(post._id)
+        await user?.save()
         res.status(200).json({
             message: "Post Created",
-            post
+            post,
+            updatedUser: user,
         })
 
 

@@ -16,12 +16,13 @@ exports.createPost = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const post_model_1 = __importDefault(require("../models/post.model"));
 const zod_1 = __importDefault(require("zod"));
+const user_model_1 = __importDefault(require("../models/user.model"));
 const postValidationSchema = zod_1.default.object({
-    content: zod_1.default.string().min(5, "Atleast 5 character long"),
+    content: zod_1.default.string().trim().min(5, "Atleast 5 character long"),
     code: zod_1.default.string().optional(),
     image: zod_1.default.string().url().optional(),
     link: zod_1.default.string().url().optional(),
-    tags: zod_1.default.array(zod_1.default.string())
+    tags: zod_1.default.array(zod_1.default.string()).optional()
 });
 const createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -40,6 +41,7 @@ const createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             });
             return;
         }
+        const user = yield user_model_1.default.findById(userId).select("-password");
         const post = yield post_model_1.default.create({
             user: userId,
             content,
@@ -48,9 +50,12 @@ const createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             link,
             tags
         });
+        user === null || user === void 0 ? void 0 : user.posts.push(post._id);
+        yield (user === null || user === void 0 ? void 0 : user.save());
         res.status(200).json({
             message: "Post Created",
-            post
+            post,
+            updatedUser: user,
         });
     }
     catch (error) {
