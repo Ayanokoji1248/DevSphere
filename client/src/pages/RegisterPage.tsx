@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 
-const RegsiterPage = () => {
+const RegisterPage = () => {
     return (
         <div className="text-white border-[1px] border-zinc-500 shadow rounded-xl w-96 font-[Albert_Sans] flex flex-col justify-center p-5 gap-7 py-8">
             <div>
@@ -38,4 +38,4 @@ const RegsiterPage = () => {
     )
 }
 
-export default RegsiterPage
+export default RegisterPage

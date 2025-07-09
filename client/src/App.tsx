@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import AuthLayout from "./layout/AuthLayout"
-import RegsiterPage from "./pages/RegsiterPage"
+import RegisterPage from "./pages/RegisterPage"
 import LoginPage from "./pages/LoginPage"
 import HomePage from "./pages/HomePage"
 import MainLayout from "./layout/MainLayout"
@@ -28,13 +28,14 @@ const App = () => {
 
   useEffect(() => {
     getCurrentUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <Routes>
 
       <Route element={<AuthLayout />}>
-        <Route path="/register" element={<RegsiterPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Route>
 
