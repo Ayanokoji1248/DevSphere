@@ -13,6 +13,20 @@ const MainLayout = () => {
             <NavBar />
             <div className="md:w-[90%] min-h-screen  mx-auto flex gap-5 relative pt-18">
                 <div className="md:w-[25%] h-screen sticky p-3 pt-8 px-4 hidden md:block">
+
+                    <div className="border-[1px] border-zinc-500  p-5 flex flex-col gap-4 rounded-xl text-white">
+                        <h1 className="text-3xl font-medium">Quick Actions</h1>
+                        <div className="flex flex-col gap-2">
+                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter bg-[#00FF9C] hover:bg-[#60f0bbea] transition-all duration-300 hover:-translate-y-0.5 text-white rounded-md cursor-pointer"> AI Code Review</button>
+                            <button onClick={() => navigate('/create-post')} className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer flex justify-center items-center gap-3"><PlusCircle strokeWidth={2} /> New Post</button>
+                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Showcase Project</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="md:w-[45%] w-full pt-4">
+                    <Outlet />
+                </div>
+                <div className="md:w-[30%] hidden md:block h-screen border-2 p-7">
                     {user &&
                         <div className="border-[1px] border-zinc-500 p-5 flex flex-col gap-3 rounded-lg text-white">
                             <div className="flex gap-3 items-center">
@@ -43,19 +57,6 @@ const MainLayout = () => {
                             <button className="bg-[#0D92F4] hover:bg-blue-500 transition-all duration-300 hover:-translate-y-0.5 text-white p-3 py-2 rounded-md font-medium cursor-pointer font-[Albert_Sans]">View Profile</button>
                         </div>
                     }
-                </div>
-                <div className="md:w-[45%] w-full pt-4">
-                    <Outlet />
-                </div>
-                <div className="md:w-[30%] hidden md:block h-screen border-2 p-7">
-                    <div className="border-[1px] border-zinc-500  p-5 flex flex-col gap-4 rounded-xl text-white">
-                        <h1 className="text-3xl font-medium">Quick Actions</h1>
-                        <div className="flex flex-col gap-2">
-                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter bg-[#00FF9C] hover:bg-[#60f0bbea] transition-all duration-300 hover:-translate-y-0.5 text-white rounded-md cursor-pointer"> AI Code Review</button>
-                            <button onClick={() => navigate('/create-post')} className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer flex justify-center items-center gap-3"><PlusCircle strokeWidth={2} /> New Post</button>
-                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Showcase Project</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
