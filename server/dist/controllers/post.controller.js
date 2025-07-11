@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPost = void 0;
+exports.getAllPost = exports.createPost = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const post_model_1 = __importDefault(require("../models/post.model"));
 const zod_1 = __importDefault(require("zod"));
@@ -66,3 +66,21 @@ const createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.createPost = createPost;
+const getAllPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const posts = yield post_model_1.default.find({}).populate("user", "_id username fullName");
+        res.status(200).json({
+            message: "All posts",
+            posts
+        });
+        return;
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.getAllPost = getAllPost;

@@ -62,3 +62,22 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
         })
     }
 }
+
+export const getAllPost = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const posts = await postModel.find({}).populate("user", "_id username fullName");
+
+        res.status(200).json({
+            message: "All posts",
+            posts
+        })
+        return
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+        return
+    }
+}

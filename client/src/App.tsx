@@ -10,10 +10,13 @@ import axios from "axios"
 import { BACKEND_URL } from "./utils"
 import userStore from "./store/userStore"
 import ProtectedRoute from "./components/ProtectedRoute"
+import postStore from "./store/postStore"
 
 
 const App = () => {
+
   const { setUser } = userStore()
+  const { setPosts } = postStore();
   const getCurrentUser = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/user/me`, {
@@ -27,8 +30,22 @@ const App = () => {
     }
   }
 
+  const getAllBlogs = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/post/all`, {
+        withCredentials: true
+      })
+      // console.log(response.data.posts)
+      setPosts(response.data.posts)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   useEffect(() => {
     getCurrentUser()
+    getAllBlogs()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
