@@ -45,6 +45,7 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
             link,
             tags
         })
+        await post.populate("user", "_id username fullName")
 
         user?.posts.push(post._id)
         await user?.save()

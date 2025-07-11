@@ -14,7 +14,7 @@ const HomePage = () => {
 
     const [content, setContent] = useState("")
     const { user, setUser } = userStore();
-    const { posts } = postStore()
+    const { posts, addPost } = postStore()
 
     const handleSubmit = async () => {
         if (!user) {
@@ -28,6 +28,7 @@ const HomePage = () => {
                 content
             }, { withCredentials: true })
             console.log(response.data)
+            addPost(response.data.post)
             setContent("")
             setUser(response.data.updatedUser)
             toast.success("Post Created")

@@ -36,7 +36,7 @@ const App = () => {
         withCredentials: true
       })
       // console.log(response.data.posts)
-      setPosts(response.data.posts)
+      setPosts(response.data.posts.reverse())
     } catch (error) {
       console.log(error)
     }

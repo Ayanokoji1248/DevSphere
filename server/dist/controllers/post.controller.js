@@ -50,6 +50,7 @@ const createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             link,
             tags
         });
+        yield post.populate("user", "_id username fullName");
         user === null || user === void 0 ? void 0 : user.posts.push(post._id);
         yield (user === null || user === void 0 ? void 0 : user.save());
         res.status(200).json({
