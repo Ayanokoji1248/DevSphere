@@ -34,44 +34,15 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const postSchema = new mongoose_1.Schema({
+const likeSchema = new mongoose_1.Schema({
+    post: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'blogs'
+    },
     user: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "user",
-        required: true
-    },
-    content: {
-        type: String,
-        minlength: [10, "Content must be at least 10 characters"],
-        maxlength: [5000, "Content cannot exceed 5000 characters"],
-        required: true,
-    },
-    code: {
-        type: String,
-        min: [5, "Atleast 5 Character"],
-        trim: true,
-    },
-    image: {
-        type: String,
-        trim: true,
-    },
-    link: {
-        type: String,
-        trim: true
-    },
-    tags: [String],
-    comments: [{
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "comment"
-        }],
-    likes: [{
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "user"
-        }],
-    likeCount: {
-        type: Number,
-        default: 0
+        ref: "user"
     }
 }, { timestamps: true });
-const postModel = mongoose_1.default.model("post", postSchema);
-exports.default = postModel;
+const likeModel = mongoose_1.default.model("like", likeSchema);
+exports.default = likeModel;

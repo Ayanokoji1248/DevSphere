@@ -1,8 +1,9 @@
-import { Request, Response, NextFunction } from "express"
+import { Request, Response, NextFunction, response } from "express"
 import mongoose from "mongoose";
 import postModel from "../models/post.model";
 import z from "zod";
 import userModal from "../models/user.model";
+import likeModel from "../models/like.model";
 
 const postValidationSchema = z.object({
     content: z.string().trim().min(5, "Atleast 5 character long"),
@@ -76,6 +77,73 @@ export const getAllPost = async (req: Request, res: Response, next: NextFunction
 
     } catch (error) {
         console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+        return
+    }
+}
+
+export const likeAndUnlikePost = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.user.id;
+
+        const postId = req.params.id;
+
+        if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
+            res.status(400).json({
+                message: "Invalid Post Id"
+            })
+            return
+        }
+
+        const postData = await postModel.findById(postId);
+
+        if (!postData) {
+            res.status(404).json({
+                message: "Post not found"
+            })
+            return
+        }
+
+        const alreadyLike = await likeModel.findOne({
+            user: userId,
+            post: postId
+        })
+
+        if (alreadyLike) {
+            const updatedPost = await postModel.findByIdAndUpdate(postId, {
+                $pull: { likes: alreadyLike._id },
+                $inc: { likeCount: -1 }
+            }, { new: true })
+            await likeModel.findByIdAndDelete(alreadyLike._id);
+            res.status(200).json({
+                message: "Post Unliked",
+                likeCount: updatedPost?.likeCount
+            })
+            return
+        }
+
+        const likePost = await likeModel.create({
+            user: userId,
+            post: postId
+        })
+        // postData.likes.push(likePost._id)
+        // postData.likeCount += 1;
+        // await postData.save()
+        const updatedPost = await postModel.findByIdAndUpdate(postId, {
+            $push: { likes: likePost._id },
+            $inc: { likeCount: 1 }
+        }, { new: true })
+
+        res.status(200).json({
+            message: "Post Liked",
+            likeCount: updatedPost?.likeCount
+        })
+        return
+
+    } catch (error) {
+        console.log(error)
         res.status(500).json({
             message: "Internal Server Error"
         })

@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllPost = exports.createPost = void 0;
+exports.likeAndUnlikePost = exports.getAllPost = exports.createPost = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const post_model_1 = __importDefault(require("../models/post.model"));
 const zod_1 = __importDefault(require("zod"));
 const user_model_1 = __importDefault(require("../models/user.model"));
+const like_model_1 = __importDefault(require("../models/like.model"));
 const postValidationSchema = zod_1.default.object({
     content: zod_1.default.string().trim().min(5, "Atleast 5 character long"),
     code: zod_1.default.string().optional(),
@@ -85,3 +86,62 @@ const getAllPost = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getAllPost = getAllPost;
+const likeAndUnlikePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        const postId = req.params.id;
+        if (!postId || !mongoose_1.default.Types.ObjectId.isValid(postId)) {
+            res.status(400).json({
+                message: "Invalid Post Id"
+            });
+            return;
+        }
+        const postData = yield post_model_1.default.findById(postId);
+        if (!postData) {
+            res.status(404).json({
+                message: "Post not found"
+            });
+            return;
+        }
+        const alreadyLike = yield like_model_1.default.findOne({
+            user: userId,
+            post: postId
+        });
+        if (alreadyLike) {
+            const updatedPost = yield post_model_1.default.findByIdAndUpdate(postId, {
+                $pull: { likes: alreadyLike._id },
+                $inc: { likeCount: -1 }
+            }, { new: true });
+            yield like_model_1.default.findByIdAndDelete(alreadyLike._id);
+            res.status(200).json({
+                message: "Post Unliked",
+                likeCount: updatedPost === null || updatedPost === void 0 ? void 0 : updatedPost.likeCount
+            });
+            return;
+        }
+        const likePost = yield like_model_1.default.create({
+            user: userId,
+            post: postId
+        });
+        // postData.likes.push(likePost._id)
+        // postData.likeCount += 1;
+        // await postData.save()
+        const updatedPost = yield post_model_1.default.findByIdAndUpdate(postId, {
+            $push: { likes: likePost._id },
+            $inc: { likeCount: 1 }
+        }, { new: true });
+        res.status(200).json({
+            message: "Post Liked",
+            likeCount: updatedPost === null || updatedPost === void 0 ? void 0 : updatedPost.likeCount
+        });
+        return;
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.likeAndUnlikePost = likeAndUnlikePost;
