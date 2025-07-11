@@ -54,7 +54,7 @@ const MainLayout = () => {
                                     <p className="font-bold">{user.projects.length}</p>
                                 </div>
                             </div>
-                            <button className="bg-[#0D92F4] hover:bg-blue-500 transition-all duration-300 hover:-translate-y-0.5 text-white p-3 py-2 rounded-md font-medium cursor-pointer font-[Albert_Sans]">View Profile</button>
+                            <button onClick={() => navigate("/profile")} className="bg-[#0D92F4] hover:bg-blue-500 transition-all duration-300 hover:-translate-y-0.5 text-white p-3 py-2 rounded-md font-medium cursor-pointer font-[Albert_Sans]">View Profile</button>
                         </div>
                     }
                 </div>

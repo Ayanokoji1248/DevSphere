@@ -11,6 +11,7 @@ import { BACKEND_URL } from "./utils"
 import userStore from "./store/userStore"
 import ProtectedRoute from "./components/ProtectedRoute"
 import postStore from "./store/postStore"
+import UserProfilePage from "./pages/UserProfilePage"
 
 
 const App = () => {
@@ -65,7 +66,8 @@ const App = () => {
         <Route path="/home" element={<HomePage />} />
         {/* this will be authenticated routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="create-post" element={<CreatePostPage />} />
+          <Route path="/create-post" element={<CreatePostPage />} />
+          <Route path="/profile" element={<UserProfilePage />} />
         </Route>
 
       </Route>
