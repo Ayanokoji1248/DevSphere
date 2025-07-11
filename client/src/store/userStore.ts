@@ -17,11 +17,16 @@ interface userProp {
 type userStoreType = {
     user: userProp | null,
     setUser: (newUser: userProp) => void
+    loading: boolean,
+    setLoading: (loading: boolean) => void
 }
 
 const userStore = create<userStoreType>((set) => ({
     user: null,
-    setUser: (newUser) => set({ user: newUser })
+    setUser: (newUser) => set({ user: newUser }),
+
+    loading: true,
+    setLoading: (loading) => set({ loading })
 }))
 
 export default userStore

@@ -15,7 +15,7 @@ import postStore from "./store/postStore"
 
 const App = () => {
 
-  const { setUser } = userStore()
+  const { setUser, setLoading } = userStore()
   const { setPosts } = postStore();
   const getCurrentUser = async () => {
     try {
@@ -40,10 +40,14 @@ const App = () => {
     } catch (error) {
       console.log(error)
     }
+    finally {
+      setLoading(false)
+    }
   }
 
 
   useEffect(() => {
+    setLoading(true)
     getCurrentUser()
     getAllBlogs()
     // eslint-disable-next-line react-hooks/exhaustive-deps
