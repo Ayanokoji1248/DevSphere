@@ -86,8 +86,8 @@ const HomePage = () => {
                                 </div>
                             }
                             {post.image &&
-                                <div className="w-full overflow-auto rounded-md">
-                                    <img className="w-full h-[500px] object-fill object-center rounded-xl " src="https://plus.unsplash.com/premium_photo-1750041453770-ca6d200405a4?q=80&w=698&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+                                <div className="w-fit max-h-[600px] overflow-auto rounded-md my-2">
+                                    <img className="w-fit h-full object-contain object-center rounded-xl " src={post.image} alt="" />
                                 </div>
                             }
 
@@ -98,7 +98,7 @@ const HomePage = () => {
                             }
 
                             {post.tags.length > 1 &&
-                                <div id="tag" className="flex gap-3 ">
+                                <div id="tag" className="flex gap-3 mt-2">
                                     {post.tags.map((t) => (
 
                                         <p className="bg-zinc-300 text-black px-2.5 py-1 font-medium text-sm rounded-full text-md">#{t}</p>

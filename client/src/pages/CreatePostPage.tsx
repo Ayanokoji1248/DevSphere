@@ -7,13 +7,16 @@ import { BACKEND_URL } from "../utils";
 import postStore from "../store/postStore";
 import toast, { Toaster } from "react-hot-toast";
 import userStore from "../store/userStore";
+import { uploadImage } from "../utils/uploadImage";
 
 
 const CreatePostPage = () => {
     const navigate = useNavigate()
 
     const { addPost } = postStore();
-    const { setUser } = userStore();
+    const { setUser, user } = userStore();
+
+    const [file, setFile] = useState<File | null>(null)
 
     const [post, setPost] = useState({
         content: "",
@@ -42,10 +45,18 @@ const CreatePostPage = () => {
 
     const handlePostSubmit = async () => {
         try {
+            let imageUrl: string | null = null
+            if (!user) {
+                throw new Error("user not Found")
+            }
+            if (file) {
+                imageUrl = await uploadImage(file, "post", user);
+            }
+
             const response = await axios.post(`${BACKEND_URL}/post/create`, {
                 content: post.content,
                 code: post.code.trim() !== "" ? post.code : undefined,
-                image: post.image.trim() !== "" ? post.image : undefined,
+                image: imageUrl,
                 link: post.link.trim() !== "" ? post.link : undefined,
                 tags
             }, { withCredentials: true })
@@ -58,6 +69,7 @@ const CreatePostPage = () => {
                 image: "",
                 link: ""
             })
+            setFile(null)
             setTags([])
             toast.success("Post Added Succesfully", {
                 duration: 1000
@@ -89,26 +101,66 @@ const CreatePostPage = () => {
                         <label htmlFor="code" className="font-bold text-lg">Code <span className="text-zinc-500 font-medium text-sm">(optional)</span></label>
                         <textarea onChange={(e) => setPost({ ...post, code: e.target.value })} className=" border-2 w-full rounded-md p-2 text-sm font-medium font-[Albert_Sans] resize-none h-22" placeholder="Enter your code here" name="code" id="code"></textarea>
                     </div>
-
-                    <div className="mt-5 flex flex-col  gap-3">
+                    <div className="mt-5 flex flex-col gap-3">
                         <label className="font-bold text-lg" htmlFor="image">
                             Image
                             <span className="text-zinc-500 font-medium text-sm">(optional)</span>
                         </label>
                         <div className="flex items-center justify-center w-full">
-                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-zinc-900  hover:bg-zinc-800  hover:border-gray-500 ">
+                            <label
+                                htmlFor="dropzone-file"
+                                className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-zinc-900 hover:bg-zinc-800 hover:border-gray-500"
+                            >
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                    <svg
+                                        className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 20 16"
+                                    >
+                                        <path
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                                        />
                                     </svg>
-                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                        <span className="font-semibold">Click to upload</span> or drag and drop
+                                    </p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                                 </div>
-                                <input name="image" id="dropzone-file" type="file" className="hidden" />
+                                <input
+                                    name="image"
+                                    id="dropzone-file"
+                                    onChange={(e) => {
+                                        const selectedFile = e.target.files?.[0];
+                                        if (selectedFile) {
+                                            setFile(selectedFile);
+                                        } else {
+                                            setFile(null);
+                                        }
+                                    }}
+                                    type="file"
+                                    className="hidden"
+                                />
                             </label>
                         </div>
 
+                        {/* ✅ Image Preview */}
+                        {file && (
+                            <div className="mt-4 flex justify-center">
+                                <img
+                                    src={URL.createObjectURL(file)}
+                                    alt="Preview"
+                                    className="max-h-64 rounded-md object-contain border border-zinc-700"
+                                />
+                            </div>
+                        )}
                     </div>
+
 
                     <div className="mt-5 flex flex-col gap-2 ">
                         <label htmlFor="link" className="font-bold text-lg">Link

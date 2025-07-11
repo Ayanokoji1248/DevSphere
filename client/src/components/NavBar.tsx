@@ -1,6 +1,6 @@
-import { CodeXml } from "lucide-react"
 import { NavLink, useNavigate } from "react-router-dom"
 import userStore from "../store/userStore"
+import { TbWorld } from "react-icons/tb"
 
 const NavBar = () => {
     const navigate = useNavigate()
@@ -10,7 +10,7 @@ const NavBar = () => {
             <div className="max-w-7xl h-full mx-auto border-white flex items-center justify-between">
                 {/* Logo */}
                 <div className="text-white flex items-center gap-2">
-                    <div className="p-1.5 bg-[linear-gradient(-20deg,#b721ff_0%,#21d4fd_100%)] rounded-md"><CodeXml /></div>
+                    <div className="p-1.5 bg-[linear-gradient(-20deg,#b721ff_0%,#21d4fd_100%)] rounded-md"><TbWorld size={30} strokeWidth={1} /></div>
                     <h1 className="text-2xl font-bold font-[Albert_Sans]">DevSphere</h1>
                 </div>
 
