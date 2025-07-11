@@ -34,7 +34,9 @@ const HomePage = () => {
             toast.success("Post Created")
         } catch (error) {
             console.log(error)
-            toast.error("Something went wrong")
+            toast.error("Something went wrong", {
+                duration: 1000
+            })
         }
     }
 
@@ -78,6 +80,11 @@ const HomePage = () => {
                             <div>
                                 <p className="leading-tight">{post.content}</p>
                             </div>
+                            {post.link &&
+                                <div className="w-full p-2 bg-blue-900/60 rounded-md my-2">
+                                    <a className="font-medium text-blue-500" href={post.link} target="_blank">{post.link}</a>
+                                </div>
+                            }
                             {post.image &&
                                 <div className="w-full overflow-auto rounded-md">
                                     <img className="w-full h-[500px] object-fill object-center rounded-xl " src="https://plus.unsplash.com/premium_photo-1750041453770-ca6d200405a4?q=80&w=698&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
