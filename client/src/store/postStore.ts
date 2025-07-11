@@ -11,7 +11,9 @@ interface postProp {
     code: string,
     image: string,
     link: string,
-    tags: string[]
+    tags: string[],
+    likes: [],
+    likeCount: number
 }
 
 type postStoreType = {
@@ -20,6 +22,8 @@ type postStoreType = {
     setSinglePost: (newPost: postProp) => void
     setPosts: (posts: postProp[]) => void
     addPost: (newPost: postProp) => void
+
+    updatePostLikeCount: (id: string, count: number) => void
 }
 
 
@@ -29,7 +33,15 @@ const postStore = create<postStoreType>((set) => ({
     singlePost: null,
     setSinglePost: (newPost) => set({ singlePost: newPost }),
     setPosts: (posts) => set({ posts }),
-    addPost: (post) => set((state) => ({ posts: [post, ...state.posts] }))
+    addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
+
+    updatePostLikeCount: (id, count) => {
+        set((state) => ({
+            posts: state.posts.map((post) => (
+                post._id === id ? { ...post, likeCount: count } : post
+            ))
+        }))
+    }
 }))
 
 export default postStore

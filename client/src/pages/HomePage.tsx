@@ -1,6 +1,6 @@
 import { CodeXml, Heart, Link, MessageCircle, Share } from "lucide-react"
 import { useState } from "react"
-import { TbPhoto } from "react-icons/tb"
+import { TbHeartFilled, TbPhoto } from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
 import userStore from "../store/userStore"
 import toast, { Toaster } from "react-hot-toast"
@@ -14,7 +14,7 @@ const HomePage = () => {
 
     const [content, setContent] = useState("")
     const { user, setUser } = userStore();
-    const { posts, addPost } = postStore()
+    const { posts, addPost, updatePostLikeCount } = postStore()
 
     const handleSubmit = async () => {
         if (!user) {
@@ -37,6 +37,18 @@ const HomePage = () => {
             toast.error("Something went wrong", {
                 duration: 1000
             })
+        }
+    }
+
+    const likeUnlikeHandler = async (id: string) => {
+        try {
+            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
+                withCredentials: true
+            })
+            // console.log(response.data)
+            updatePostLikeCount(id, response.data.likeCount)
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -108,7 +120,7 @@ const HomePage = () => {
                             }
 
                             <div className="mt-2 flex gap-5">
-                                <div className="flex items-center text-sm gap-1 hover:text-red-500 cursor-pointer transition-all duration-300"><Heart size={18} /> 35</div>
+                                <button onClick={() => likeUnlikeHandler(post._id)} className="flex items-center text-sm gap-1 hover:text-red-500 cursor-pointer transition-all duration-300">{post.likes.includes(user?._id)?<Heart size={20}/> : <TbHeartFilled size={20} className="text-red-500"/>} {post.likeCount}</button>
                                 <div className="flex items-center text-sm gap-1 hover:text-blue-500 cursor-pointer transition-all duration-300"><MessageCircle size={18} /> 35</div>
                                 <div className="flex items-center text-sm gap-1 hover:text-green-500 cursor-pointer transition-all duration-300"><Share size={18} /> 35</div>
                             </div>
