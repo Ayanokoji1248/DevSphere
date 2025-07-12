@@ -1,13 +1,36 @@
 import { CodeXml, Link, Plus } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { TbLocation } from "react-icons/tb"
 import userStore from "../store/userStore"
+import ProjectCard from "../components/ProjectCard"
+import { type ProjectProp } from "../utils/interfaces"
+import axios from "axios"
+import { BACKEND_URL } from "../utils"
 
 const UserProfilePage = () => {
     const tabs = ["Projects", "Posts", "Skills"]
     const [activeTab, setActiveTab] = useState("Projects");
 
     const { user, loading } = userStore();
+
+
+    const [projects, setProjects] = useState<ProjectProp[]>([])
+
+    const getAllUserProject = async () => {
+        try {
+            const response = await axios.get(`${BACKEND_URL}/project/user-project`, {
+                withCredentials: true
+            });
+            console.log(response.data.projects);
+            setProjects(response.data.projects)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getAllUserProject()
+    }, [])
 
     if (loading) {
         return <div className="text-white">loading...</div>
@@ -113,7 +136,21 @@ const UserProfilePage = () => {
 
             {/* Tab content */}
             <div className="w-full">
-                {activeTab === "Projects" && <div>Project cards</div>}
+                {activeTab === "Projects" &&
+                    <div className="w-full h-full flex flex-col gap-5 mt-2">
+                        {projects.map((project) => (
+                            <ProjectCard
+                            _id={project._id}
+                                projectName={project.projectName}
+                                shortDesc={project.shortDesc}
+                                tech={project.tech}
+                                projectImage={project.projectImage}
+
+                            />
+                        ))}
+
+
+                    </div>}
                 {activeTab === "Posts" && <div>Posts cards</div>}
                 {activeTab === "Skills" && <div>Skills</div>}
             </div>
