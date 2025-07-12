@@ -89,11 +89,11 @@ const NavBar = () => {
                                         setModalOpen(false);
                                     }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">My Profile</button>
                                     <button onClick={() => {
-                                        navigate('/profile')
+                                        navigate('/edit-profile')
                                         setModalOpen(false);
                                     }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Edit Profile</button>
                                     <button onClick={() => {
-                                        navigate('/profile')
+                                        navigate('/edit-profile')
                                         setModalOpen(false);
                                     }} className="p-2 hover:bg-red-800/30 text-red-500 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Logout</button>
                                 </div>

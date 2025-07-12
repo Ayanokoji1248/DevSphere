@@ -12,6 +12,7 @@ import userStore from "./store/userStore"
 import ProtectedRoute from "./components/ProtectedRoute"
 import postStore from "./store/postStore"
 import UserProfilePage from "./pages/UserProfilePage"
+import EditProfilePage from "./pages/EditProfilePage"
 
 
 const App = () => {
@@ -68,6 +69,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="/create-post" element={<CreatePostPage />} />
           <Route path="/profile" element={<UserProfilePage />} />
+          <Route path="/edit-profile" element={<EditProfilePage />} />
         </Route>
 
       </Route>
