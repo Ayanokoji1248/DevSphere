@@ -12,6 +12,7 @@ interface postProp {
     image: string,
     link: string,
     tags: string[],
+    comments: string[]
     likes: [],
     likeCount: number
 }

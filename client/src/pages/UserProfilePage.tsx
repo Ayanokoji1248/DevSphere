@@ -6,12 +6,15 @@ import ProjectCard from "../components/ProjectCard"
 import { type ProjectProp } from "../utils/interfaces"
 import axios from "axios"
 import { BACKEND_URL } from "../utils"
+import postStore from "../store/postStore"
+import PostCard from "../components/PostCard"
 
 const UserProfilePage = () => {
     const tabs = ["Projects", "Posts", "Skills"]
     const [activeTab, setActiveTab] = useState("Projects");
 
     const { user, loading } = userStore();
+    const { posts } = postStore()
 
 
     const [projects, setProjects] = useState<ProjectProp[]>([])
@@ -140,7 +143,7 @@ const UserProfilePage = () => {
                     <div className="w-full h-full flex flex-col gap-5 mt-2">
                         {projects.map((project) => (
                             <ProjectCard
-                            _id={project._id}
+                                _id={project._id}
                                 projectName={project.projectName}
                                 shortDesc={project.shortDesc}
                                 tech={project.tech}
@@ -151,7 +154,22 @@ const UserProfilePage = () => {
 
 
                     </div>}
-                {activeTab === "Posts" && <div>Posts cards</div>}
+                {activeTab === "Posts" &&
+                    <div className="w-full h-full flex flex-col gap-5 mt-2">
+                        {posts.map((post) => (
+                            <PostCard
+                                _id={post._id}
+                                user={post.user}
+                                content={post.content}
+                                code={post.code}
+                                image={post.image}
+                                link={post.link}
+                                tags={post.tags}
+                                likeCount={post.likeCount}
+                                comments={post.comments}
+                            />
+                        ))}
+                    </div>}
                 {activeTab === "Skills" && <div>Skills</div>}
             </div>
         </div>

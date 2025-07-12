@@ -15,3 +15,20 @@ export interface ProjectProp {
         profilePic: string,
     }
 }
+
+
+export interface PostProp {
+    user: {
+        _id: string,
+        username: string,
+        fullName: string,
+    },
+    _id: string,
+    content: string,
+    code?: string,
+    image?: string,
+    link?: string,
+    tags: string[],
+    likeCount: number,
+    comments?: string[],
+}
