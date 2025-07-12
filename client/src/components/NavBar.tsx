@@ -83,7 +83,7 @@ const NavBar = () => {
                             <div className="bg-white w-10 h-10 rounded-full"></div>
 
                             {modalOpen &&
-                                <div className={`absolute top-16 border-[2px] border-zinc-500 right-1 bg-black rounded-md shadow-xs shadow-white px-3 py-2 flex flex-col items-center gap-2 z-50`}>
+                                <div className={`absolute top-16 border-[2px] border-zinc-500 right-1 xl:right-18 bg-black rounded-md shadow-xs shadow-white px-3 py-2 flex flex-col items-center gap-2 z-50`}>
                                     <button onClick={() => {
                                         navigate('/profile')
                                         setModalOpen(false);
@@ -95,7 +95,7 @@ const NavBar = () => {
                                     <button onClick={() => {
                                         navigate('/profile')
                                         setModalOpen(false);
-                                    }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Logout</button>
+                                    }} className="p-2 hover:bg-red-800/30 text-red-500 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Logout</button>
                                 </div>
                             }
                         </div>

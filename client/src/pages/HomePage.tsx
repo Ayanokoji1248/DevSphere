@@ -1,4 +1,4 @@
-import { CodeXml, Heart, Link, MessageCircle, Share } from "lucide-react"
+import { CodeXml, Link } from "lucide-react"
 import { useState } from "react"
 import { TbPhoto } from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast"
 import axios from "axios"
 import { BACKEND_URL } from "../utils"
 import postStore from "../store/postStore"
+import PostCard from "../components/PostCard"
 
 
 const HomePage = () => {
@@ -14,7 +15,7 @@ const HomePage = () => {
 
     const [content, setContent] = useState("")
     const { user, setUser } = userStore();
-    const { posts, addPost, updatePostLikeCount } = postStore()
+    const { posts, addPost } = postStore()
 
     const handleSubmit = async () => {
         if (!user) {
@@ -40,17 +41,17 @@ const HomePage = () => {
         }
     }
 
-    const likeUnlikeHandler = async (id: string) => {
-        try {
-            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-                withCredentials: true
-            })
-            // console.log(response.data)
-            updatePostLikeCount(id, response.data.likeCount)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const likeUnlikeHandler = async (id: string) => {
+    //     try {
+    //         const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
+    //             withCredentials: true
+    //         })
+    //         // console.log(response.data)
+    //         updatePostLikeCount(id, response.data.likeCount)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     return (
         <div className='w-full min-h-screen pb-6'>
@@ -63,13 +64,13 @@ const HomePage = () => {
                     <div className='w-full'>
                         <textarea value={content} onChange={(e) => setContent(e.target.value)} name="content" id="content" className='w-full h-22 border-2 rounded-xl resize-none p-3 text-sm font-[Albert_Sans] font-medium' placeholder="Share your latest project, code snippet, or developer insight..."></textarea>
 
-                        <div className='flex justify-between items-center p-2'>
-                            <div className='flex gap-2 md:gap-5'>
+                        <div className='flex justify-between items-center p-2 flex-col md:flex-row gap-3'>
+                            <div className='flex gap-2 md:gap-5 md:flex-row flex-wrap md:flex-nowrap'>
                                 <button onClick={() => navigate('/create-post')} className='text-sm font-[Albert_Sans] font-medium md:px-4 px-2 py-2 rounded-md border-2 flex items-center gap-2 hover:border-green-500 cursor-pointer transition-all duration-300 hover:bg-green-700/30'><CodeXml size={18} /> Code</button>
                                 <button onClick={() => navigate('/create-post')} className='text-sm font-[Albert_Sans] font-medium md:px-4 px-2 py-2 rounded-md border-2 flex gap-2 items-center hover:border-blue-500 hover:bg-blue-700/30 cursor-pointer transition-all duration-300'><TbPhoto size={18} /> Media</button>
                                 <button onClick={() => navigate('/create-post')} className='text-sm font-[Albert_Sans] font-medium md:px-4 px-2 py-2 rounded-md border-2 flex items-center gap-3 cursor-pointer hover:border-pink-500 hover:bg-pink-700/30 transition-all duration-300'><Link size={18} /> Link</button>
                             </div>
-                            <button onClick={handleSubmit} className='bg-[#9400FF] text-white cursor-pointer px-4 md:px-6 py-2 text-lg font-medium rounded-md hover:bg-[#7E30E1] transition-all duration-300 hover:-translate-y-0.5'>Post</button>
+                            <button onClick={handleSubmit} className='bg-[#9400FF] w-full text-white cursor-pointer px-4 md:px-6 py-2 text-lg font-medium rounded-md hover:bg-[#7E30E1] transition-all duration-300 hover:-translate-y-0.5'>Post</button>
                         </div>
                     </div>
                 </div>
@@ -79,53 +80,17 @@ const HomePage = () => {
             <div id="posts" className="mt-8 flex flex-col gap-5 text-white">
 
                 {posts.map((post) => (
-
-                    <div id="post" className="w-full border-[1px] rounded-xl border-zinc-500 p-5 py-6 flex gap-5">
-                        <div>
-                            <div className="w-10 h-10 bg-zinc-300 rounded-full"></div>
-                        </div>
-                        <div className="w-full font-[Albert_Sans] flex flex-col gap-2">
-                            <div className="flex items-center gap-3">
-                                <h1 className="font-bold text-lg tracking-tighter">{post.user.fullName}</h1>
-                                <p className="text-sm tracking-tight font-medium text-zinc-400">@{post.user.username}</p>
-                            </div>
-                            <div>
-                                <p className="leading-tight">{post.content}</p>
-                            </div>
-                            {post.link &&
-                                <div className="w-full p-2 bg-blue-900/60 rounded-md my-2">
-                                    <a className="font-medium text-blue-500" href={post.link} target="_blank">{post.link}</a>
-                                </div>
-                            }
-                            {post.image &&
-                                <div className="w-fit max-h-[600px] overflow-auto rounded-md my-2">
-                                    <img className="w-fit h-full object-contain object-center rounded-xl " src={post.image} alt="" />
-                                </div>
-                            }
-
-                            {post.code &&
-                                <div className="bg-zinc-800 text-green-400 font-medium font-mono p-2 rounded-md">
-                                    <p>{post.code}</p>
-                                </div>
-                            }
-
-                            {post.tags.length > 1 &&
-                                <div id="tag" className="flex gap-3 mt-2">
-                                    {post.tags.map((t) => (
-
-                                        <p className="bg-zinc-300 text-black px-2.5 py-1 font-medium text-sm rounded-full text-md">#{t}</p>
-                                    ))}
-
-                                </div>
-                            }
-
-                            <div className="mt-2 flex gap-5">
-                                <button onClick={() => likeUnlikeHandler(post._id)} className="flex items-center text-sm gap-1 hover:text-red-500 cursor-pointer transition-all duration-300"><Heart size={18} />  {post.likeCount}</button>
-                                <div className="flex items-center text-sm gap-1 hover:text-blue-500 cursor-pointer transition-all duration-300"><MessageCircle size={18} /> 35</div>
-                                <div className="flex items-center text-sm gap-1 hover:text-green-500 cursor-pointer transition-all duration-300"><Share size={18} /> 35</div>
-                            </div>
-                        </div>
-                    </div>
+                    <PostCard
+                        _id={post._id}
+                        user={post.user}
+                        content={post.content}
+                        code={post.code}
+                        image={post.image}
+                        link={post.link}
+                        tags={post.tags}
+                        likeCount={post.likeCount}
+                        comments={post.comments}
+                    />
                 ))}
 
 
