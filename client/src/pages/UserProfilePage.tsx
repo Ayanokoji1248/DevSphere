@@ -10,7 +10,7 @@ import postStore from "../store/postStore"
 import PostCard from "../components/PostCard"
 
 const UserProfilePage = () => {
-    const tabs = ["Projects", "Posts", "Skills"]
+    const tabs = ["Projects", "Posts"]
     const [activeTab, setActiveTab] = useState("Projects");
 
     const { user, loading } = userStore();
@@ -24,7 +24,7 @@ const UserProfilePage = () => {
             const response = await axios.get(`${BACKEND_URL}/project/user-project`, {
                 withCredentials: true
             });
-            console.log(response.data.projects);
+            // console.log(response.data.projects);
             setProjects(response.data.projects)
         } catch (error) {
             console.log(error)
@@ -170,7 +170,6 @@ const UserProfilePage = () => {
                             />
                         ))}
                     </div>}
-                {activeTab === "Skills" && <div>Skills</div>}
             </div>
         </div>
     )
