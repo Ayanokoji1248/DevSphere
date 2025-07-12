@@ -5,4 +5,6 @@ const user_middleware_1 = require("../middlewares/user.middleware");
 const project_controller_1 = require("../controllers/project.controller");
 const projectRouter = (0, express_1.Router)();
 projectRouter.post('/create', user_middleware_1.userMiddleware, project_controller_1.createProject);
+projectRouter.get('/user-project', user_middleware_1.userMiddleware, project_controller_1.getAllUserProject);
+projectRouter.get("/all-project", project_controller_1.getAllProjects);
 exports.default = projectRouter;

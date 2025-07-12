@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProject = void 0;
+exports.getAllProjects = exports.getAllUserProject = exports.createProject = void 0;
 const zod_1 = __importDefault(require("zod"));
 const project_model_1 = __importDefault(require("../models/project.model"));
 const user_model_1 = __importDefault(require("../models/user.model"));
@@ -21,11 +21,11 @@ const projectValidateSchema = zod_1.default.object({
     shortDesc: zod_1.default.string().min(6, "Atleast 6 character").trim(),
     longDesc: zod_1.default.string().min(10, "At least 10 character").trim(),
     category: zod_1.default.string(),
-    status: zod_1.default.string(),
+    status: zod_1.default.enum(["Planning", "In Progress", "Completed"]),
     tech: zod_1.default.array(zod_1.default.string()),
     githubLink: zod_1.default.string().optional(),
     projectLink: zod_1.default.string().optional(),
-    projectImage: zod_1.default.string().url("Invalid Url").trim()
+    projectImage: zod_1.default.string().url("Invalid Url").trim().optional()
 });
 const createProject = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -70,3 +70,43 @@ const createProject = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.createProject = createProject;
+const getAllUserProject = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        const projects = yield project_model_1.default.find({ user: userId }).populate("user", "_id username fullName profilePic");
+        if (projects.length === 0) {
+            res.status(400).json({
+                message: "No Projects there"
+            });
+            return;
+        }
+        res.status(200).json({
+            message: "User Projects",
+            projects
+        });
+        return;
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.getAllUserProject = getAllUserProject;
+const getAllProjects = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const projects = yield project_model_1.default.find({}).populate("user", "_id username fullName profilePic");
+        res.status(200).json({
+            projects
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+});
+exports.getAllProjects = getAllProjects;

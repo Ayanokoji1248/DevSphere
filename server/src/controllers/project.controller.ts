@@ -63,3 +63,46 @@ export const createProject = async (req: Request, res: Response, next: NextFunct
         })
     }
 }
+
+export const getAllUserProject = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.user.id;
+        const projects = await projectModel.find({ user: userId }).populate("user", "_id username fullName profilePic");
+
+        if (projects.length === 0) {
+            res.status(400).json({
+                message: "No Projects there"
+            })
+            return
+        }
+
+        res.status(200).json({
+            message: "User Projects",
+            projects
+        })
+        return
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+        return
+    }
+}
+
+
+export const getAllProjects = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const projects = await projectModel.find({}).populate("user", "_id username fullName profilePic")
+
+        res.status(200).json({
+            projects
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
+}
