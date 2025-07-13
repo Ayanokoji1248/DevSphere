@@ -18,6 +18,7 @@ export interface ProjectProp {
 
 
 export interface PostProp {
+    isMyPost?: boolean,
     user: {
         _id: string,
         username: string,
@@ -32,4 +33,7 @@ export interface PostProp {
     tags: string[],
     likeCount: number,
     comments?: string[],
+
+    deletePost?: () => void
+    likeUpdate?: (id: string, likeCount: number) => void
 }

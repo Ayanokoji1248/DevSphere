@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.likeAndUnlikePost = exports.getAllPost = exports.createPost = void 0;
+exports.deletePost = exports.getAllUserPosts = exports.likeAndUnlikePost = exports.getAllPost = exports.createPost = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const post_model_1 = __importDefault(require("../models/post.model"));
 const zod_1 = __importDefault(require("zod"));
@@ -145,3 +145,64 @@ const likeAndUnlikePost = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.likeAndUnlikePost = likeAndUnlikePost;
+const getAllUserPosts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        if (!userId || !mongoose_1.default.Types.ObjectId.isValid(userId)) {
+            res.status(400).json({
+                message: "Invalid User"
+            });
+            return;
+        }
+        const posts = yield post_model_1.default.find({ user: userId }).populate("user", "_id username fullName profilePic");
+        res.status(200).json({
+            message: "User Posts",
+            posts
+        });
+        return;
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.getAllUserPosts = getAllUserPosts;
+const deletePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        const { id } = req.params;
+        const user = yield user_model_1.default.findByIdAndUpdate(userId, {
+            $pull: { posts: id }
+        }, { new: true });
+        const post = yield post_model_1.default.findById(id);
+        if (!post) {
+            res.status(404).json({
+                message: "Post not found"
+            });
+            return;
+        }
+        console.log(post.user._id);
+        if ((post === null || post === void 0 ? void 0 : post.user._id.toString()) !== userId.toString()) {
+            res.status(400).json({
+                message: "You are not allowed to delete this post"
+            });
+            return;
+        }
+        yield post_model_1.default.findByIdAndDelete(id);
+        res.status(200).json({
+            message: "Post deleted",
+            updatedUser: user,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.deletePost = deletePost;

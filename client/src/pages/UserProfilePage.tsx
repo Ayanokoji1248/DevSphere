@@ -3,12 +3,12 @@ import { useEffect, useState } from "react"
 import { TbLocation } from "react-icons/tb"
 import userStore from "../store/userStore"
 import ProjectCard from "../components/ProjectCard"
-import { type ProjectProp } from "../utils/interfaces"
+import { type PostProp, type ProjectProp } from "../utils/interfaces"
 import axios from "axios"
 import { BACKEND_URL } from "../utils"
-import postStore from "../store/postStore"
 import PostCard from "../components/PostCard"
 import { useNavigate } from "react-router-dom"
+import postStore from "../store/postStore"
 
 const UserProfilePage = () => {
     const navigate = useNavigate();
@@ -16,10 +16,10 @@ const UserProfilePage = () => {
     const tabs = ["Projects", "Posts"]
     const [activeTab, setActiveTab] = useState("Projects");
 
-    const { user, loading } = userStore();
-    const { posts } = postStore()
+    const { user, loading, setUser } = userStore();
+    const { removePost } = postStore()
 
-
+    const [userPosts, setUserPosts] = useState<PostProp[]>([]);
     const [projects, setProjects] = useState<ProjectProp[]>([])
 
     const getAllUserProject = async () => {
@@ -34,8 +34,37 @@ const UserProfilePage = () => {
         }
     }
 
+    const getAllUserPosts = async () => {
+        try {
+            const response = await axios.get(`${BACKEND_URL}/post/user-posts`, {
+                withCredentials: true
+            });
+            // console.log(response.data.posts);
+            setUserPosts(response.data.posts.reverse())
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deletePost = async (id: string) => {
+
+        try {
+            const response = await axios.delete(`${BACKEND_URL}/post/${id}`, {
+                withCredentials: true
+            })
+            console.log(response.data)
+            removePost(id)
+            setUserPosts((prev) => prev.filter((post => post._id !== id)))
+            setUser(response.data.updatedUser);
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
-        getAllUserProject()
+        getAllUserProject();
+        getAllUserPosts()
     }, [])
 
     if (loading) {
@@ -167,8 +196,11 @@ const UserProfilePage = () => {
                     </div>}
                 {activeTab === "Posts" &&
                     <div className="w-full h-full flex flex-col gap-5 mt-2">
-                        {posts.map((post) => (
-                            <PostCard
+
+                        {userPosts.map((post) => {
+
+                            return < PostCard
+                                isMyPost={true}
                                 _id={post._id}
                                 user={post.user}
                                 content={post.content}
@@ -178,8 +210,10 @@ const UserProfilePage = () => {
                                 tags={post.tags}
                                 likeCount={post.likeCount}
                                 comments={post.comments}
+                                deletePost={() => deletePost(post._id)}
                             />
-                        ))}
+                        }
+                        )}
                     </div>}
             </div>
         </div >

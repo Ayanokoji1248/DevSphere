@@ -3,8 +3,11 @@ import { Heart, MessageCircle, Share } from "lucide-react";
 import { BACKEND_URL } from "../utils";
 import postStore from "../store/postStore";
 import type { PostProp } from "../utils/interfaces";
+import userStore from "../store/userStore";
 
-const PostCard = ({ _id, user, content, code, image, link, tags, likeCount, comments }: PostProp) => {
+
+const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, comments, deletePost }: PostProp) => {
+    const { user: currentUser } = userStore();
     const { updatePostLikeCount } = postStore();
 
     const likeUnlikeHandler = async (id: string) => {
@@ -83,6 +86,12 @@ const PostCard = ({ _id, user, content, code, image, link, tags, likeCount, comm
                         <Share size={18} /> 35
                     </div>
                 </div>
+                {
+                    isMyPost && user._id === currentUser?._id &&
+                    <div className="mt-2 flex">
+                        <button onClick={deletePost} className="bg-red-500 p-2 py-1 rounded-md text-sm font-medium cursor-pointer">Delete</button>
+                    </div>
+                }
             </div>
         </div>
     );
