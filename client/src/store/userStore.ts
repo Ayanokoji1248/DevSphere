@@ -1,16 +1,16 @@
 import { create } from "zustand"
 
-interface userProp {
+export interface userProp {
     _id: string,
     fullName: string,
     username: string,
     email: string,
     bio: string,
-    profilePic: string,
-    bannerImage: string,
-    portfolioLink: string,
-    headline: string,
-    address: string,
+    profilePic?: string,
+    bannerImage?: string,
+    portfolioLink?: string,
+    headline?: string,
+    address?: string,
     skills: string[],
     following: string[],
     follower: string[],

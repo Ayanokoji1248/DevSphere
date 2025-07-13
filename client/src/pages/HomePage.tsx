@@ -59,7 +59,9 @@ const HomePage = () => {
             <div className='border-2 border-zinc-600 rounded-xl text-white'>
                 <div className='p-5 flex gap-5'>
                     <div className=''>
-                        <div className='md:w-12 md:h-12 w-10 h-10 flex shrink-0 bg-zinc-300 rounded-full'></div>
+                        <div className='md:w-12 md:h-12 w-10 h-10 flex shrink-0 bg-zinc-300 rounded-full overflow-auto'>
+                            <img src={user?.profilePic} alt="" />
+                        </div>
                     </div>
                     <div className='w-full'>
                         <textarea value={content} onChange={(e) => setContent(e.target.value)} name="content" id="content" className='w-full h-22 border-2 rounded-xl resize-none p-3 text-sm font-[Albert_Sans] font-medium' placeholder="Share your latest project, code snippet, or developer insight..."></textarea>

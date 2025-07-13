@@ -8,8 +8,11 @@ import axios from "axios"
 import { BACKEND_URL } from "../utils"
 import postStore from "../store/postStore"
 import PostCard from "../components/PostCard"
+import { useNavigate } from "react-router-dom"
 
 const UserProfilePage = () => {
+    const navigate = useNavigate();
+
     const tabs = ["Projects", "Posts"]
     const [activeTab, setActiveTab] = useState("Projects");
 
@@ -42,19 +45,19 @@ const UserProfilePage = () => {
     return (
         <div className="min-h-screen text-white rounded-md border-zinc-600 relative font-[Albert_Sans] flex flex-col gap-2 pb-5 px-3">
             {/* Cover image */}
-            <div className="h-48 md:h-64 w-full rounded-xl overflow-hidden relative">
+            <div className="h-48 md:h-62 w-full rounded-xl overflow-hidden relative">
                 <img
                     className="w-full h-full object-cover object-center"
-                    src="https://i.pinimg.com/736x/7a/e3/c7/7ae3c7ad104a968dc735871c0bf17608.jpg"
-                    alt=""
+                    src={user?.bannerImage}
+                    alt="banner image"
                 />
             </div>
 
             {/* Profile avatar */}
             <div className="absolute top-36 md:top-44 left-5 w-24 h-24 md:w-32 md:h-32 bg-white rounded-full overflow-hidden border-4 border-zinc-800">
                 <img
-                    src="https://i.pinimg.com/736x/94/ea/93/94ea9375223db8cb6ed76c7ba6c7245b.jpg"
-                    alt=""
+                    src={user?.profilePic}
+                    alt="user profile"
                     className="w-full h-full object-cover"
                 />
             </div>
@@ -62,27 +65,35 @@ const UserProfilePage = () => {
             {/* Name and edit button */}
             <div className="pt-10 md:pt-12 flex flex-col md:flex-row md:items-center items-start gap-3">
                 <h1 className="text-4xl font-bold tracking-tight">{user?.fullName}</h1>
-                <p className="p-1 px-2 text-xs md:text-sm font-semibold tracking-tight bg-amber-600 rounded-full">Mid-level Developer</p>
+                {user?.headline &&
+                    <p className="p-1 px-2 text-xs md:text-sm font-semibold tracking-tight bg-amber-600 rounded-full">{user?.headline}</p>
+                }
             </div>
 
             {/* Username */}
             <p className="tracking-tight font-medium text-zinc-400">@{user?.username}</p>
 
             {/* Bio */}
-            <p className="text-sm tracking-tight font-medium">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quaerat ipsum perspiciatis dolor suscipit, a obcaecati molestiae voluptatum, modi neque alias maiores asperiores? Laudantium error aut magni ipsum delectus porro recusandae ad vitae fuga. Accusantium, tenetur provident! Labore, nihil odit aut, atque adipisci veniam ratione soluta placeat eos, fugit vel!
-            </p>
+            {user?.bio &&
+                <p className="text-sm tracking-tight font-medium">
+                    {user?.bio}
+                </p>
+            }
 
             {/* Location and link */}
             <div className="mt-2 flex flex-wrap gap-4">
-                <div className="flex items-center gap-2">
-                    <TbLocation size={18} className="text-blue-500" />
-                    <p className="text-zinc-500 font-medium tracking-tight text-sm">NY, New York</p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <Link size={18} className="text-emerald-500" />
-                    <p className="tracking-tight text-sm font-medium text-blue-500 break-all">portifolio.com</p>
-                </div>
+                {user?.address &&
+                    <div className="flex items-center gap-2">
+                        <TbLocation size={18} className="text-blue-500" />
+                        <p className="text-zinc-500 font-medium tracking-tight text-sm">{user.address}</p>
+                    </div>
+                }
+                {user?.portfolioLink &&
+                    <div className="flex items-center gap-2">
+                        <Link size={18} className="text-emerald-500" />
+                        <p className="tracking-tight text-sm font-medium text-blue-500 break-all">{user.portfolioLink}</p>
+                    </div>
+                }
             </div>
 
             {/* Stats */}
@@ -112,14 +123,14 @@ const UserProfilePage = () => {
                         <CodeXml className="text-blue-500" size={22} />
                         <h1 className="text-lg font-bold tracking-tighter">Skills & Technologies</h1>
                     </div>
-                    <button className="font-medium border-2 py-1 px-2 rounded-md flex items-center gap-2 text-sm tracking-tight cursor-pointer">
+                    <button onClick={() => navigate('/edit-profile')} className="font-medium border-2 py-1 px-2 rounded-md flex items-center gap-2 text-sm tracking-tight cursor-pointer">
                         <Plus size={20} /> Add Skills
                     </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    <p className="bg-blue-900/60 w-fit p-1 text-sm font-medium rounded-full px-2 text-blue-500">Express</p>
-                    <p className="bg-emerald-900/60 w-fit p-1 text-sm font-medium rounded-full px-2 text-emerald-500">React</p>
-                    <p className="bg-orange-900/60 w-fit p-1 text-sm font-medium rounded-full px-2 text-orange-500">Node JS</p>
+                    {user?.skills.map((skill, index) => (
+                        <p key={index} className="bg-blue-900/60 w-fit p-1 text-sm font-medium rounded-full px-2 text-blue-500">{skill}</p>
+                    ))}
                 </div>
             </div>
 
@@ -171,7 +182,7 @@ const UserProfilePage = () => {
                         ))}
                     </div>}
             </div>
-        </div>
+        </div >
     )
 }
 

@@ -93,7 +93,7 @@ const userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         const validate = loginSchema.safeParse(req.body);
         if (!validate.success) {
             res.status(400).json({
-                errors: validate.error.flatten().formErrors
+                errors: validate.error.flatten().fieldErrors
             });
             return;
         }

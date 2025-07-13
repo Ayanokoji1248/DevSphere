@@ -80,7 +80,9 @@ const NavBar = () => {
                     {user ?
                         <div ref={divRef} onClick={() => setModalOpen(!modalOpen)}>
 
-                            <div className="bg-white w-10 h-10 rounded-full"></div>
+                            <div className="bg-white w-10 h-10 rounded-full overflow-auto">
+                                <img src={user.profilePic} className="w-full h-full" alt="profile pic" />
+                            </div>
 
                             {modalOpen &&
                                 <div className={`absolute top-16 border-[2px] border-zinc-500 right-1 xl:right-18 bg-black rounded-md shadow-xs shadow-white px-3 py-2 flex flex-col items-center gap-2 z-50`}>

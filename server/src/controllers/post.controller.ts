@@ -46,7 +46,7 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
             link,
             tags
         })
-        await post.populate("user", "_id username fullName")
+        await post.populate("user", "_id username fullName profilePic");
 
         user?.posts.push(post._id)
         await user?.save()
@@ -67,7 +67,7 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
 
 export const getAllPost = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const posts = await postModel.find({}).populate("user", "_id username fullName");
+        const posts = await postModel.find({}).populate("user", "_id username fullName profilePic");
 
         res.status(200).json({
             message: "All posts",

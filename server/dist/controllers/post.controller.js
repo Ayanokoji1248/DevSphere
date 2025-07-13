@@ -51,7 +51,7 @@ const createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             link,
             tags
         });
-        yield post.populate("user", "_id username fullName");
+        yield post.populate("user", "_id username fullName profilePic");
         user === null || user === void 0 ? void 0 : user.posts.push(post._id);
         yield (user === null || user === void 0 ? void 0 : user.save());
         res.status(200).json({
@@ -70,7 +70,7 @@ const createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 exports.createPost = createPost;
 const getAllPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const posts = yield post_model_1.default.find({}).populate("user", "_id username fullName");
+        const posts = yield post_model_1.default.find({}).populate("user", "_id username fullName profilePic");
         res.status(200).json({
             message: "All posts",
             posts

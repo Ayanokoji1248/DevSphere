@@ -22,6 +22,7 @@ export interface PostProp {
         _id: string,
         username: string,
         fullName: string,
+        profilePic: string,
     },
     _id: string,
     content: string,

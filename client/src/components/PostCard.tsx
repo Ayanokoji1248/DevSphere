@@ -22,7 +22,9 @@ const PostCard = ({ _id, user, content, code, image, link, tags, likeCount, comm
         <div className="w-full border-[1px] rounded-xl border-zinc-500 p-4 sm:p-5 flex flex-col sm:flex-row gap-3 sm:gap-5">
             {/* Avatar */}
             <div className="flex-shrink-0">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-zinc-300 rounded-full"></div>
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-auto border-2 border-zinc-600">
+                    <img src={user.profilePic} alt="profile pic" />
+                </div>
             </div>
 
             {/* Content */}

@@ -2,12 +2,25 @@ import { Plus, Upload } from "lucide-react"
 import { useRef, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io"
 import { useNavigate } from "react-router-dom";
-import userStore from "../store/userStore";
 import { BACKEND_URL } from "../utils";
 import { uploadImage } from "../utils/uploadImage";
 import axios from "axios";
+import userStore from "../store/userStore";
 
 
+
+type FormDataState = {
+    username: string;
+    fullName: string;
+    email: string;
+    bio: string;
+    profilePic: string;
+    bannerImage: string;
+    skills: string[];
+    headline: string;
+    portfolioLink: string;
+    address: string;
+};
 const EditProfilePage = () => {
 
 
@@ -35,7 +48,7 @@ const EditProfilePage = () => {
     const [profileImage, setProfileImage] = useState<File | null>(null);
     const [bannerImage, setBannerImage] = useState<File | null>(null);
 
-    const [skills, setSkills] = useState<string[]>([]);
+    const [skills, setSkills] = useState<string[]>(user?.skills || []);
     const [skill, setSkill] = useState("");
 
     const handleTag = () => {
@@ -53,19 +66,33 @@ const EditProfilePage = () => {
             throw new Error("User not found");
         }
         // Here you would typically send the formData to your backend API to update the user profile
-        console.log("Form submitted with data:", formData);
-        const profileImageUrl = uploadImage(profileImage as File, `profilePic`, user)
-        const bannerImageUrl = uploadImage(bannerImage as File, `bannerImage`, user);
-        const response = await axios.put(`${BACKEND_URL}/user/edit`, {
+        // console.log("Form submitted with data:", formData);
+        const profileImageUrl = await uploadImage(profileImage as File, `profilePic`, user)
+        const bannerImageUrl = await uploadImage(bannerImage as File, `bannerImage`, user);
+
+        // console.log("Profile Image URL:", profileImageUrl);
+        // console.log("Banner Image URL:", bannerImageUrl);
+
+        const requestData: FormDataState = {
             ...formData,
             skills: skills,
-            profilePic: profileImageUrl,
-            bannerImage: bannerImageUrl
-        }, {
+        }
+
+        if (profileImageUrl) {
+            requestData.profilePic = profileImageUrl;
+        }
+
+        if (bannerImageUrl) {
+            requestData.bannerImage = bannerImageUrl;
+        }
+
+
+        const response = await axios.put(`${BACKEND_URL}/user/edit-profile`, requestData, {
             withCredentials: true
         });
-        console.log(response.data);
-        // navigate('/profile');
+        console.log(response.data.updatedUser);
+        setUser(response.data.updatedUser);
+        navigate('/profile');
     }
 
     return (
@@ -81,7 +108,7 @@ const EditProfilePage = () => {
 
                 <div onClick={() => {
                     bannerImageRef.current?.click();
-                }} className={`w-full h-42 bg-zinc-800/80 rounded-xl mt-3 flex flex-col gap-2 items-center justify-center hover:bg-zinc-900 cursor-pointer transition-all duration-300 border-2 border-zinc-600 ${bannerPreviewImage ? 'bg-cover bg-center opacity-90' : ''}`} style={{ backgroundImage: bannerPreviewImage ? `url(${bannerPreviewImage})` : 'none' }}>
+                }} className={`w-full h-62 bg-zinc-800/80 rounded-xl mt-2 flex flex-col gap-2 items-center justify-center hover:bg-zinc-900 cursor-pointer transition-all duration-300 border-2 border-zinc-600 ${bannerPreviewImage ? 'bg-cover bg-center opacity-90' : ''}`} style={{ backgroundImage: bannerPreviewImage ? `url(${bannerPreviewImage})` : 'none' }}>
                     <div className="bg-zinc-700/70 text-white flex flex-col items-center justify-center gap-2 p-3 rounded-md">
                         <Upload />
                         <h1 className="font-medium text-md tracking-tighter">Upload Banner Image</h1>
@@ -181,7 +208,7 @@ const EditProfilePage = () => {
 
             </div>
 
-            <button onClick={handleSubmit} className="bg-white text-black p-2 w-full rounded-md mt-2">Edit Profile</button>
+            <button onClick={handleSubmit} className="bg-violet-600 font-bold text-white tracking-tight hover:bg-violet-700 p-2 w-full rounded-md mt-4 transition-all duration-300 cursor-pointer hover:-translate-y-0.5">Edit Profile</button>
         </div>
     )
 }

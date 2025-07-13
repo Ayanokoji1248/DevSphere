@@ -6,6 +6,7 @@ interface postProp {
         _id: string,
         username: string,
         fullName: string,
+        profilePic: string,
     },
     content: string,
     code: string,

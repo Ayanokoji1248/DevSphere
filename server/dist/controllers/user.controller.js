@@ -12,9 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserProfile = exports.getUser = void 0;
+exports.updateUserProfile = exports.getUserProfile = exports.getUser = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const zod_1 = __importDefault(require("zod"));
+const userSchema = zod_1.default.object({
+    fullName: zod_1.default.string().min(5, "Atleast 5 character long").optional(),
+    username: zod_1.default.string().min(5, "Atleast 5 character long").max(20, "Username cannot exceed 20 characters").optional(),
+    headline: zod_1.default.string().min(5, "Atleast 5 Character").optional(),
+    bio: zod_1.default.string().min(10, "Atleast 10 Character").max(500, "Not more than 1000 characters").optional(),
+    skills: zod_1.default.array(zod_1.default.string()).optional(),
+    address: zod_1.default.string().optional(),
+    portfolioLink: zod_1.default.string().url("Invalid URL").or(zod_1.default.literal("")).optional(),
+    profilePic: zod_1.default.string().url().or(zod_1.default.literal("")).optional(),
+    bannerImage: zod_1.default.string().url().or(zod_1.default.literal("")).optional(),
+});
 const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.user.id;
@@ -64,3 +76,62 @@ const getUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getUserProfile = getUserProfile;
+const updateUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        if (!userId || !mongoose_1.default.Types.ObjectId.isValid(userId)) {
+            res.status(400).json({
+                message: "Invalid User"
+            });
+            return;
+        }
+        const { fullName, username, headline, bio, skills, address, portfolioLink, profilePic, bannerImage } = req.body;
+        const validate = userSchema.safeParse({
+            fullName,
+            username,
+            headline,
+            bio,
+            skills,
+            address,
+            portfolioLink,
+            profilePic,
+            bannerImage,
+        });
+        if (!validate.success) {
+            res.status(400).json({
+                errors: validate.error.flatten().fieldErrors
+            });
+            return;
+        }
+        const user = yield user_model_1.default.findByIdAndUpdate(userId, {
+            fullName,
+            username,
+            headline,
+            bio,
+            skills,
+            address,
+            portfolioLink,
+            bannerImage,
+            profilePic
+        }, { new: true }).select("-password");
+        if (!user) {
+            res.status(400).json({
+                message: "User not found"
+            });
+            return;
+        }
+        res.status(200).json({
+            message: "User Profile Updated",
+            updatedUser: user
+        });
+        return;
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.updateUserProfile = updateUserProfile;

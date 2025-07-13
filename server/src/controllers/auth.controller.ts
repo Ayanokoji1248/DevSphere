@@ -85,7 +85,7 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
 
         if (!validate.success) {
             res.status(400).json({
-                errors: validate.error.flatten().formErrors
+                errors: validate.error.flatten().fieldErrors
             })
             return
         }

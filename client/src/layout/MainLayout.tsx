@@ -30,7 +30,9 @@ const MainLayout = () => {
                     {user &&
                         <div className="sticky top-20 border-[1px] border-zinc-500 p-5 flex flex-col gap-3 rounded-lg text-white">
                             <div className="flex gap-3 items-center">
-                                <div className="w-10 h-10 bg-zinc-700 rounded-full flex shrink-0"></div>
+                                <div className="w-10 h-10 bg-zinc-700 rounded-full flex shrink-0">
+                                    <img src={user.profilePic} alt="profile pic" className="w-full h-full object-cover rounded-full" />
+                                </div>
                                 <div className="font-[Albert_Sans] flex flex-col">
                                     <h1 className="font-bold text-lg tracking-tighter">{user.fullName}</h1>
                                     <p className="text-sm font-medium text-zinc-500">@{user.username}</p>
