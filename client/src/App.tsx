@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import postStore from "./store/postStore"
 import UserProfilePage from "./pages/UserProfilePage"
 import EditProfilePage from "./pages/EditProfilePage"
+import ProjectPage from "./pages/ProjectPage"
 
 
 const App = () => {
@@ -73,6 +74,8 @@ const App = () => {
         </Route>
 
       </Route>
+      
+      <Route path="/projects" element={<ProjectPage />} />
 
     </Routes >
   )

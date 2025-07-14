@@ -184,14 +184,13 @@ const deletePost = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             });
             return;
         }
-        console.log(post.user._id);
         if ((post === null || post === void 0 ? void 0 : post.user._id.toString()) !== userId.toString()) {
             res.status(400).json({
                 message: "You are not allowed to delete this post"
             });
             return;
         }
-        yield post_model_1.default.findByIdAndDelete(id);
+        yield post_model_1.default.findByIdAndDelete(id, { new: true });
         res.status(200).json({
             message: "Post deleted",
             updatedUser: user,
