@@ -58,7 +58,7 @@ const App = () => {
         withCredentials: true
       })
       console.log(response.data)
-      setProjects(response.data.projects)
+      setProjects(response.data.projects.reverse())
     } catch (error) {
       console.log(error)
     }
