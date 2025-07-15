@@ -14,6 +14,7 @@ export interface ProjectProp {
         fullName: string,
         profilePic: string,
     }
+    isMyProject: boolean
 }
 
 

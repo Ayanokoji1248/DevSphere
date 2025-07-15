@@ -199,17 +199,18 @@ const UserProfilePage = () => {
             </div>
 
             {/* Tab content */}
-            <div className="w-full">
+            <div className="w-full flex justify-between items-center">
                 {activeTab === "Projects" &&
-                    <div className="w-full h-full flex flex-col gap-5 mt-2">
+                    <div className="w-full h-full flex flex-col justify-between items-center gap-5 mt-2">
                         {projects.map((project) => (
                             <ProjectCard
                                 _id={project._id}
+                                user={project.user}
                                 projectName={project.projectName}
                                 shortDesc={project.shortDesc}
                                 tech={project.tech}
                                 projectImage={project.projectImage}
-
+                                isMyProject={true}
                             />
                         ))}
 

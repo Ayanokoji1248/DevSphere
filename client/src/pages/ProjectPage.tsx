@@ -2,11 +2,14 @@ import { IoIosArrowBack } from "react-icons/io"
 import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom"
 import { PlusIcon } from "lucide-react"
-// import ProjectCard from "../components/ProjectCard"
+import projectStore from "../store/projectStore"
+import ProjectCard from "../components/ProjectCard"
+
 
 
 const ProjectPage = () => {
     const navigate = useNavigate()
+    const { projects } = projectStore();
     return (
         <div className="bg-black min-h-screen font-[Albert_Sans]">
             <NavBar />
@@ -17,7 +20,7 @@ const ProjectPage = () => {
                         <IoIosArrowBack size={22} />
                     </button>
 
-                    <button className="p-2 flex gap-2 bg-white text-black font-medium tracking-tight rounded-md transition-all duration-300 hover:bg-zinc-200 cursor-pointer hover:-translate-y-0.5">
+                    <button onClick={() => navigate('/create-project')} className="p-2 flex gap-2 bg-white text-black font-medium tracking-tight rounded-md transition-all duration-300 hover:bg-zinc-200 cursor-pointer hover:-translate-y-0.5">
                         <PlusIcon className="text-black" /> Create new Project
                     </button>
 
@@ -33,13 +36,25 @@ const ProjectPage = () => {
 
                 <div className="mt-6">
                     <div>
-
                         <h1 className="text-4xl tracking-tight font-bold">All Projects</h1>
                     </div>
 
-                    <div id="projects" className="border-2 mt-5">
+                    <div id="projects" className="mt-2 flex flex-wrap gap-10 justify-center p-5">
 
                         {/* <ProjectCard /> */}
+
+                        {projects.map((project) => (
+                            <ProjectCard
+                                _id={project._id}
+                                projectName={project.projectName}
+                                shortDesc={project.shortDesc}
+                                longDesc={project.longDesc}
+                                tech={project.tech}
+                                projectImage={project.projectImage}
+                                user={project.user}
+                                isMyProject={false}
+                            />
+                        ))}
 
                     </div>
 
