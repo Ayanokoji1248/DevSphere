@@ -35,5 +35,5 @@ export interface PostProp {
     comments?: string[],
 
     deletePost?: () => void
-    likeUpdate?: (id: string, likeCount: number) => void
+    likeUpdate?: () => void
 }

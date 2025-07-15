@@ -1,25 +1,12 @@
-import axios from "axios";
+
 import { Heart, MessageCircle, Share } from "lucide-react";
-import { BACKEND_URL } from "../utils";
-import postStore from "../store/postStore";
+
 import type { PostProp } from "../utils/interfaces";
 import userStore from "../store/userStore";
 
 
-const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, comments, deletePost }: PostProp) => {
+const PostCard = ({ isMyPost, user, content, code, image, link, tags, likeCount, comments, deletePost, likeUpdate }: PostProp) => {
     const { user: currentUser } = userStore();
-    const { updatePostLikeCount } = postStore();
-
-    const likeUnlikeHandler = async (id: string) => {
-        try {
-            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-                withCredentials: true
-            });
-            updatePostLikeCount(id, response.data.likeCount);
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     return (
         <div className="w-full border-[1px] rounded-xl border-zinc-500 p-4 sm:p-5 flex flex-col sm:flex-row gap-3 sm:gap-5">
@@ -74,7 +61,7 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
                 {/* Actions */}
                 <div className="mt-2 flex gap-4 flex-wrap">
                     <button
-                        onClick={() => likeUnlikeHandler(_id)}
+                        onClick={likeUpdate}
                         className="flex items-center text-xs sm:text-sm gap-1 hover:text-red-500 cursor-pointer transition-all duration-300"
                     >
                         <Heart size={18} /> {likeCount}

@@ -22,6 +22,8 @@ const UserProfilePage = () => {
     const [userPosts, setUserPosts] = useState<PostProp[]>([]);
     const [projects, setProjects] = useState<ProjectProp[]>([])
 
+    const { updatePostLikeCount } = postStore();
+
     const getAllUserProject = async () => {
         try {
             const response = await axios.get(`${BACKEND_URL}/project/user-project`, {
@@ -56,6 +58,25 @@ const UserProfilePage = () => {
             removePost(id)
             setUserPosts((prev) => prev.filter((post => post._id !== id)))
             setUser(response.data.updatedUser);
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const likePost = async (id: string) => {
+        try {
+            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
+                withCredentials: true
+            })
+            updatePostLikeCount(id, response.data.likeCount)
+            setUserPosts((prev) =>
+                prev.map((post) =>
+                    post._id === id
+                        ? { ...post, likeCount: response.data.likeCount }
+                        : post
+                )
+            );
 
         } catch (error) {
             console.log(error)
@@ -200,6 +221,7 @@ const UserProfilePage = () => {
                         {userPosts.map((post) => {
 
                             return < PostCard
+                                key={post._id}
                                 isMyPost={true}
                                 _id={post._id}
                                 user={post.user}
@@ -211,6 +233,7 @@ const UserProfilePage = () => {
                                 likeCount={post.likeCount}
                                 comments={post.comments}
                                 deletePost={() => deletePost(post._id)}
+                                likeUpdate={() => likePost(post._id,)}
                             />
                         }
                         )}

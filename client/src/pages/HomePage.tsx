@@ -15,7 +15,7 @@ const HomePage = () => {
 
     const [content, setContent] = useState("")
     const { user, setUser } = userStore();
-    const { posts, addPost } = postStore()
+    const { posts, addPost, updatePostLikeCount } = postStore()
 
     const handleSubmit = async () => {
         if (!user) {
@@ -41,17 +41,17 @@ const HomePage = () => {
         }
     }
 
-    // const likeUnlikeHandler = async (id: string) => {
-    //     try {
-    //         const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-    //             withCredentials: true
-    //         })
-    //         // console.log(response.data)
-    //         updatePostLikeCount(id, response.data.likeCount)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    const likeUnlikeHandler = async (id: string) => {
+        try {
+            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
+                withCredentials: true
+            })
+            // console.log(response.data)
+            updatePostLikeCount(id, response.data.likeCount)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div className='w-full min-h-screen pb-6'>
@@ -92,6 +92,7 @@ const HomePage = () => {
                         tags={post.tags}
                         likeCount={post.likeCount}
                         comments={post.comments}
+                        likeUpdate={() => likeUnlikeHandler(post._id)}
                     />
                 ))}
 
