@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { userMiddleware } from "../middlewares/user.middleware"
-import { getUser, getUserProfile, updateUserProfile } from "../controllers/user.controller"
+import { getUser, getUserPost, getUserProfile, getUserProject, updateUserProfile } from "../controllers/user.controller"
 
 const userRouter = Router()
 
@@ -10,6 +10,7 @@ userRouter.get('/:id', getUserProfile)
 
 userRouter.put("/edit-profile", userMiddleware, updateUserProfile)
 
+userRouter.get("/:id/post", getUserPost)
 
-
+userRouter.get('/:id/project', getUserProject)
 export default userRouter

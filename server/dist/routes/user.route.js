@@ -7,4 +7,6 @@ const userRouter = (0, express_1.Router)();
 userRouter.get('/me', user_middleware_1.userMiddleware, user_controller_1.getUser);
 userRouter.get('/:id', user_controller_1.getUserProfile);
 userRouter.put("/edit-profile", user_middleware_1.userMiddleware, user_controller_1.updateUserProfile);
+userRouter.get("/:id/post", user_controller_1.getUserPost);
+userRouter.get('/:id/project', user_controller_1.getUserProject);
 exports.default = userRouter;

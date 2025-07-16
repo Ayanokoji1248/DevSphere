@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import userModal from "../models/user.model";
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import z from "zod";
+import postModel from "../models/post.model";
+import _ from "passport-local-mongoose";
+import projectModel from "../models/project.model";
 
 const userSchema = z.object({
     fullName: z.string().min(5, "Atleast 5 character long").optional(),
@@ -127,6 +130,81 @@ export const updateUserProfile = async (req: Request, res: Response, next: NextF
             updatedUser: user
         })
         return
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+        return
+    }
+}
+
+export const getUserPost = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+
+        if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+            res.status(400).json({
+                message: "Invalid Id"
+            })
+            return
+        }
+
+        const user = await userModal.findById(id)
+
+        if (!user) {
+            res.status(404).json({
+                message: "User not found"
+            })
+            return
+        }
+
+        const posts = await postModel.find({
+            user: id
+        }).sort({ createdAt: -1 }).populate("user", "_id username fullName profilePic")
+
+        res.status(200).json({
+            message: "User Post Founded",
+            posts
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
+}
+
+export const getUserProject = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+
+        if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+            res.status(400).json({
+                message: "Invalid Id"
+            })
+            return
+        }
+
+        const user = await userModal.findById(id);
+
+        if (!user) {
+            res.status(404).json({
+                message: "User not found"
+            })
+            return
+        }
+
+        const projects = await projectModel.find({
+            user: id
+        }).sort({ createdAt: -1 })
+
+        res.status(200).json({
+            message: "Project Founded",
+            projects
+        })
 
     } catch (error) {
         console.log(error)

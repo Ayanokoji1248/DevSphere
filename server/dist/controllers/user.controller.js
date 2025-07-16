@@ -12,10 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserProfile = exports.getUserProfile = exports.getUser = void 0;
+exports.getUserProject = exports.getUserPost = exports.updateUserProfile = exports.getUserProfile = exports.getUser = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const zod_1 = __importDefault(require("zod"));
+const post_model_1 = __importDefault(require("../models/post.model"));
+const project_model_1 = __importDefault(require("../models/project.model"));
 const userSchema = zod_1.default.object({
     fullName: zod_1.default.string().min(5, "Atleast 5 character long").optional(),
     username: zod_1.default.string().min(5, "Atleast 5 character long").max(20, "Username cannot exceed 20 characters").optional(),
@@ -135,3 +137,68 @@ const updateUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.updateUserProfile = updateUserProfile;
+const getUserPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        if (!id || !mongoose_1.default.Types.ObjectId.isValid(id)) {
+            res.status(400).json({
+                message: "Invalid Id"
+            });
+            return;
+        }
+        const user = yield user_model_1.default.findById(id);
+        if (!user) {
+            res.status(404).json({
+                message: "User not found"
+            });
+            return;
+        }
+        const posts = yield post_model_1.default.find({
+            user: id
+        }).sort({ createdAt: -1 }).populate("user", "_id username fullName profilePic");
+        res.status(200).json({
+            message: "User Post Founded",
+            posts
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+});
+exports.getUserPost = getUserPost;
+const getUserProject = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        if (!id || !mongoose_1.default.Types.ObjectId.isValid(id)) {
+            res.status(400).json({
+                message: "Invalid Id"
+            });
+            return;
+        }
+        const user = yield user_model_1.default.findById(id);
+        if (!user) {
+            res.status(404).json({
+                message: "User not found"
+            });
+            return;
+        }
+        const projects = yield project_model_1.default.find({
+            user: id
+        }).sort({ createdAt: -1 });
+        res.status(200).json({
+            message: "Project Founded",
+            projects
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.getUserProject = getUserProject;
