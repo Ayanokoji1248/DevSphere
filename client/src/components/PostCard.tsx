@@ -3,18 +3,25 @@ import { Heart, MessageCircle, Share } from "lucide-react";
 
 import type { PostProp } from "../utils/interfaces";
 import userStore from "../store/userStore";
+import { NavLink, useNavigate } from "react-router-dom";
 
 
-const PostCard = ({ isMyPost, user, content, code, image, link, tags, likeCount, comments, deletePost, likeUpdate }: PostProp) => {
+const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, comments, deletePost, likeUpdate }: PostProp) => {
     const { user: currentUser } = userStore();
 
+    const navigate = useNavigate()
+
+
     return (
-        <div className="w-full border-[1px] rounded-xl border-zinc-500 p-4 sm:p-5 flex flex-col sm:flex-row gap-3 sm:gap-5">
+        <div onClick={() => navigate(`/post/${_id}`)} className="w-full border-[1px] rounded-xl border-zinc-500 p-4 sm:p-5 flex flex-col sm:flex-row gap-3 sm:gap-5 hover:cursor-pointer hover:bg-zinc-950 transition-all duration-300 hover:-translate-y-0.5">
             {/* Avatar */}
             <div className="flex-shrink-0">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-auto border-2 border-zinc-600">
-                    <img src={user.profilePic} alt="profile pic" />
-                </div>
+                <NavLink to={`/user/${user._id}`}>
+
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-auto border-2 border-zinc-600">
+                        <img src={user.profilePic} alt="profile pic" />
+                    </div>
+                </NavLink>
             </div>
 
             {/* Content */}
@@ -22,7 +29,7 @@ const PostCard = ({ isMyPost, user, content, code, image, link, tags, likeCount,
                 {/* User Info */}
                 <div className="flex flex-wrap items-center gap-2">
                     <h1 className="font-bold text-base sm:text-lg tracking-tighter">{user.fullName}</h1>
-                    <p className="text-xs sm:text-sm tracking-tight font-medium text-zinc-400">@{user.username}</p>
+                    <NavLink to={`/user/${user._id}`} className="text-xs sm:text-sm tracking-tight font-medium text-zinc-400">@{user.username}</NavLink>
                 </div>
 
                 {/* Post Content */}
@@ -61,7 +68,10 @@ const PostCard = ({ isMyPost, user, content, code, image, link, tags, likeCount,
                 {/* Actions */}
                 <div className="mt-2 flex gap-4 flex-wrap">
                     <button
-                        onClick={likeUpdate}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            if (likeUpdate) likeUpdate() // contional because of optional in postprop
+                        }}
                         className="flex items-center text-xs sm:text-sm gap-1 hover:text-red-500 cursor-pointer transition-all duration-300"
                     >
                         <Heart size={18} /> {likeCount}
@@ -76,7 +86,10 @@ const PostCard = ({ isMyPost, user, content, code, image, link, tags, likeCount,
                 {
                     isMyPost && user._id === currentUser?._id &&
                     <div className="mt-2 flex">
-                        <button onClick={deletePost} className="bg-red-500 p-2 py-1 rounded-md text-sm font-medium cursor-pointer">Delete</button>
+                        <button onClick={(e) => {
+                            e.stopPropagation()
+                            if (deletePost) deletePost()
+                        }} className="bg-red-500 p-2 py-1 rounded-md text-sm font-medium cursor-pointer">Delete</button>
                     </div>
                 }
             </div>

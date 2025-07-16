@@ -87,9 +87,18 @@ const NavBar = () => {
                             {modalOpen &&
                                 <div className={`absolute top-16 border-[2px] border-zinc-500 right-1 xl:right-18 bg-black rounded-md shadow-xs shadow-white px-3 py-2 flex flex-col items-center gap-2 z-50`}>
                                     <button onClick={() => {
+                                        navigate('/home')
+                                        setModalOpen(false);
+                                    }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Home</button>
+                                    <button onClick={() => {
+                                        navigate('/projects')
+                                        setModalOpen(false);
+                                    }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Projects</button>
+                                    <button onClick={() => {
                                         navigate('/profile')
                                         setModalOpen(false);
                                     }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">My Profile</button>
+
                                     <button onClick={() => {
                                         navigate('/edit-profile')
                                         setModalOpen(false);

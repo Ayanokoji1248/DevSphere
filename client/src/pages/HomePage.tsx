@@ -82,6 +82,8 @@ const HomePage = () => {
             <div id="posts" className="mt-8 flex flex-col gap-5 text-white">
 
                 {posts.map((post) => (
+
+
                     <PostCard
                         _id={post._id}
                         user={post.user}
@@ -94,6 +96,7 @@ const HomePage = () => {
                         comments={post.comments}
                         likeUpdate={() => likeUnlikeHandler(post._id)}
                     />
+
                 ))}
 
 

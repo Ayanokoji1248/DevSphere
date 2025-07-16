@@ -9,7 +9,10 @@ postRouter.get("/all", getAllPost);
 
 postRouter.get('/user-posts', userMiddleware, getAllUserPosts)
 
-postRouter.post('/like-unlike/:id', userMiddleware, likeAndUnlikePost)
+postRouter.get('/:id', )
 
 postRouter.delete('/:id', userMiddleware, deletePost)
+
+postRouter.post('/like-unlike/:id', userMiddleware, likeAndUnlikePost)
+
 export default postRouter

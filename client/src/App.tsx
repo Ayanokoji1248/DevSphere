@@ -70,6 +70,7 @@ const App = () => {
     getCurrentUser()
     getAllBlogs()
     getAllProjects()
+    setLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

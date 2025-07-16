@@ -50,17 +50,21 @@ const UserProfilePage = () => {
 
     const deletePost = async (id: string) => {
 
-        try {
-            const response = await axios.delete(`${BACKEND_URL}/post/${id}`, {
-                withCredentials: true
-            })
-            console.log(response.data)
-            removePost(id)
-            setUserPosts((prev) => prev.filter((post => post._id !== id)))
-            setUser(response.data.updatedUser);
+        const confirmation = confirm("Are you sure you want to delete");
 
-        } catch (error) {
-            console.log(error)
+        if (confirmation) {
+            try {
+                const response = await axios.delete(`${BACKEND_URL}/post/${id}`, {
+                    withCredentials: true
+                })
+                console.log(response.data)
+                removePost(id)
+                setUserPosts((prev) => prev.filter((post => post._id !== id)))
+                setUser(response.data.updatedUser);
+
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
