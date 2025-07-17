@@ -17,6 +17,7 @@ import ProjectPage from "./pages/ProjectPage"
 import projectStore from "./store/projectStore"
 import CreateProjectPage from "./pages/CreateProjectPage"
 import ProfilePage from "./pages/ProfilePage"
+import PostPage from "./pages/PostPage"
 
 
 const App = () => {
@@ -91,7 +92,7 @@ const App = () => {
           <Route path="/edit-profile" element={<EditProfilePage />} />
         </Route>
         <Route path="/user/:id" element={<ProfilePage />} />
-
+        <Route path="/post/:id" element={<PostPage />} />
       </Route>
 
       <Route path="/projects" element={<ProjectPage />} />

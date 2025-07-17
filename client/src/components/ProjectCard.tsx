@@ -1,7 +1,7 @@
 import userStore from "../store/userStore"
 import type { ProjectProp } from "../utils/interfaces"
 
-const ProjectCard = ({ _id, projectName, projectImage, shortDesc, tech, isMyProject, user
+const ProjectCard = ({ projectName, projectImage, shortDesc, tech, isMyProject, user, deleteProject
 }: ProjectProp) => {
     const { user: currentUser } = userStore()
     return (
@@ -21,7 +21,10 @@ const ProjectCard = ({ _id, projectName, projectImage, shortDesc, tech, isMyProj
 
                 {isMyProject && user?._id === currentUser?._id &&
                     <div className="mt-3">
-                        <button onClick={() => confirm(`You sure you want to delete this project ${_id}`)} className="p-2 bg-red-500 font-bold rounded-md text-sm">Delete Project</button>
+                        <button onClick={(e) => {
+                            e.stopPropagation()
+                            if (deleteProject) deleteProject()
+                        }} className="p-2 bg-red-500 font-bold rounded-md text-sm">Delete Project</button>
                     </div>
                 }
             </div>

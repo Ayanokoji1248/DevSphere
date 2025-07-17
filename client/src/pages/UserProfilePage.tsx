@@ -9,6 +9,7 @@ import { BACKEND_URL } from "../utils"
 import PostCard from "../components/PostCard"
 import { useNavigate } from "react-router-dom"
 import postStore from "../store/postStore"
+import projectStore from "../store/projectStore"
 
 const UserProfilePage = () => {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const UserProfilePage = () => {
 
     const { user, loading, setUser } = userStore();
     const { removePost } = postStore()
+    const { removeProject } = projectStore()
 
     const [userPosts, setUserPosts] = useState<PostProp[]>([]);
     const [projects, setProjects] = useState<ProjectProp[]>([])
@@ -82,6 +84,17 @@ const UserProfilePage = () => {
                 )
             );
 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteProject = async (id: string) => {
+        try {
+            const response = await axios.delete(`${BACKEND_URL}/project/${id}`)
+            removeProject(id)
+            setProjects((prev) => prev.filter((project) => project._id !== id))
+            console.log(response)
         } catch (error) {
             console.log(error)
         }
@@ -215,6 +228,7 @@ const UserProfilePage = () => {
                                 tech={project.tech}
                                 projectImage={project.projectImage}
                                 isMyProject={true}
+                                deleteProject={() => deleteProject(project._id)}
                             />
                         ))}
 

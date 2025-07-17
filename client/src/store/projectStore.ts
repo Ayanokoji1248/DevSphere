@@ -23,6 +23,7 @@ type projectStoreType = {
     projects: projectPropType[],
     setProjects: (projects: projectPropType[]) => void,
     addProject: (newProject: projectPropType) => void,
+    removeProject: (id: string) => void
 }
 
 const projectStore = create<projectStoreType>((set) => ({
@@ -30,6 +31,10 @@ const projectStore = create<projectStoreType>((set) => ({
     setProjects: (projects) => set({ projects }),
     addProject: (newProject) => set((state) => ({
         projects: [newProject, ...state.projects]
+    })),
+
+    removeProject: (id) => set((state) => ({
+        projects: state.projects.filter((project) => project._id !== id)
     }))
 }))
 

@@ -16,7 +16,9 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
         <div onClick={() => navigate(`/post/${_id}`)} className="w-full border-[1px] rounded-xl border-zinc-500 p-4 sm:p-5 flex flex-col sm:flex-row gap-3 sm:gap-5 hover:cursor-pointer hover:bg-zinc-950 transition-all duration-300 hover:-translate-y-0.5">
             {/* Avatar */}
             <div className="flex-shrink-0">
-                <NavLink to={`/user/${user._id}`}>
+                <NavLink to={`/user/${user._id}`}
+                    onClick={(e) => e.stopPropagation()}
+                >
 
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-auto border-2 border-zinc-600">
                         <img src={user.profilePic} alt="profile pic" />
@@ -29,7 +31,9 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
                 {/* User Info */}
                 <div className="flex flex-wrap items-center gap-2">
                     <h1 className="font-bold text-base sm:text-lg tracking-tighter">{user.fullName}</h1>
-                    <NavLink to={`/user/${user._id}`} className="text-xs sm:text-sm tracking-tight font-medium text-zinc-400">@{user.username}</NavLink>
+                    <NavLink to={`/user/${user._id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-xs sm:text-sm tracking-tight font-medium text-zinc-400">@{user.username}</NavLink>
                 </div>
 
                 {/* Post Content */}
