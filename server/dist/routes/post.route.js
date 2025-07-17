@@ -7,6 +7,7 @@ const postRouter = (0, express_1.Router)();
 postRouter.post("/create", user_middleware_1.userMiddleware, post_controller_1.createPost);
 postRouter.get("/all", post_controller_1.getAllPost);
 postRouter.get('/user-posts', user_middleware_1.userMiddleware, post_controller_1.getAllUserPosts);
-postRouter.post('/like-unlike/:id', user_middleware_1.userMiddleware, post_controller_1.likeAndUnlikePost);
+postRouter.get('/:id', post_controller_1.getParticularPost);
 postRouter.delete('/:id', user_middleware_1.userMiddleware, post_controller_1.deletePost);
+postRouter.post('/like-unlike/:id', user_middleware_1.userMiddleware, post_controller_1.likeAndUnlikePost);
 exports.default = postRouter;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePost = exports.getAllUserPosts = exports.likeAndUnlikePost = exports.getAllPost = exports.createPost = void 0;
+exports.deletePost = exports.getParticularPost = exports.getAllUserPosts = exports.likeAndUnlikePost = exports.getAllPost = exports.createPost = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const post_model_1 = __importDefault(require("../models/post.model"));
 const zod_1 = __importDefault(require("zod"));
@@ -170,6 +170,37 @@ const getAllUserPosts = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.getAllUserPosts = getAllUserPosts;
+const getParticularPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        if (!id || !mongoose_1.default.Types.ObjectId.isValid(id)) {
+            res.status(400).json({
+                message: "Invalid Post Id"
+            });
+            return;
+        }
+        const post = yield post_model_1.default.findById(id).populate("user", "_id username fullName profilePic");
+        if (!post) {
+            res.status(404).json({
+                message: "Post Not Found"
+            });
+            return;
+        }
+        res.status(200).json({
+            message: "Post Found",
+            post
+        });
+        return;
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.getParticularPost = getParticularPost;
 const deletePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.user.id;
