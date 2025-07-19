@@ -71,6 +71,10 @@ const postSchema = new mongoose_1.Schema({
     likeCount: {
         type: Number,
         default: 0
+    },
+    commentCount: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true });
 const postModel = mongoose_1.default.model("post", postSchema);

@@ -49,7 +49,7 @@ const commentSchema = new mongoose_1.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "post",
         required: true,
-    }
+    },
 }, {
     timestamps: true,
 });

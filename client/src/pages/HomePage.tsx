@@ -94,6 +94,7 @@ const HomePage = () => {
                         tags={post.tags}
                         likeCount={post.likeCount}
                         comments={post.comments}
+                        commentCount={post.commentCount}
                         likeUpdate={() => likeUnlikeHandler(post._id)}
                     />
 

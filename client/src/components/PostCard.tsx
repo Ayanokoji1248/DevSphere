@@ -6,7 +6,7 @@ import userStore from "../store/userStore";
 import { NavLink, useNavigate } from "react-router-dom";
 
 
-const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, comments, deletePost, likeUpdate }: PostProp) => {
+const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, comments, deletePost, likeUpdate, commentCount }: PostProp) => {
     const { user: currentUser } = userStore();
 
     const navigate = useNavigate()
@@ -81,7 +81,7 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
                         <Heart size={18} /> {likeCount}
                     </button>
                     <div className="flex items-center text-xs sm:text-sm gap-1 hover:text-blue-500 cursor-pointer transition-all duration-300">
-                        <MessageCircle size={18} /> {comments?.length}
+                        <MessageCircle size={18} /> {commentCount}
                     </div>
                     <div className="flex items-center text-xs sm:text-sm gap-1 hover:text-green-500 cursor-pointer transition-all duration-300">
                         <Share size={18} /> 35

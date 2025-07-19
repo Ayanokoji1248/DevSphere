@@ -4,10 +4,13 @@ import { useParams } from "react-router-dom"
 import { BACKEND_URL } from "../utils"
 import PostCard from "../components/PostCard"
 import { type PostProp } from "../utils/interfaces"
+import postStore from "../store/postStore"
 
 const PostPage = () => {
     const { id } = useParams()
     const [post, setPost] = useState<PostProp | null>(null)
+    const { updatePostLikeCount } = postStore()
+    const [comment, setComment] = useState("")
 
     const getParticularPost = async (id: string) => {
         try {
@@ -27,8 +30,20 @@ const PostPage = () => {
             setPost((prev) =>
                 prev ? { ...prev, likeCount: response.data.likeCount } : prev
             )
+            updatePostLikeCount(id, response.data.likeCount)
         } catch (error) {
             console.error("Failed to like post:", error)
+        }
+    }
+
+    const commentPost = async (id: string) => {
+        try {
+            const response = await axios.post(`${BACKEND_URL}/comment/create/${id}`, { comment }, { withCredentials: true })
+            console.log(response.data)
+            setPost(prev => prev ? { ...prev, commentCount: response.data.commentCount } : prev)
+            setComment("")
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -50,6 +65,8 @@ const PostPage = () => {
                     tags={post.tags}
                     likeCount={post.likeCount}
                     likeUpdate={() => likePost(post._id)}
+                    commentCount={post.commentCount}
+                // commentUpdate={() => commentPost(post._id)}
                 />
             )}
 
@@ -57,8 +74,8 @@ const PostPage = () => {
                 <h1 className="text-xl font-semibold tracking-tighter text-zinc-400">Comments:</h1>
             </div>
             <div className="flex flex-col gap-3">
-                <textarea name="comment" id="comment" className="h-20 w-full outline-none border-[1px] rounded-md border-zinc-500 p-2 text-sm font-medium" placeholder="Enter your review"></textarea>
-                <button className="p-2 text-sm font-semibold bg-blue-500 rounded-md w-fit">Submit</button>
+                <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="comment" id="comment" className="h-20 w-full outline-none border-[1px] rounded-md border-zinc-500 p-2 text-sm font-medium" placeholder="Enter your review"></textarea>
+                <button onClick={() => commentPost(id as string)} className="p-2 text-sm font-semibold bg-blue-500 rounded-md w-fit">Submit</button>
             </div>
 
             <div>

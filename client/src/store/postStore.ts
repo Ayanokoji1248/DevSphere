@@ -16,6 +16,7 @@ interface postProp {
     comments: string[]
     likes: [],
     likeCount: number
+    commentCount: number
 }
 
 type postStoreType = {
@@ -27,6 +28,7 @@ type postStoreType = {
     removePost: (id: string) => void
 
     updatePostLikeCount: (id: string, count: number) => void
+    updateCommentLikeCount: (id: string, count: number) => void
 }
 
 
@@ -46,6 +48,14 @@ const postStore = create<postStoreType>((set) => ({
         set((state) => ({
             posts: state.posts.map((post) => (
                 post._id === id ? { ...post, likeCount: count } : post
+            ))
+        }))
+    },
+
+    updateCommentLikeCount: (id, count) => {
+        set((state) => ({
+            posts: state.posts.map((post) => (
+                post._id == id ? { ...post, commentCount: count } : post
             ))
         }))
     }

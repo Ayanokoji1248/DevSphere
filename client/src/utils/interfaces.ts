@@ -39,4 +39,6 @@ export interface PostProp {
 
     deletePost?: () => void
     likeUpdate?: () => void
+    commentCount?: number
+    // commentUpdate?: () => void
 }
