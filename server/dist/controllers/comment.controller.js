@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createComment = void 0;
+exports.getAllComments = exports.createComment = void 0;
 const zod_1 = __importDefault(require("zod"));
 const comment_model_1 = __importDefault(require("../models/comment.model"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -69,3 +69,35 @@ const createComment = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.createComment = createComment;
+const getAllComments = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const postId = req.params.id;
+        // const userId = req.user.id
+        if (!postId || !mongoose_1.default.Types.ObjectId.isValid(postId)) {
+            res.status(400).json({
+                message: "Invalid Post ID"
+            });
+            return;
+        }
+        const comments = yield comment_model_1.default.find({
+            post: postId
+        }).populate("user", "_id username fullName profilePic").sort({ createdAt: -1 });
+        if (comments.length === 0) {
+            res.status(400).json({
+                message: "No Comments Found"
+            });
+            return;
+        }
+        res.status(200).json({
+            message: "All Comments",
+            comments
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+});
+exports.getAllComments = getAllComments;

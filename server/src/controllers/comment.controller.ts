@@ -68,3 +68,41 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
         return
     }
 }
+
+export const getAllComments = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const postId = req.params.id
+        // const userId = req.user.id
+
+        if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
+            res.status(400).json({
+                message: "Invalid Post ID"
+            })
+            return
+        }
+
+        const comments = await commentModel.find({
+            post: postId
+        }).populate("user", "_id username fullName profilePic").sort({ createdAt: -1 })
+
+        if (comments.length === 0) {
+            res.status(400).json({
+                message: "No Comments Found"
+            })
+            return
+        }
+
+        res.status(200).json({
+            message: "All Comments",
+            comments
+        })
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
+}

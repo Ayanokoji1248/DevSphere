@@ -6,7 +6,7 @@ import userStore from "../store/userStore";
 import { NavLink, useNavigate } from "react-router-dom";
 
 
-const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, comments, deletePost, likeUpdate, commentCount }: PostProp) => {
+const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, deletePost, likeUpdate, commentCount }: PostProp) => {
     const { user: currentUser } = userStore();
 
     const navigate = useNavigate()

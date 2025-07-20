@@ -42,3 +42,14 @@ export interface PostProp {
     commentCount?: number
     // commentUpdate?: () => void
 }
+
+
+export interface CommentProp {
+    comment: string,
+    user: {
+        _id: string,
+        username: string,
+        fullName: string,
+        profilePic: string,
+    }
+}
