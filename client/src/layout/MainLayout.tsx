@@ -20,6 +20,7 @@ const MainLayout = () => {
                             <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter bg-[#00FF9C] hover:bg-[#60f0bbea] transition-all duration-300 hover:-translate-y-0.5 text-white rounded-md cursor-pointer"> AI Code Review</button>
                             <button onClick={() => navigate('/create-post')} className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer flex justify-center items-center gap-3"><PlusCircle strokeWidth={2} /> New Post</button>
                             <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Showcase Project</button>
+                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Message</button>
                         </div>
                     </div>
                 </div>

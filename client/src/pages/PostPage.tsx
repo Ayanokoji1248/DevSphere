@@ -1,13 +1,15 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { BACKEND_URL } from "../utils"
 import PostCard from "../components/PostCard"
 import { type CommentProp, type PostProp } from "../utils/interfaces"
 import postStore from "../store/postStore"
 import userStore from "../store/userStore"
+import { IoIosArrowBack } from "react-icons/io"
 
 const PostPage = () => {
+    const navigate = useNavigate()
     const { id } = useParams()
     const { user } = userStore()
     const [post, setPost] = useState<PostProp | null>(null)
@@ -70,6 +72,10 @@ const PostPage = () => {
 
     return (
         <div className="w-full text-white flex flex-col gap-3 pb-10 font-[Albert_Sans]">
+            <button onClick={() => navigate('/home')} className="cursor-pointer hover:bg-zinc-800 transition-all duration-300 hover:-translate-y-0.5 p-2 border-[1px] w-fit rounded-md">
+                <IoIosArrowBack className="" size={22} />
+            </button>
+
             {post && (
                 <PostCard
                     user={post.user}
