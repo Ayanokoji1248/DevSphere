@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { PlusIcon } from "lucide-react"
 import projectStore from "../store/projectStore"
 import ProjectCard from "../components/ProjectCard"
+import Button from "../components/Button"
 
 
 
@@ -20,9 +21,18 @@ const ProjectPage = () => {
                         <IoIosArrowBack size={22} />
                     </button>
 
-                    <button onClick={() => navigate('/create-project')} className="p-2 flex gap-2 bg-white text-black font-medium tracking-tight rounded-md transition-all duration-300 hover:bg-zinc-200 cursor-pointer hover:-translate-y-0.5">
+                    {/* <button onClick={() => navigate('/create-project')} className="p-2 flex gap-2 bg-white text-black font-medium tracking-tight rounded-md transition-all duration-300 hover:bg-zinc-200 cursor-pointer hover:-translate-y-0.5">
                         <PlusIcon className="text-black" /> Create new Project
-                    </button>
+                    </button> */}
+
+                    <Button
+                        size="md"
+                        variant="secondary"
+                        text="Create new project"
+                        className="rounded-md font-medium flex items-center gap-2"
+                        leftIcon={<PlusIcon size={22} />}
+                        onClick={() => navigate('/create-project')}
+                    />
 
                 </div>
 
