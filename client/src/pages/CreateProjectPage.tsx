@@ -8,6 +8,7 @@ import { BACKEND_URL } from "../utils";
 import { uploadImage } from "../utils/uploadImage";
 import userStore from "../store/userStore";
 import projectStore from "../store/projectStore";
+import Button from "../components/Button";
 
 
 const CreateProjectPage = () => {
@@ -146,7 +147,7 @@ const CreateProjectPage = () => {
                         <div onClick={() => {
                             fileRef.current?.click()
                         }} className="w-xl mx-auto h-72 border-2 rounded-md flex justify-center items-center hover:bg-zinc-800 transition-all duration-300 cursor-pointer"
-                            style={{ backgroundImage: `url(${previewProjectImage})`, backgroundPosition:"center", backgroundSize:"cover" }}>
+                            style={{ backgroundImage: `url(${previewProjectImage})`, backgroundPosition: "center", backgroundSize: "cover" }}>
                             <h1 className="flex justify-center flex-col gap-2 items-center font-medium text-zinc-400">
                                 <UploadIcon />
                                 Upload Image
@@ -179,7 +180,16 @@ const CreateProjectPage = () => {
                         </div>
 
 
-                        <button onClick={handleSubmit} className="p-2 font-medium tracking-tight bg-violet-600 rounded-md cursor-pointer transition-all duration-300 hover:bg-violet-700 hover:-translate-y-0.5">Create Project</button>
+                        {/* <button onClick={handleSubmit} className="p-2 font-medium tracking-tight bg-violet-600 rounded-md cursor-pointer transition-all duration-300 hover:bg-violet-700 hover:-translate-y-0.5">Create Project</button> */}
+
+                        <Button
+                            variant="primary"
+                            size="md"
+                            text="Create Project"
+                            widthFull={true}
+                            className="text-md font-bold rounded-md"
+                            onClick={handleSubmit}
+                        />
 
                     </div>
                 </div>
