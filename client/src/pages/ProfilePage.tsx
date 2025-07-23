@@ -122,8 +122,12 @@ const ProfilePage = () => {
                 }
             </div>
 
-            {/* Username */}
-            <p className="tracking-tight font-medium text-zinc-400">@{user?.username}</p>
+            {/* Username & Follow Button */}
+            <div className="flex items-center justify-between">
+                <p className="tracking-tight font-medium text-zinc-400">@{user?.username}</p>
+                <button className="bg-[#04cd9e] hover:bg-[#00a07d] cursor-pointer transition-all duration-300 text-sm px-2 py-1 rounded-md font-medium">Follow</button>
+
+            </div>
 
             {/* Bio */}
             {user?.bio &&
