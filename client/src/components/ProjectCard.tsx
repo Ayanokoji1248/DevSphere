@@ -1,5 +1,6 @@
 import userStore from "../store/userStore"
 import type { ProjectProp } from "../utils/interfaces"
+import Button from "./Button"
 
 const ProjectCard = ({ projectName, projectImage, shortDesc, tech, isMyProject, user, deleteProject
 }: ProjectProp) => {
@@ -21,10 +22,21 @@ const ProjectCard = ({ projectName, projectImage, shortDesc, tech, isMyProject, 
 
                 {isMyProject && user?._id === currentUser?._id &&
                     <div className="mt-3">
-                        <button onClick={(e) => {
+                        {/* <button onClick={(e) => {
                             e.stopPropagation()
                             if (deleteProject) deleteProject()
-                        }} className="p-2 bg-red-500 font-bold rounded-md text-sm">Delete Project</button>
+                        }} className="p-2 bg-red-500 font-bold rounded-md text-sm">Delete Project</button> */}
+                        <Button
+                            variant="danger"
+                            size="sm"
+                            text="Delete Project"
+                            className="rounded-md font-medium text-sm"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                if (deleteProject) deleteProject()
+                            }}
+                        />
+
                     </div>
                 }
             </div>

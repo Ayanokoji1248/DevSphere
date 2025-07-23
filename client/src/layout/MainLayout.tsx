@@ -2,6 +2,7 @@ import { PlusCircle } from "lucide-react"
 import { Outlet, useNavigate } from "react-router-dom"
 import NavBar from "../components/NavBar"
 import userStore from "../store/userStore"
+import Button from "../components/Button"
 
 
 const MainLayout = () => {
@@ -17,10 +18,26 @@ const MainLayout = () => {
                     <div className="sticky top-20 border-[1px] border-zinc-500  p-5 flex flex-col gap-4 rounded-xl text-white">
                         <h1 className="text-3xl font-medium">Quick Actions</h1>
                         <div className="flex flex-col gap-2">
-                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter bg-[#00FF9C] hover:bg-[#60f0bbea] transition-all duration-300 hover:-translate-y-0.5 text-white rounded-md cursor-pointer"> AI Code Review</button>
-                            <button onClick={() => navigate('/create-post')} className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer flex justify-center items-center gap-3"><PlusCircle strokeWidth={2} /> New Post</button>
-                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Showcase Project</button>
-                            <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Message</button>
+                            {/* <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter bg-[#00FF9C] hover:bg-[#60f0bbea] transition-all duration-300 hover:-translate-y-0.5 text-white rounded-md cursor-pointer"> AI Code Review</button> */}
+                            <Button variant="green" text="AI Code Review" widthFull={true} size="md" className="text-lg font-medium" />
+                            {/* <button onClick={() => navigate('/create-post')} className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer flex justify-center items-center gap-3"><PlusCircle strokeWidth={2} /> New Post</button> */}
+                            <Button
+                                text="New Post"
+                                size="md"
+                                variant="outline"
+                                className="text-lg font-medium flex items-center justify-center gap-3 hover:bg-zinc-900" widthFull={true}
+                                leftIcon={<PlusCircle strokeWidth={2} />}
+                                onClick={() => navigate('/create-post')} />
+                            {/* <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Showcase Project</button> */}
+                            <Button
+                                size="md"
+                                text="Showcase Project"
+                                variant="outline"
+                                widthFull={true}
+                                className="text-lg font-medium hover:bg-zinc-900"
+                            />
+                            {/* <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Message</button> */}
+                            <Button variant="outline" size="md" widthFull={true} text="Message" className="font-medium text-lg hover:bg-zinc-900" />
                         </div>
                     </div>
                 </div>
@@ -57,7 +74,8 @@ const MainLayout = () => {
                                     <p className="font-bold">{user.projects.length}</p>
                                 </div>
                             </div>
-                            <button onClick={() => navigate("/profile")} className="bg-[#0D92F4] hover:bg-blue-500 transition-all duration-300 hover:-translate-y-0.5 text-white p-3 py-2 rounded-md font-medium cursor-pointer font-[Albert_Sans]">View Profile</button>
+
+                            <Button text="View Profile" variant="info" size="md" widthFull={true} className="rounded-md font-medium" onClick={() => navigate('/profile')} />
                         </div>
                     }
                 </div>

@@ -5,6 +5,7 @@ import userStore from "../store/userStore";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import { userRegisteration } from "../schemas/auth.schema";
+import Button from "../components/Button";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -152,12 +153,7 @@ const RegisterPage = () => {
                         )}
                     </div>
 
-                    <button
-                        onClick={handleRegister}
-                        className="bg-white mt-2 text-black p-2 rounded-md font-medium cursor-pointer hover:bg-zinc-200 transition-all duration-300"
-                    >
-                        Register
-                    </button>
+                    <Button text="Register" variant="secondary" size="md" widthFull={true} className="font-medium rounded-md" onClick={handleRegister} />
 
                     <p className="text-sm">
                         Already have an account?{" "}

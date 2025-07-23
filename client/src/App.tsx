@@ -67,11 +67,24 @@ const App = () => {
   }
 
   useEffect(() => {
-    setLoading(true)
-    getCurrentUser()
-    getAllBlogs()
-    getAllProjects()
-    setLoading(false)
+    const fetechData = async () => {
+      setLoading(true)
+      try {
+        await Promise.all([
+          getCurrentUser(),
+          getAllBlogs(),
+          getAllProjects(),
+        ])
+
+      } catch (error) {
+        console.log(error)
+      }
+      finally {
+        setLoading(false)
+      }
+    }
+
+    fetechData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -8,6 +8,7 @@ import postStore from "../store/postStore";
 import toast, { Toaster } from "react-hot-toast";
 import userStore from "../store/userStore";
 import { uploadImage } from "../utils/uploadImage";
+import Button from "../components/Button";
 
 
 const CreatePostPage = () => {
@@ -192,7 +193,15 @@ const CreatePostPage = () => {
                 </div>
 
                 <div className="p-5">
-                    <button onClick={handlePostSubmit} className="bg-violet-500 p-2 w-full rounded-md font-medium font-[Albert_Sans] hover:bg-violet-600 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">Submit</button>
+                    {/* <button onClick={handlePostSubmit} className="bg-violet-500 p-2 w-full rounded-md font-medium font-[Albert_Sans] hover:bg-violet-600 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">Submit</button> */}
+                    <Button
+                        onClick={handlePostSubmit}
+                        variant="primary"
+                        text="Submit"
+                        size="md"
+                        widthFull={true}
+                        className="rounded-md font-medium"
+                    />
                 </div>
             </div>
         </>

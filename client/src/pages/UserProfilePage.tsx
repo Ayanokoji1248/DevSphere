@@ -10,6 +10,7 @@ import PostCard from "../components/PostCard"
 import { useNavigate } from "react-router-dom"
 import postStore from "../store/postStore"
 import projectStore from "../store/projectStore"
+import Button from "../components/Button"
 
 const UserProfilePage = () => {
     const navigate = useNavigate();
@@ -190,9 +191,17 @@ const UserProfilePage = () => {
                         <CodeXml className="text-blue-500" size={22} />
                         <h1 className="text-lg font-bold tracking-tighter">Skills & Technologies</h1>
                     </div>
-                    <button onClick={() => navigate('/edit-profile')} className="font-medium border-2 py-1 px-2 rounded-md flex items-center gap-2 text-sm tracking-tight cursor-pointer">
+                    {/* <button onClick={() => navigate('/edit-profile')} className="font-medium border-2 py-1 px-2 rounded-md flex items-center gap-2 text-sm tracking-tight cursor-pointer">
                         <Plus size={20} /> Add Skills
-                    </button>
+                    </button> */}
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        text="Add Skills"
+                        className="text-sm rounded-md font-medium tracking-tight flex items-center gap-2"
+                        onClick={()=>navigate('/edit-profile')}
+                        leftIcon={<Plus size={20} />}
+                    />
                 </div>
                 <div className="flex flex-wrap gap-2">
                     {user?.skills.map((skill, index) => (

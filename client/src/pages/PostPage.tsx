@@ -7,6 +7,7 @@ import { type CommentProp, type PostProp } from "../utils/interfaces"
 import postStore from "../store/postStore"
 import userStore from "../store/userStore"
 import { IoIosArrowBack } from "react-icons/io"
+import Button from "../components/Button"
 
 const PostPage = () => {
     const navigate = useNavigate()
@@ -98,7 +99,7 @@ const PostPage = () => {
             </div>
             <div className="flex flex-col gap-3">
                 <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="comment" id="comment" className="h-20 w-full outline-none border-[1px] rounded-md border-zinc-500 p-2 text-sm font-medium" placeholder="Enter your review"></textarea>
-                <button onClick={() => commentPost(id as string)} className="p-2 text-sm font-semibold bg-blue-500 rounded-md w-fit cursor-pointer hover:bg-blue-600 transition-all duration-300 hover:-translate-y-0.5">Submit</button>
+                <Button text="Submit" variant="info" size="md" className="rounded-md text-sm font-medium" onClick={() => commentPost(id as string)} />
             </div>
 
             <div>
@@ -120,7 +121,13 @@ const PostPage = () => {
                             {
                                 user?._id === comment.user._id &&
                                 < div className="mt-2">
-                                    <button className="bg-red-500 text-sm font-medium p-0.5 px-1 rounded-md cursor-pointer hover:bg-red-600 transition-all duration-300">Delete</button>
+                                    {/* <button className="bg-red-500 text-sm font-medium p-0.5 px-1 rounded-md cursor-pointer hover:bg-red-600 transition-all duration-300">Delete</button> */}
+                                    <Button
+                                        text="Delete"
+                                        variant="danger"
+                                        size="sm"
+                                        className="text-sm rounded-md font-medium"
+                                    />
                                 </div>
                             }
                         </div>

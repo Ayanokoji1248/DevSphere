@@ -6,6 +6,7 @@ import { BACKEND_URL } from "../utils";
 import { uploadImage } from "../utils/uploadImage";
 import axios from "axios";
 import userStore from "../store/userStore";
+import Button from "../components/Button";
 
 
 
@@ -208,7 +209,15 @@ const EditProfilePage = () => {
 
             </div>
 
-            <button onClick={handleSubmit} className="bg-violet-600 font-bold text-white tracking-tight hover:bg-violet-700 p-2 w-full rounded-md mt-4 transition-all duration-300 cursor-pointer hover:-translate-y-0.5">Edit Profile</button>
+            {/* <button onClick={handleSubmit} className="bg-violet-600 font-bold text-white tracking-tight hover:bg-violet-700 p-2 w-full rounded-md mt-4 transition-all duration-300 cursor-pointer hover:-translate-y-0.5">Edit Profile</button> */}
+            <Button
+                onClick={(e) => handleSubmit(e as React.FormEvent)}
+                variant="primary"
+                size="md"
+                text="Edit Profile"
+                widthFull={true}
+                className="rounded-md font-bold tracking-tight mt-4"
+            />
         </div>
     )
 }

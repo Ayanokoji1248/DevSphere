@@ -4,6 +4,7 @@ import { Heart, MessageCircle, Share } from "lucide-react";
 import type { PostProp } from "../utils/interfaces";
 import userStore from "../store/userStore";
 import { NavLink, useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 
 const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, deletePost, likeUpdate, commentCount }: PostProp) => {
@@ -90,10 +91,20 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
                 {
                     isMyPost && user._id === currentUser?._id &&
                     <div className="mt-2 flex">
-                        <button onClick={(e) => {
+                        {/* <button onClick={(e) => {
                             e.stopPropagation()
                             if (deletePost) deletePost()
-                        }} className="bg-red-500 p-2 py-1 rounded-md text-sm font-medium cursor-pointer">Delete</button>
+                        }} className="bg-red-500 p-2 py-1 rounded-md text-sm font-medium cursor-pointer">Delete</button> */}
+                        <Button
+                            variant="danger"
+                            text="Delete"
+                            size="sm"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                if (deletePost) deletePost()
+                            }}
+                            className="text-sm rounded-md font-medium"
+                        />
                     </div>
                 }
             </div>
