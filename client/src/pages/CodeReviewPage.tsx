@@ -8,16 +8,21 @@ import "prismjs/components/prism-python";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-c";
 import "prismjs/components/prism-cpp";
-import "prismjs/themes/prism.css";
-
+import "prismjs/themes/prism-tomorrow.css"; // ✅ Prism theme
+import axios from "axios";
+import ReactMarkdown from "react-markdown";
+import Prism from "prismjs";
+import { BACKEND_URL } from "../utils";
 
 type LanguageOptions = "javascript" | "python" | "java" | "c" | "cpp";
 
 const CodeReviewPage = () => {
     const [code, setCode] = useState(`function greet(name) {
-  return "Hello " + name;
+  return \`Hello \${name}\`;
 }`);
     const [language, setLanguage] = useState<LanguageOptions>("javascript");
+    const [review, setReview] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const languageMap: Record<LanguageOptions, Prism.Grammar> = {
         javascript: languages.javascript,
@@ -27,11 +32,31 @@ const CodeReviewPage = () => {
         cpp: languages.cpp,
     };
 
+    const getReviewCode = async () => {
+        try {
+            setReview("");
+            setLoading(true);
+            const response = await axios.post(
+                `${BACKEND_URL}/ai/code-review`,
+                { code },
+                { withCredentials: true }
+            );
+            setReview(response.data.review);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="w-full min-h-screen bg-black overflow-auto">
             <NavBar />
             <div className="text-white pt-20 max-w-7xl mx-auto px-4">
-                <button className="bg-gray-800 px-4 py-2 rounded hover:bg-gray-700 transition">← Back</button>
+                <button className="bg-gray-800 px-4 py-2 rounded hover:bg-gray-700 transition">
+                    ← Back
+                </button>
+
                 <div className="flex gap-5 items-center my-4">
                     <h1 className="text-xl font-semibold font-[Albert_Sans]">Select Language</h1>
                     <select
@@ -48,33 +73,73 @@ const CodeReviewPage = () => {
                 </div>
 
                 <div className="flex flex-col md:flex-row w-full gap-4 pb-5">
-                    <div className="w-full md:w-1/2 border border-gray-700 h-[550px] overflow-hidden rounded-md p-2 relative">
-                        <button className="absolute z-10 bottom-5 right-5 cursor-pointer font-[Albert_Sans] text-sm font-semibold tracking-tight p-2 text-zinc-950 bg-white rounded-md">Code Review</button>
+                    {/* Code Editor */}
+                    <div
+                        className={`w-full md:w-1/2 border border-gray-700 h-[550px] overflow-hidden rounded-md p-2 relative ${loading ? "bg-gray-700/60" : ""
+                            }`}
+                    >
                         <Editor
-                            className="bg-zinc-900 font-mediumsdfsdf"
+                            className="bg-zinc-900"
                             value={code}
                             onValueChange={setCode}
-                            highlight={(code) =>
-                                highlight(code, languageMap[language], language)
-                            }
+                            highlight={(code) => highlight(code, languageMap[language], language)}
                             padding={10}
                             style={{
-                                fontFamily: "Albert Sans",
+                                fontFamily: "Fira Code, monospace",
                                 fontSize: 16,
-                                // color: "#f8f8f2",
                                 whiteSpace: "pre",
                                 overflow: "auto",
                                 maxHeight: "100%",
                                 height: "100%",
+                                color: "#f8f8f2",
                             }}
                         />
-
+                        <button
+                            onClick={getReviewCode}
+                            className="absolute z-10 bottom-5 right-5 cursor-pointer font-[Albert_Sans] text-sm font-semibold tracking-tight p-2 text-zinc-950 bg-white rounded-md"
+                        >
+                            Code Review
+                        </button>
                     </div>
 
+                    {/* Markdown Output */}
+                    <div
+                        className="w-full md:w-1/2 border border-gray-700 rounded-md p-4 bg-gray-900 h-[550px] overflow-auto text-sm leading-relaxed"
+                        style={{
+                            overflowWrap: "break-word",
+                            wordBreak: "break-word",
+                            whiteSpace: "pre-wrap",
+                        }}
+                    >
+                        <h2 className="text-lg font-semibold mb-2">Code Review Output:</h2>
+                        <div className="max-w-none overflow-auto">
+                            {loading && <p>Loading...</p>}
+                            <ReactMarkdown
+                                children={review}
+                                components={{
+                                    code({ node, inline, className, children, ...props }) {
+                                        const match = /language-(\w+)/.exec(className || "");
+                                        const lang = match?.[1] || "javascript";
+                                        const html = Prism.highlight(
+                                            String(children).replace(/\n$/, ""),
+                                            Prism.languages[lang],
+                                            lang
+                                        );
 
-                    <div className="w-full md:w-1/2 border border-gray-700 rounded-md p-4 bg-gray-900">
-                        <h2 className="text-lg font-semibold mb-2">Code Preview:</h2>
-
+                                        return !inline ? (
+                                            <div
+                                                className="rounded bg-zinc-800 text-white text-sm p-3 overflow-auto"
+                                                dangerouslySetInnerHTML={{ __html: html }}
+                                            />
+                                        ) : (
+                                            <code className="bg-gray-800 text-white px-1 py-0.5 rounded">
+                                                {children}
+                                            </code>
+                                        );
+                                    },
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

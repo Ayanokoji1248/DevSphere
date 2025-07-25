@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
-.token {
+:global(pre span.token) {
+    background-color: transparent !important;
+}
+
+pre span.token {
     background: transparent !important;
 }
