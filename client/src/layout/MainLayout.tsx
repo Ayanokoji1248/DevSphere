@@ -19,7 +19,7 @@ const MainLayout = () => {
                         <h1 className="text-3xl font-medium">Quick Actions</h1>
                         <div className="flex flex-col gap-2">
                             {/* <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter bg-[#00FF9C] hover:bg-[#60f0bbea] transition-all duration-300 hover:-translate-y-0.5 text-white rounded-md cursor-pointer"> AI Code Review</button> */}
-                            <Button variant="green" text="AI Code Review" widthFull={true} size="md" className="text-lg font-medium" />
+                            <Button variant="green" text="AI Code Review" widthFull={true} size="md" className="text-lg font-medium" onClick={() => navigate('/code-review')} />
                             {/* <button onClick={() => navigate('/create-post')} className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer flex justify-center items-center gap-3"><PlusCircle strokeWidth={2} /> New Post</button> */}
                             <Button
                                 text="New Post"

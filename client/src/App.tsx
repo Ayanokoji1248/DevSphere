@@ -18,6 +18,7 @@ import projectStore from "./store/projectStore"
 import CreateProjectPage from "./pages/CreateProjectPage"
 import ProfilePage from "./pages/ProfilePage"
 import PostPage from "./pages/PostPage"
+import CodeReviewPage from "./pages/CodeReviewPage"
 
 
 const App = () => {
@@ -113,6 +114,8 @@ const App = () => {
       <Route element={<ProtectedRoute />}>
         <Route path="/create-project" element={<CreateProjectPage />} />
       </Route>
+
+      <Route path="/code-review" element={<CodeReviewPage />} />
 
     </Routes >
   )
