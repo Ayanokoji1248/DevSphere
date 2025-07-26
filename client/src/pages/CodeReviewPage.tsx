@@ -78,8 +78,11 @@ const CodeReviewPage = () => {
                         className={`w-full md:w-1/2 border border-gray-700 h-[550px] overflow-hidden rounded-md p-2 relative ${loading ? "bg-gray-700/60" : ""
                             }`}
                     >
+                        {loading &&
+                            <p className="absolute z-20 top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] text-lg font-medium font-[Albert_Sans] tracking-tight">Reviewing...</p>
+                        }
                         <Editor
-                            className="bg-zinc-900"
+                            className={`bg-zinc-900 ${loading && "blur-xs"}`}
                             value={code}
                             onValueChange={setCode}
                             highlight={(code) => highlight(code, languageMap[language], language)}
@@ -96,7 +99,8 @@ const CodeReviewPage = () => {
                         />
                         <button
                             onClick={getReviewCode}
-                            className="absolute z-10 bottom-5 right-5 cursor-pointer font-[Albert_Sans] text-sm font-semibold tracking-tight p-2 text-zinc-950 bg-white rounded-md"
+                            className={`absolute z-10 bottom-5 right-5 cursor-pointer font-[Albert_Sans] text-sm font-semibold tracking-tight p-2 text-zinc-950 bg-white rounded-md ${loading && "cursor-default"}`}
+                            disabled={loading}
                         >
                             Code Review
                         </button>
@@ -104,7 +108,7 @@ const CodeReviewPage = () => {
 
                     {/* Markdown Output */}
                     <div
-                        className="w-full md:w-1/2 border border-gray-700 rounded-md p-4 bg-gray-900 h-[550px] overflow-auto text-sm leading-relaxed"
+                        className="w-full md:w-1/2 border border-gray-700 rounded-md p-4 bg-black h-[550px] overflow-auto text-sm leading-relaxed"
                         style={{
                             overflowWrap: "break-word",
                             wordBreak: "break-word",
@@ -117,24 +121,22 @@ const CodeReviewPage = () => {
                             <ReactMarkdown
                                 children={review}
                                 components={{
-                                    code({ node, inline, className, children, ...props }) {
+                                    code({ node, inline, className, children }) {
                                         const match = /language-(\w+)/.exec(className || "");
-                                        const lang = match?.[1] || "javascript";
-                                        const html = Prism.highlight(
-                                            String(children).replace(/\n$/, ""),
-                                            Prism.languages[lang],
-                                            lang
-                                        );
-
-                                        return !inline ? (
-                                            <div
-                                                className="rounded bg-zinc-800 text-white text-sm p-3 overflow-auto"
-                                                dangerouslySetInnerHTML={{ __html: html }}
-                                            />
+                                        return !inline && match ? (
+                                            <pre className="bg-[#1e1e1e] text-white p-4 rounded-md overflow-auto">
+                                                <code
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: Prism.highlight(
+                                                            String(children).replace(/\n$/, ""),
+                                                            Prism.languages[match[1]] || Prism.languages.javascript,
+                                                            match[1]
+                                                        ),
+                                                    }}
+                                                />
+                                            </pre>
                                         ) : (
-                                            <code className="bg-gray-800 text-white px-1 py-0.5 rounded">
-                                                {children}
-                                            </code>
+                                            <code className="bg-gray-800 px-1 py-0.5 rounded text-red-400">{children}</code>
                                         );
                                     },
                                 }}

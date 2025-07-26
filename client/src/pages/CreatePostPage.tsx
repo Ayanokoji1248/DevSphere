@@ -9,6 +9,10 @@ import toast, { Toaster } from "react-hot-toast";
 import userStore from "../store/userStore";
 import { uploadImage } from "../utils/uploadImage";
 import Button from "../components/Button";
+import Editor from "react-simple-code-editor";
+import hljs from "highlight.js";
+import "prismjs/themes/prism-tomorrow.css"; // ✅ Prism theme
+
 
 
 const CreatePostPage = () => {
@@ -85,22 +89,42 @@ const CreatePostPage = () => {
     }
 
     return (
-        <>
+        <div className="pb-5">
             <Toaster />
-            <div className="text-white border-2 border-zinc-500 rounded-xl min-h-screen p-5 w-full pb-0">
+            <div className="text-white border-2 border-zinc-500 rounded-xl min-h-screen p-5 pb-2 w-full">
                 <div className="bg-zinc-900 rounded-md w-fit p-2 border-[1px] cursor-pointer hover:bg-zinc-800 transition-all duration-300 hover:-translate-y-0.5" onClick={() => navigate('/home')}>
                     <IoIosArrowBack size={22} />
                 </div>
 
 
-                <div className=" p-5 mt-3 font-[Albert_Sans]">
+                <div className=" p-5 font-[Albert_Sans]">
                     <h1 className="text-3xl font-[Albert_Sans] tracking-tighter font-bold">Content</h1>
 
                     <textarea className="mt-4 border-2 w-full rounded-md p-2 text-sm font-medium font-[Albert_Sans] resize-none h-22" name="content" value={post.content} onChange={(e) => setPost({ ...post, content: e.target.value })} id="content" placeholder="What's on your mind? Share your latest project, code insight, or developer experience..."></textarea>
 
                     <div className="flex flex-col mt-5 gap-2">
                         <label htmlFor="code" className="font-bold text-lg">Code <span className="text-zinc-500 font-medium text-sm">(optional)</span></label>
-                        <textarea onChange={(e) => setPost({ ...post, code: e.target.value })} className=" border-2 w-full rounded-md p-2 text-sm font-medium font-[Albert_Sans] resize-none h-22" placeholder="Enter your code here" name="code" id="code"></textarea>
+                        {/* <textarea onChange={(e) => setPost({ ...post, code: e.target.value })} className=" border-2 w-full rounded-md p-2 text-sm font-medium font-[Albert_Sans] resize-none h-22" placeholder="Enter your code here" name="code" id="code"></textarea> */}
+                        <Editor
+                            name="code"
+                            placeholder="Enter your code"
+                            className="bg-zinc-900"
+                            value={post.code}
+                            onValueChange={(value) => setPost({ ...post, code: value })}
+                            highlight={(code) => hljs.highlightAuto(code).value}
+                            padding={10}
+                            style={{
+                                fontFamily: "Fira Code, monospace",
+                                fontSize: 16,
+                                whiteSpace: "pre",
+                                overflow: "auto",
+                                height: "300px",
+                                color: "#f8f8f2",
+                                borderRadius: "10px",
+                                border: "1px solid white"
+                            }}
+                        />
+
                     </div>
                     <div className="mt-5 flex flex-col gap-3">
                         <label className="font-bold text-lg" htmlFor="image">
@@ -204,7 +228,7 @@ const CreatePostPage = () => {
                     />
                 </div>
             </div>
-        </>
+        </div>
 
     )
 }
