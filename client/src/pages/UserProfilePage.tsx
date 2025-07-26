@@ -167,11 +167,11 @@ const UserProfilePage = () => {
             {/* Stats */}
             <div className="flex flex-wrap gap-4 mt-3">
                 <div className="flex flex-col justify-center items-center p-3 bg-[#0D1422] text-blue-500 border-2 border-blue-900 rounded-md flex-1 min-w-[100px]">
-                    <h1 className="font-bold text-2xl">{user?.following.length}</h1>
+                    <h1 className="font-bold text-2xl">{user?.followingCount}</h1>
                     <p className="font-medium tracking-tight text-sm">Following</p>
                 </div>
                 <div className="flex flex-col justify-center items-center p-3 bg-[#181023] text-violet-500 border-2 border-violet-900 rounded-md flex-1 min-w-[100px]">
-                    <h1 className="font-bold text-2xl">{user?.follower.length}</h1>
+                    <h1 className="font-bold text-2xl">{user?.followerCount}</h1>
                     <p className="font-medium tracking-tight text-sm">Followers</p>
                 </div>
                 <div className="flex flex-col justify-center items-center p-3 bg-[#0B1B13] text-emerald-500 border-2 border-emerald-900 rounded-md flex-1 min-w-[100px]">
@@ -199,7 +199,7 @@ const UserProfilePage = () => {
                         size="sm"
                         text="Add Skills"
                         className="text-sm rounded-md font-medium tracking-tight flex items-center gap-2"
-                        onClick={()=>navigate('/edit-profile')}
+                        onClick={() => navigate('/edit-profile')}
                         leftIcon={<Plus size={20} />}
                     />
                 </div>

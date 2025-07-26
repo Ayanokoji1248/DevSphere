@@ -59,7 +59,7 @@ const CreateProjectPage = () => {
         }
 
         const projectImageUrl = await uploadImage(projectImage, "project", user)
-        console.log(projectImageUrl);
+        // console.log(projectImageUrl);
 
         try {
             const response = await axios.post(`${BACKEND_URL}/project/create`, {

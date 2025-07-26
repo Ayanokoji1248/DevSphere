@@ -59,11 +59,11 @@ const MainLayout = () => {
                             <div className="px-3 font-[Albert_Sans]">
                                 <div className="flex justify-between">
                                     <h1>Following</h1>
-                                    <p className="font-bold">{user.following.length}</p>
+                                    <p className="font-bold">{user.followingCount}</p>
                                 </div>
                                 <div className="flex justify-between">
                                     <h1>Follower</h1>
-                                    <p className="font-bold">{user.follower.length}</p>
+                                    <p className="font-bold">{user.followerCount}</p>
                                 </div>
                                 <div className="flex justify-between">
                                     <h1>Post</h1>

@@ -120,7 +120,7 @@ const EditProfilePage = () => {
                             const preview = URL.createObjectURL(file);
                             setBannerPreviewImage(preview);
                             setBannerImage(file);
-                            console.log(file)
+                            // console.log(file)
                         }
                     }} ref={bannerImageRef} type="file" className="hidden" />
                 </div>
@@ -138,7 +138,7 @@ const EditProfilePage = () => {
                                     const preview = URL.createObjectURL(file);
                                     setPreviewProfileImage(preview);
                                     setProfileImage(file);
-                                    console.log(file)
+                                    // console.log(file)
                                 }
                             }} className="bg-zinc-50 hover:bg-zinc-200 text-zinc-800 tracking-tighter rounded-md p-2 w-full cursor-pointer transition-all duration-300" />
                         </div>
