@@ -14,6 +14,8 @@ export interface userProp {
     skills: string[],
     following: string[],
     follower: string[],
+    followingCount: number,
+    followerCount: number,
     posts: string[],
     projects: string[]
 }
@@ -22,7 +24,10 @@ type userStoreType = {
     user: userProp | null,
     setUser: (newUser: userProp) => void
     loading: boolean,
-    setLoading: (loading: boolean) => void
+    setLoading: (loading: boolean) => void,
+
+    isFollowing: boolean,
+    setIsFollowing: (status: boolean) => void,
 }
 
 const userStore = create<userStoreType>((set) => ({
@@ -30,7 +35,12 @@ const userStore = create<userStoreType>((set) => ({
     setUser: (newUser) => set({ user: newUser }),
 
     loading: true,
-    setLoading: (loading) => set({ loading })
+    setLoading: (loading) => set({ loading }),
+
+    isFollowing: false,
+    setIsFollowing: (status: boolean) => set({ isFollowing: status })
+
+
 }))
 
 export default userStore

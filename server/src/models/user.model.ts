@@ -59,6 +59,14 @@ const userSchema = new Schema({
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: "follow"
     // }],
+    followerCount: {
+        type: Number,
+        default: 0
+    },
+    followingCount: {
+        type: Number,
+        default: 0
+    },
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "post"

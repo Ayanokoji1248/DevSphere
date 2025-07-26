@@ -9,6 +9,7 @@ import postStore from "../store/postStore";
 import userStore, { type userProp } from "../store/userStore";
 import { BACKEND_URL } from "../utils";
 import type { PostProp, ProjectProp } from "../utils/interfaces";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const ProfilePage = () => {
@@ -18,7 +19,7 @@ const ProfilePage = () => {
     const tabs = ["Projects", "Posts"]
     const [activeTab, setActiveTab] = useState("Projects");
 
-    const { user: currentUser } = userStore()
+    const { user: currentUser, setIsFollowing, isFollowing } = userStore()
 
     const [user, setUser] = useState<userProp>();
 
@@ -36,6 +37,7 @@ const ProfilePage = () => {
 
             console.log(response)
             setUser(response.data.user)
+            setIsFollowing(response.data.isFollowing)
         } catch (error) {
             console.log(error)
         }
@@ -84,6 +86,17 @@ const ProfilePage = () => {
         }
     }
 
+    const followUser = async (id: string) => {
+        try {
+            const response = await axios.post(`${BACKEND_URL}/user/${id}/follow-unfollow`, {}, { withCredentials: true });
+            setIsFollowing(!isFollowing)
+            console.log(response.data);
+            toast.success(response.data.message)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         getUserInfo()
         getUserProject();
@@ -96,6 +109,7 @@ const ProfilePage = () => {
     }
     return (
         <div className="min-h-screen text-white rounded-md border-zinc-600 relative font-[Albert_Sans] flex flex-col gap-2 pb-5 px-3">
+            <Toaster />
             {/* Cover image */}
             <div className="h-48 md:h-62 w-full rounded-xl overflow-hidden relative">
                 <img
@@ -125,7 +139,7 @@ const ProfilePage = () => {
             {/* Username & Follow Button */}
             <div className="flex items-center justify-between">
                 <p className="tracking-tight font-medium text-zinc-400">@{user?.username}</p>
-                <button className="bg-[#04cd9e] hover:bg-[#00a07d] cursor-pointer transition-all duration-300 text-sm px-2 py-1 rounded-md font-medium">Follow</button>
+                <button onClick={() => followUser(user._id)} className="bg-[#04cd9e] hover:bg-[#00a07d] cursor-pointer transition-all duration-300 text-sm px-2 py-1 rounded-md font-medium">{isFollowing ? "Following" : "Follow"}</button>
 
             </div>
 
@@ -155,11 +169,11 @@ const ProfilePage = () => {
             {/* Stats */}
             <div className="flex flex-wrap gap-4 mt-3">
                 <div className="flex flex-col justify-center items-center p-3 bg-[#0D1422] text-blue-500 border-2 border-blue-900 rounded-md flex-1 min-w-[100px]">
-                    <h1 className="font-bold text-2xl">{user?.following.length}</h1>
+                    <h1 className="font-bold text-2xl">{user?.followingCount}</h1>
                     <p className="font-medium tracking-tight text-sm">Following</p>
                 </div>
                 <div className="flex flex-col justify-center items-center p-3 bg-[#181023] text-violet-500 border-2 border-violet-900 rounded-md flex-1 min-w-[100px]">
-                    <h1 className="font-bold text-2xl">{user?.follower.length}</h1>
+                    <h1 className="font-bold text-2xl">{user?.followerCount}</h1>
                     <p className="font-medium tracking-tight text-sm">Followers</p>
                 </div>
                 <div className="flex flex-col justify-center items-center p-3 bg-[#0B1B13] text-emerald-500 border-2 border-emerald-900 rounded-md flex-1 min-w-[100px]">

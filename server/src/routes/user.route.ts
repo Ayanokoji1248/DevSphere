@@ -6,7 +6,7 @@ const userRouter = Router()
 
 userRouter.get('/me', userMiddleware, getUser)
 
-userRouter.get('/:id', getUserProfile)
+userRouter.get('/:id', userMiddleware, getUserProfile)
 
 userRouter.put("/edit-profile", userMiddleware, updateUserProfile)
 

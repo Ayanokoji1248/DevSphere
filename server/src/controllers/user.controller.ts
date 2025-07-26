@@ -50,30 +50,42 @@ export const getUser = async (req: Request, res: Response, next: NextFunction) =
 
 export const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id } = req.params
+        const { id } = req.params;
+        // console.log(id)
+        const currentUserId = req.user.id;
 
         if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-            res.status(400).json({
-                message: "Invalid User"
-            })
+            res.status(400).json({ message: "Invalid User" });
             return
         }
 
-        const user = await userModal.findById(id).select("-password")
+        const user = await userModal.findById(id).select("-password");
+
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+            return
+        }
+
+        // Check follow status
+        const isFollowing = await followModel.exists({
+            follower: currentUserId,
+            following: id
+        });
 
         res.status(200).json({
             message: "User Found",
-            user
-        })
+            user,
+            isFollowing: !!isFollowing,
+        });
+        return
 
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            message: "Internal Server Error"
-        })
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" });
         return
     }
-}
+};
+
 
 export const updateUserProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -222,46 +234,46 @@ export const userFollowAndUnfollow = async (req: Request, res: Response, next: N
         const currentUserId = req.user.id;
 
         if (!followUserId || !mongoose.Types.ObjectId.isValid(followUserId)) {
-            res.status(400).json({
-                message: "Invalid Id"
-            })
-            return
+            res.status(400).json({ message: "Invalid Id" });
+            return;
         }
 
         if (followUserId === currentUserId) {
-            res.status(400).json({
-                message: "You cannot follow yourself"
-            })
+            res.status(400).json({ message: "You cannot follow yourself" });
+            return
         }
 
         const alreadyFollow = await followModel.findOne({
             following: followUserId,
             follower: currentUserId
-        })
+        });
 
         if (alreadyFollow) {
-            await followModel.findByIdAndDelete(alreadyFollow._id)
-            res.status(200).json({
-                message: "Unfollowed User",
-            })
+            await followModel.findByIdAndDelete(alreadyFollow._id);
+
+            // Decrease counts
+            await userModal.findByIdAndUpdate(currentUserId, { $inc: { followingCount: -1 } });
+            await userModal.findByIdAndUpdate(followUserId, { $inc: { followerCount: -1 } });
+
+            res.status(200).json({ message: "User Unfollowed" });
             return
         }
 
-        const followUser = await followModel.create({
+        await followModel.create({
             following: followUserId,
             follower: currentUserId,
-        })
+        });
 
-        res.status(200).json({
-            message: "Followed User",
-            followUser
-        })
+        // Increase counts
+        await userModal.findByIdAndUpdate(currentUserId, { $inc: { followingCount: 1 } });
+        await userModal.findByIdAndUpdate(followUserId, { $inc: { followerCount: 1 } });
+
+        res.status(200).json({ message: "User Followed" });
         return
 
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            message: "Interal Server Error"
-        })
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" });
+        return
     }
-}
+};
