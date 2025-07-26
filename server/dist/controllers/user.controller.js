@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserProject = exports.getUserPost = exports.updateUserProfile = exports.getUserProfile = exports.getUser = void 0;
+exports.userFollowAndUnfollow = exports.getUserProject = exports.getUserPost = exports.updateUserProfile = exports.getUserProfile = exports.getUser = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const zod_1 = __importDefault(require("zod"));
 const post_model_1 = __importDefault(require("../models/post.model"));
 const project_model_1 = __importDefault(require("../models/project.model"));
+const follow_model_1 = __importDefault(require("../models/follow.model"));
 const userSchema = zod_1.default.object({
     fullName: zod_1.default.string().min(5, "Atleast 5 character long").optional(),
     username: zod_1.default.string().min(5, "Atleast 5 character long").max(20, "Username cannot exceed 20 characters").optional(),
@@ -202,3 +203,47 @@ const getUserProject = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getUserProject = getUserProject;
+const userFollowAndUnfollow = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const followUserId = req.params.id;
+        const currentUserId = req.user.id;
+        if (!followUserId || !mongoose_1.default.Types.ObjectId.isValid(followUserId)) {
+            res.status(400).json({
+                message: "Invalid Id"
+            });
+            return;
+        }
+        if (followUserId === currentUserId) {
+            res.status(400).json({
+                message: "You cannot follow yourself"
+            });
+        }
+        const alreadyFollow = yield follow_model_1.default.findOne({
+            following: followUserId,
+            follower: currentUserId
+        });
+        if (alreadyFollow) {
+            yield follow_model_1.default.findByIdAndDelete(alreadyFollow._id);
+            res.status(200).json({
+                message: "Unfollowed User",
+            });
+            return;
+        }
+        const followUser = yield follow_model_1.default.create({
+            following: followUserId,
+            follower: currentUserId,
+        });
+        res.status(200).json({
+            message: "Followed User",
+            followUser
+        });
+        return;
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Interal Server Error"
+        });
+    }
+});
+exports.userFollowAndUnfollow = userFollowAndUnfollow;

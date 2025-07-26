@@ -85,14 +85,14 @@ const userSchema = new mongoose_1.Schema({
         type: String
     },
     portfolioLink: String,
-    following: [{
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "user"
-        }],
-    follower: [{
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "user"
-        }],
+    // following: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "follow"
+    // }],
+    // follower: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "follow"
+    // }],
     posts: [{
             type: mongoose_1.default.Schema.Types.ObjectId,
             ref: "post"

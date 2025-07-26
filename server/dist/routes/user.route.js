@@ -9,4 +9,5 @@ userRouter.get('/:id', user_controller_1.getUserProfile);
 userRouter.put("/edit-profile", user_middleware_1.userMiddleware, user_controller_1.updateUserProfile);
 userRouter.get("/:id/post", user_controller_1.getUserPost);
 userRouter.get('/:id/project', user_controller_1.getUserProject);
+userRouter.post('/:id/follow-unfollow', user_middleware_1.userMiddleware, user_controller_1.userFollowAndUnfollow);
 exports.default = userRouter;

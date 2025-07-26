@@ -5,6 +5,7 @@ import z from "zod";
 import postModel from "../models/post.model";
 import _ from "passport-local-mongoose";
 import projectModel from "../models/project.model";
+import followModel from "../models/follow.model";
 
 const userSchema = z.object({
     fullName: z.string().min(5, "Atleast 5 character long").optional(),
@@ -212,5 +213,55 @@ export const getUserProject = async (req: Request, res: Response, next: NextFunc
             message: "Internal Server Error"
         })
         return
+    }
+}
+
+export const userFollowAndUnfollow = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const followUserId = req.params.id;
+        const currentUserId = req.user.id;
+
+        if (!followUserId || !mongoose.Types.ObjectId.isValid(followUserId)) {
+            res.status(400).json({
+                message: "Invalid Id"
+            })
+            return
+        }
+
+        if (followUserId === currentUserId) {
+            res.status(400).json({
+                message: "You cannot follow yourself"
+            })
+        }
+
+        const alreadyFollow = await followModel.findOne({
+            following: followUserId,
+            follower: currentUserId
+        })
+
+        if (alreadyFollow) {
+            await followModel.findByIdAndDelete(alreadyFollow._id)
+            res.status(200).json({
+                message: "Unfollowed User",
+            })
+            return
+        }
+
+        const followUser = await followModel.create({
+            following: followUserId,
+            follower: currentUserId,
+        })
+
+        res.status(200).json({
+            message: "Followed User",
+            followUser
+        })
+        return
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Interal Server Error"
+        })
     }
 }
