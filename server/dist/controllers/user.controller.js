@@ -233,7 +233,11 @@ const userFollowAndUnfollow = (req, res, next) => __awaiter(void 0, void 0, void
             // Decrease counts
             yield user_model_1.default.findByIdAndUpdate(currentUserId, { $inc: { followingCount: -1 } });
             yield user_model_1.default.findByIdAndUpdate(followUserId, { $inc: { followerCount: -1 } });
-            res.status(200).json({ message: "User Unfollowed" });
+            const user = yield user_model_1.default.findById(currentUserId).select("-password");
+            res.status(200).json({
+                message: "User Unfollowed",
+                updatedUser: user
+            });
             return;
         }
         yield follow_model_1.default.create({
@@ -243,7 +247,11 @@ const userFollowAndUnfollow = (req, res, next) => __awaiter(void 0, void 0, void
         // Increase counts
         yield user_model_1.default.findByIdAndUpdate(currentUserId, { $inc: { followingCount: 1 } });
         yield user_model_1.default.findByIdAndUpdate(followUserId, { $inc: { followerCount: 1 } });
-        res.status(200).json({ message: "User Followed" });
+        const user = yield user_model_1.default.findById(currentUserId).select("-password");
+        res.status(200).json({
+            message: "User Followed",
+            updatedUser: user
+        });
         return;
     }
     catch (error) {

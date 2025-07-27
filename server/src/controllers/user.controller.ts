@@ -254,8 +254,11 @@ export const userFollowAndUnfollow = async (req: Request, res: Response, next: N
             // Decrease counts
             await userModal.findByIdAndUpdate(currentUserId, { $inc: { followingCount: -1 } });
             await userModal.findByIdAndUpdate(followUserId, { $inc: { followerCount: -1 } });
-
-            res.status(200).json({ message: "User Unfollowed" });
+            const user = await userModal.findById(currentUserId).select("-password");
+            res.status(200).json({
+                message: "User Unfollowed",
+                updatedUser: user
+            });
             return
         }
 
@@ -267,8 +270,12 @@ export const userFollowAndUnfollow = async (req: Request, res: Response, next: N
         // Increase counts
         await userModal.findByIdAndUpdate(currentUserId, { $inc: { followingCount: 1 } });
         await userModal.findByIdAndUpdate(followUserId, { $inc: { followerCount: 1 } });
+        const user = await userModal.findById(currentUserId).select("-password");
 
-        res.status(200).json({ message: "User Followed" });
+        res.status(200).json({
+            message: "User Followed",
+            updatedUser: user
+        });
         return
 
     } catch (error) {

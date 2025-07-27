@@ -19,7 +19,7 @@ const ProfilePage = () => {
     const tabs = ["Projects", "Posts"]
     const [activeTab, setActiveTab] = useState("Projects");
 
-    const { user: currentUser, setIsFollowing, isFollowing } = userStore()
+    const { user: currentUser, setIsFollowing, isFollowing, setUser: setCurrentUser } = userStore()
 
     const [user, setUser] = useState<userProp>();
 
@@ -90,7 +90,8 @@ const ProfilePage = () => {
         try {
             const response = await axios.post(`${BACKEND_URL}/user/${id}/follow-unfollow`, {}, { withCredentials: true });
             setIsFollowing(!isFollowing)
-            console.log(response.data);
+            // console.log(response.data);
+            setCurrentUser(response.data.updatedUser)
             toast.success(response.data.message)
         } catch (error) {
             console.log(error)
@@ -140,7 +141,17 @@ const ProfilePage = () => {
             <div className="flex items-center justify-between">
                 <p className="tracking-tight font-medium text-zinc-400">@{user?.username}</p>
                 {currentUser?._id !== user._id &&
-                    <button onClick={() => followUser(user._id)} className="bg-[#04cd9e] hover:bg-[#00a07d] cursor-pointer transition-all duration-300 text-sm px-2 py-1 rounded-md font-medium">{isFollowing ? "Following" : "Follow"}</button>
+                    <button
+                        onClick={() => followUser(user._id)}
+                        className={`
+    ${isFollowing
+                                ? "border-2 border-[#04cd9e] text-green-500 bg-transparent hover:bg-[#e6fef7]"
+                                : "bg-[#04cd9e] hover:bg-[#00a07d] text-white"}
+    cursor-pointer transition-all duration-300 text-sm px-3 py-1.5 rounded-md font-medium
+  `}
+                    >
+                        {isFollowing ? "Following" : "Follow"}
+                    </button>
                 }
 
             </div>
