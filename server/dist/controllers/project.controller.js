@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllProjects = exports.getAllUserProject = exports.createProject = void 0;
+exports.deleteProject = exports.getAllProjects = exports.getAllUserProject = exports.createProject = void 0;
 const zod_1 = __importDefault(require("zod"));
 const project_model_1 = __importDefault(require("../models/project.model"));
 const user_model_1 = __importDefault(require("../models/user.model"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const projectValidateSchema = zod_1.default.object({
     projectName: zod_1.default.string().min(5, "At least 5 character").trim(),
     shortDesc: zod_1.default.string().min(6, "Atleast 6 character").trim(),
@@ -110,3 +111,45 @@ const getAllProjects = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getAllProjects = getAllProjects;
+const deleteProject = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const projectId = req.params.id;
+        const userId = req.user.id;
+        if (!projectId || !mongoose_1.default.Types.ObjectId.isValid(projectId)) {
+            res.status(400).json({
+                message: "Invalid Project Id"
+            });
+            return;
+        }
+        const project = yield project_model_1.default.findById(projectId);
+        if (!project) {
+            res.status(404).json({
+                message: "Project Not Found"
+            });
+            return;
+        }
+        if (project.user.toString() !== userId) {
+            res.status(403).json({
+                message: "Forbidden"
+            });
+            return;
+        }
+        const user = yield user_model_1.default.findByIdAndUpdate(userId, {
+            $pull: { projects: new mongoose_1.default.Types.ObjectId(projectId) }
+        }, { new: true }).select("-password");
+        yield project.deleteOne();
+        res.status(200).json({
+            message: "Project Deleted Successfully",
+            user
+        });
+        return;
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.deleteProject = deleteProject;

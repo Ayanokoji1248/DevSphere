@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import z from "zod";
 import projectModel from "../models/project.model";
 import userModal from "../models/user.model";
+import mongoose from "mongoose";
 
 const projectValidateSchema = z.object({
     projectName: z.string().min(5, "At least 5 character").trim(),
@@ -104,5 +105,56 @@ export const getAllProjects = async (req: Request, res: Response, next: NextFunc
         res.status(500).json({
             message: "Internal Server Error"
         })
+    }
+}
+
+export const deleteProject = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const projectId = req.params.id;
+        const userId = req.user.id;
+
+        if (!projectId || !mongoose.Types.ObjectId.isValid(projectId)) {
+            res.status(400).json({
+                message: "Invalid Project Id"
+            })
+            return
+        }
+
+
+
+        const project = await projectModel.findById(projectId)
+
+        if (!project) {
+            res.status(404).json({
+                message: "Project Not Found"
+            })
+            return
+        }
+
+        if (project.user.toString() !== userId) {
+            res.status(403).json({
+                message: "Forbidden"
+            })
+            return
+        }
+
+        const user = await userModal.findByIdAndUpdate(userId, {
+            $pull: { projects: new mongoose.Types.ObjectId(projectId) }
+        }, { new: true }).select("-password")
+
+        await project.deleteOne()
+
+        res.status(200).json({
+            message: "Project Deleted Successfully",
+            user
+        })
+        return
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+        return
     }
 }

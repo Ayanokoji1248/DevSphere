@@ -14,7 +14,7 @@ import Button from "../components/Button";
 const CreateProjectPage = () => {
     const navigate = useNavigate();
 
-    const { user } = userStore()
+    const { user, setUser } = userStore()
     const { addProject } = projectStore()
 
     const [formData, setFormData] = useState({
@@ -69,8 +69,11 @@ const CreateProjectPage = () => {
             }, {
                 withCredentials: true
             })
-            // console.log(response.data)
+            console.log(response.data)
             addProject(response.data.project)
+            setUser(response.data.updatedUser)
+
+            navigate('/projects')
 
         } catch (error) {
             console.log(error)

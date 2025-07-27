@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom"
 import postStore from "../store/postStore"
 import projectStore from "../store/projectStore"
 import Button from "../components/Button"
+import toast from "react-hot-toast"
 
 const UserProfilePage = () => {
     const navigate = useNavigate();
@@ -92,12 +93,15 @@ const UserProfilePage = () => {
 
     const deleteProject = async (id: string) => {
         try {
-            const response = await axios.delete(`${BACKEND_URL}/project/${id}`)
+            const response = await axios.delete(`${BACKEND_URL}/project/${id}`, { withCredentials: true })
             removeProject(id)
             setProjects((prev) => prev.filter((project) => project._id !== id))
+            setUser(response.data.user);
+            toast.success("Project Deleted Successfully")
             console.log(response)
         } catch (error) {
             console.log(error)
+            toast.error("Something Went on deleting the project")
         }
     }
 

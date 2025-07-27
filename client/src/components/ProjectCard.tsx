@@ -7,7 +7,7 @@ const ProjectCard = ({ projectName, projectImage, shortDesc, tech, isMyProject, 
     const { user: currentUser } = userStore()
     return (
 
-        <div className="max-w-sm h-108 font-[Albert_Sans] flex flex-col gap-2 rounded-xl overflow-auto border-2 border-zinc-700">
+        <div className="max-w-sm min-h-108 font-[Albert_Sans] flex flex-col gap-2 rounded-xl overflow-auto border-2 border-zinc-700">
             <img className="w-full h-58 object-center object-cover" src={projectImage} alt={projectImage} />
             <div className="flex flex-col gap-3 p-4">
                 <div className="flex flex-col gap-2">
