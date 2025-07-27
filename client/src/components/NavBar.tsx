@@ -2,6 +2,8 @@ import { NavLink, useNavigate } from "react-router-dom"
 import userStore from "../store/userStore"
 import { useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
+import axios from "axios";
+import { BACKEND_URL } from "../utils";
 
 const NavBar = () => {
 
@@ -9,7 +11,16 @@ const NavBar = () => {
     const divRef = useRef<HTMLDivElement>(null);
 
     const navigate = useNavigate()
-    const { user } = userStore();
+    const { user, setUser } = userStore();
+
+    const logoutUser = async () => {
+        try {
+            await axios.post(`${BACKEND_URL}/auth/logout`, {}, { withCredentials: true })
+            setUser(null)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
 
@@ -101,7 +112,8 @@ const NavBar = () => {
                                         setModalOpen(false);
                                     }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Edit Profile</button>
                                     <button onClick={() => {
-                                        navigate('/edit-profile')
+                                        logoutUser()
+                                        navigate('/register')
                                         setModalOpen(false);
                                     }} className="p-2 hover:bg-red-800/30 text-red-500 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Logout</button>
                                 </div>

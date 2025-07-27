@@ -139,7 +139,9 @@ const ProfilePage = () => {
             {/* Username & Follow Button */}
             <div className="flex items-center justify-between">
                 <p className="tracking-tight font-medium text-zinc-400">@{user?.username}</p>
-                <button onClick={() => followUser(user._id)} className="bg-[#04cd9e] hover:bg-[#00a07d] cursor-pointer transition-all duration-300 text-sm px-2 py-1 rounded-md font-medium">{isFollowing ? "Following" : "Follow"}</button>
+                {currentUser?._id !== user._id &&
+                    <button onClick={() => followUser(user._id)} className="bg-[#04cd9e] hover:bg-[#00a07d] cursor-pointer transition-all duration-300 text-sm px-2 py-1 rounded-md font-medium">{isFollowing ? "Following" : "Follow"}</button>
+                }
 
             </div>
 

@@ -57,7 +57,7 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
                 {/* Code */}
                 {code && (
                     <div className="bg-zinc-800 text-green-400 font-medium font-mono text-xs sm:text-sm p-2 rounded-md overflow-x-auto">
-                        <p>{code}</p>
+                        <pre>{code}</pre>
                     </div>
                 )}
 

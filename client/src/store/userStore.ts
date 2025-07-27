@@ -22,7 +22,7 @@ export interface userProp {
 
 type userStoreType = {
     user: userProp | null,
-    setUser: (newUser: userProp) => void
+    setUser: (newUser: userProp | null) => void
     loading: boolean,
     setLoading: (loading: boolean) => void,
 
