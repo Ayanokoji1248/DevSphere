@@ -9,6 +9,7 @@ import { BACKEND_URL } from "../utils"
 import postStore from "../store/postStore"
 import PostCard from "../components/PostCard"
 import Button from "../components/Button"
+import { postSchemaValidation } from "../schemas/post.schema"
 
 
 const HomePage = () => {
@@ -18,6 +19,8 @@ const HomePage = () => {
     const { user, setUser } = userStore();
     const { posts, addPost, updatePostLikeCount } = postStore()
 
+    const [error, setError] = useState<{ [key: string]: string }>({})
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         if (!user) {
@@ -26,7 +29,27 @@ const HomePage = () => {
             })
         }
         try {
-            console.log(content)
+            // console.log(content)
+            const result = postSchemaValidation.safeParse({
+                content
+            });
+
+            console.log(result.error?.issues[0].message)
+
+            if (!result.success) {
+                const fieldErrors: { [key: string]: string } = {}
+
+                result.error.issues.forEach((err) => {
+                    if (err.path[0]) {
+                        fieldErrors[err.path[0] as string] = err.message
+                    }
+                })
+                console.log(fieldErrors)
+                setError(fieldErrors);
+                console.log(error)
+                return
+            }
+
             const response = await axios.post(`${BACKEND_URL}/post/create`, {
                 content
             }, { withCredentials: true })
@@ -67,6 +90,7 @@ const HomePage = () => {
                     </div>
                     <div className='w-full'>
                         <textarea value={content} onChange={(e) => setContent(e.target.value)} name="content" id="content" className='w-full h-22 border-2 rounded-xl resize-none p-3 text-sm font-[Albert_Sans] font-medium' placeholder="Share your latest project, code snippet, or developer insight..."></textarea>
+                        {error.content && <p className="text-red-500 font-medium text-xs">{error.content}</p>}
 
                         <div className='flex justify-between items-center p-2 flex-col md:flex-row gap-3'>
                             <div className='flex gap-2 md:gap-5 md:flex-row flex-wrap md:flex-nowrap'>

@@ -12,6 +12,7 @@ import Button from "../components/Button";
 import Editor from "react-simple-code-editor";
 import hljs from "highlight.js";
 import "prismjs/themes/prism-tomorrow.css"; // ✅ Prism theme
+import { postSchemaValidation } from "../schemas/post.schema";
 
 
 
@@ -32,6 +33,8 @@ const CreatePostPage = () => {
     const [tag, setTag] = useState("")
     const [tags, setTags] = useState<string[]>([]);
 
+    const [error, setError] = useState<{ [key: string]: string }>({})
+
     const handleTagSubmit = () => {
         if (tag.trim() == "") {
             return
@@ -50,12 +53,27 @@ const CreatePostPage = () => {
 
     const handlePostSubmit = async () => {
         try {
+
+
             let imageUrl: string | null = null
             if (!user) {
                 throw new Error("user not Found")
             }
             if (file) {
                 imageUrl = await uploadImage(file, "post", user);
+            }
+
+            const result = postSchemaValidation.safeParse(post)
+
+            if (!result.success) {
+                const fieldErrors: { [key: string]: string } = {}
+                result.error.issues.forEach((err) => {
+                    if (err.path[0]) {
+                        fieldErrors[err.path[0] as string] = err.message
+                    }
+                })
+                setError(fieldErrors)
+                return
             }
 
             const response = await axios.post(`${BACKEND_URL}/post/create`, {
@@ -101,7 +119,7 @@ const CreatePostPage = () => {
                     <h1 className="text-3xl font-[Albert_Sans] tracking-tighter font-bold">Content</h1>
 
                     <textarea className="mt-4 border-2 w-full rounded-md p-2 text-sm font-medium font-[Albert_Sans] resize-none h-22" name="content" value={post.content} onChange={(e) => setPost({ ...post, content: e.target.value })} id="content" placeholder="What's on your mind? Share your latest project, code insight, or developer experience..."></textarea>
-
+                    {error.content && <p className="text-xs text-red-500">{error.content}</p>}
                     <div className="flex flex-col mt-5 gap-2">
                         <label htmlFor="code" className="font-bold text-lg">Code <span className="text-zinc-500 font-medium text-sm">(optional)</span></label>
                         {/* <textarea onChange={(e) => setPost({ ...post, code: e.target.value })} className=" border-2 w-full rounded-md p-2 text-sm font-medium font-[Albert_Sans] resize-none h-22" placeholder="Enter your code here" name="code" id="code"></textarea> */}
@@ -124,6 +142,8 @@ const CreatePostPage = () => {
                                 border: "1px solid white"
                             }}
                         />
+
+                        {error.code && <p className="text-xs text-red-500">{error.code}</p>}
 
                     </div>
                     <div className="mt-5 flex flex-col gap-3">
@@ -192,6 +212,7 @@ const CreatePostPage = () => {
                             <span className="text-zinc-500 font-medium text-sm">(optional)</span>
                         </label>
                         <input onChange={(e) => setPost({ ...post, link: e.target.value })} type="text" className="p-2 border-[1px] font-medium rounded-md outline-none" placeholder="url" />
+                        {error.link && <p className="text-red-500 text-xs">{error.link}</p>}
                     </div>
 
                 </div>
