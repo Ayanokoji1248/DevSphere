@@ -10,6 +10,7 @@ import postStore from "../store/postStore"
 import PostCard from "../components/PostCard"
 import Button from "../components/Button"
 import { postSchemaValidation } from "../schemas/post.schema"
+import useLikePost from "../hooks/useLikePost"
 
 
 const HomePage = () => {
@@ -17,7 +18,9 @@ const HomePage = () => {
 
     const [content, setContent] = useState("")
     const { user, setUser } = userStore();
-    const { posts, addPost, updatePostLikeCount } = postStore()
+    const { posts, addPost } = postStore()
+
+    const { likeUnlikeHandler } = useLikePost()
 
     const [error, setError] = useState<{ [key: string]: string }>({})
 
@@ -66,17 +69,17 @@ const HomePage = () => {
         }
     }
 
-    const likeUnlikeHandler = async (id: string) => {
-        try {
-            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-                withCredentials: true
-            })
-            // console.log(response.data)
-            updatePostLikeCount(id, response.data.likeCount)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const likeUnlikeHandler = async (id: string) => {
+    //     try {
+    //         const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
+    //             withCredentials: true
+    //         })
+    //         // console.log(response.data)
+    //         updatePostLikeCount(id, response.data.likeCount)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     return (
         <div className='w-full min-h-screen pb-6'>

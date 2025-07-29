@@ -12,6 +12,7 @@ import postStore from "../store/postStore"
 import projectStore from "../store/projectStore"
 import Button from "../components/Button"
 import toast from "react-hot-toast"
+import useLikePost from "../hooks/useLikePost"
 
 const UserProfilePage = () => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const UserProfilePage = () => {
     const [userPosts, setUserPosts] = useState<PostProp[]>([]);
     const [projects, setProjects] = useState<ProjectProp[]>([])
 
-    const { updatePostLikeCount } = postStore();
+    const { likeUnlikeHandler } = useLikePost();
 
     const getAllUserProject = async () => {
         try {
@@ -73,22 +74,27 @@ const UserProfilePage = () => {
     }
 
     const likePost = async (id: string) => {
-        try {
-            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-                withCredentials: true
-            })
-            updatePostLikeCount(id, response.data.likeCount)
-            setUserPosts((prev) =>
-                prev.map((post) =>
-                    post._id === id
-                        ? { ...post, likeCount: response.data.likeCount }
-                        : post
-                )
-            );
+        const newCount = await likeUnlikeHandler(id);
 
-        } catch (error) {
-            console.log(error)
-        }
+        setUserPosts((prev) => prev.map((post) => (
+            post._id === id ? { ...post, likeCount: newCount } : post
+        )))
+        // try {
+        //     const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
+        //         withCredentials: true
+        //     })
+        //     updatePostLikeCount(id, response.data.likeCount)
+        //     setUserPosts((prev) =>
+        //         prev.map((post) =>
+        //             post._id === id
+        //                 ? { ...post, likeCount: response.data.likeCount }
+        //                 : post
+        //         )
+        //     );
+
+        // } catch (error) {
+        //     console.log(error)
+        // }
     }
 
     const deleteProject = async (id: string) => {

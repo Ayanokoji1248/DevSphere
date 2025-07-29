@@ -5,11 +5,11 @@ import { TbLocation } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import ProjectCard from "../components/ProjectCard";
-import postStore from "../store/postStore";
 import userStore, { type userProp } from "../store/userStore";
 import { BACKEND_URL } from "../utils";
 import type { PostProp, ProjectProp } from "../utils/interfaces";
 import toast, { Toaster } from "react-hot-toast";
+import useLikePost from "../hooks/useLikePost";
 
 
 const ProfilePage = () => {
@@ -27,7 +27,7 @@ const ProfilePage = () => {
     const [userPosts, setUserPosts] = useState<PostProp[]>([]);
     const [projects, setProjects] = useState<ProjectProp[]>([])
 
-    const { updatePostLikeCount } = postStore();
+    const { likeUnlikeHandler } = useLikePost();
 
     const getUserInfo = async () => {
         try {
@@ -60,7 +60,7 @@ const ProfilePage = () => {
             const response = await axios.get(`${BACKEND_URL}/user/${id}/post`, {
                 withCredentials: true
             });
-            console.log(response.data);
+            // console.log(response.data);
             setUserPosts(response.data.posts)
         } catch (error) {
             console.log(error)
@@ -68,22 +68,10 @@ const ProfilePage = () => {
     }
 
     const likePost = async (id: string) => {
-        try {
-            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-                withCredentials: true
-            })
-            updatePostLikeCount(id, response.data.likeCount)
-            setUserPosts((prev) =>
-                prev.map((post) =>
-                    post._id === id
-                        ? { ...post, likeCount: response.data.likeCount }
-                        : post
-                )
-            );
-
-        } catch (error) {
-            console.log(error)
-        }
+        const newCount = await likeUnlikeHandler(id)
+        setUserPosts((prev) => prev.map((post) => (
+            post._id === id ? { ...post, likeCount: newCount } : post
+        )))
     }
 
     const followUser = async (id: string) => {

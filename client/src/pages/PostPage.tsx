@@ -4,19 +4,21 @@ import { useNavigate, useParams } from "react-router-dom"
 import { BACKEND_URL } from "../utils"
 import PostCard from "../components/PostCard"
 import { type CommentProp, type PostProp } from "../utils/interfaces"
-import postStore from "../store/postStore"
 import userStore from "../store/userStore"
 import { IoIosArrowBack } from "react-icons/io"
 import Button from "../components/Button"
+import useLikePost from "../hooks/useLikePost"
 
 const PostPage = () => {
     const navigate = useNavigate()
     const { id } = useParams()
     const { user } = userStore()
     const [post, setPost] = useState<PostProp | null>(null)
-    const { updatePostLikeCount } = postStore()
+    // const { updatePostLikeCount } = postStore()
     const [comment, setComment] = useState("")
     const [comments, setComments] = useState<CommentProp[]>([]);
+
+    const { likeUnlikeHandler } = useLikePost()
 
     const getParticularPost = async (id: string) => {
         try {
@@ -28,18 +30,10 @@ const PostPage = () => {
     }
 
     const likePost = async (id: string) => {
-        try {
-            const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-                withCredentials: true
-            })
-
-            setPost((prev) =>
-                prev ? { ...prev, likeCount: response.data.likeCount } : prev
-            )
-            updatePostLikeCount(id, response.data.likeCount)
-        } catch (error) {
-            console.error("Failed to like post:", error)
-        }
+        const newCount = await likeUnlikeHandler(id);
+        setPost((prev) =>
+            prev ? { ...prev, likeCount: newCount } : prev
+        )
     }
 
     const commentPost = async (id: string) => {
