@@ -44,7 +44,7 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
             postId,
             { $inc: { commentCount: 1 } },
             { new: true } // return updated document
-        )
+        ).populate("user", "_id username fullName profilePic")
 
         if (!post) {
             res.status(404).json({
@@ -56,7 +56,8 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
         res.status(201).json({
             message: "Comment Created",
             comment: populatedComment,
-            commentCount: post.commentCount
+            commentCount: post.commentCount,
+            post
         })
         return
 

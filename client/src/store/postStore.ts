@@ -26,6 +26,7 @@ type postStoreType = {
     setPosts: (posts: postProp[]) => void
     addPost: (newPost: postProp) => void
     removePost: (id: string) => void
+    updatePost: (id: string, updatedPost: postProp) => void
 
     updatePostLikeCount: (id: string, count: number) => void
     updateCommentLikeCount: (id: string, count: number) => void
@@ -43,6 +44,12 @@ const postStore = create<postStoreType>((set) => ({
     removePost: (id: string) => set((state) => ({
         posts: state.posts.filter((post) => post._id !== id)
     })),
+
+    updatePost: (id, updatedPost) => {
+        set((state) => ({
+            posts: state.posts.map((post) => post._id === id ? updatedPost : post)
+        }))
+    },
 
     updatePostLikeCount: (id, count) => {
         set((state) => ({

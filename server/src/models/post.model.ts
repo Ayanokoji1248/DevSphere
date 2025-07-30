@@ -8,7 +8,7 @@ const postSchema = new Schema({
     },
     content: {
         type: String,
-        minlength: [10, "Content must be at least 10 characters"],
+        minlength: [5, "Content must be at least 5 characters"],
         maxlength: [5000, "Content cannot exceed 5000 characters"],
         required: true,
     },

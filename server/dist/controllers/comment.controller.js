@@ -46,7 +46,7 @@ const createComment = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         });
         const populatedComment = yield comment_model_1.default.findById(commentData._id).populate("user", "_id username fullName profilePic");
         const post = yield post_model_1.default.findByIdAndUpdate(postId, { $inc: { commentCount: 1 } }, { new: true } // return updated document
-        );
+        ).populate("user", "_id username fullName profilePic");
         if (!post) {
             res.status(404).json({
                 message: "Post not found"
@@ -56,7 +56,8 @@ const createComment = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         res.status(201).json({
             message: "Comment Created",
             comment: populatedComment,
-            commentCount: post.commentCount
+            commentCount: post.commentCount,
+            post
         });
         return;
     }

@@ -8,13 +8,14 @@ import userStore from "../store/userStore"
 import { IoIosArrowBack } from "react-icons/io"
 import Button from "../components/Button"
 import useLikePost from "../hooks/useLikePost"
+import postStore from "../store/postStore"
 
 const PostPage = () => {
     const navigate = useNavigate()
     const { id } = useParams()
     const { user } = userStore()
     const [post, setPost] = useState<PostProp | null>(null)
-    // const { updatePostLikeCount } = postStore()
+    const { updatePost } = postStore()
     const [comment, setComment] = useState("")
     const [comments, setComments] = useState<CommentProp[]>([]);
 
@@ -40,6 +41,7 @@ const PostPage = () => {
         try {
             const response = await axios.post(`${BACKEND_URL}/comment/create/${id}`, { comment }, { withCredentials: true })
             console.log(response.data)
+            updatePost(id, response.data.post)
             setPost(prev => prev ? { ...prev, commentCount: response.data.commentCount } : prev)
             setComments(prev => [response.data.comment, ...prev]);
             setComment("")

@@ -1,11 +1,9 @@
-
 import { Heart, MessageCircle, Share } from "lucide-react";
-
 import type { PostProp } from "../utils/interfaces";
 import userStore from "../store/userStore";
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
-
+import Badge from "./Badge";
 
 const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeCount, deletePost, likeUpdate, commentCount }: PostProp) => {
     const { user: currentUser } = userStore();
@@ -65,7 +63,8 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
                 {tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
                         {tags.map((t, i) => (
-                            <p key={i} className="bg-zinc-300 text-black px-3 py-1 font-medium text-xs sm:text-sm rounded-full">#{t}</p>
+                            // <p key={i} className="bg-zinc-300 text-black px-3 py-1 font-medium text-xs sm:text-sm rounded-full">#{t}</p>
+                            <Badge key={i} text={`# ${t}`} />
                         ))}
                     </div>
                 )}

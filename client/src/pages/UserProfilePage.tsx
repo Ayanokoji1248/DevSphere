@@ -270,6 +270,7 @@ const UserProfilePage = () => {
                                 tags={post.tags}
                                 likeCount={post.likeCount}
                                 comments={post.comments}
+                                commentCount={post.commentCount}
                                 deletePost={() => deletePost(post._id)}
                                 likeUpdate={() => likePost(post._id,)}
                             />

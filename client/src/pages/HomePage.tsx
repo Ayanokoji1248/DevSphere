@@ -52,7 +52,8 @@ const HomePage = () => {
                 console.log(error)
                 return
             }
-
+            setError({})
+            
             const response = await axios.post(`${BACKEND_URL}/post/create`, {
                 content
             }, { withCredentials: true })
@@ -92,7 +93,10 @@ const HomePage = () => {
                         </div>
                     </div>
                     <div className='w-full'>
-                        <textarea value={content} onChange={(e) => setContent(e.target.value)} name="content" id="content" className='w-full h-22 border-2 rounded-xl resize-none p-3 text-sm font-[Albert_Sans] font-medium' placeholder="Share your latest project, code snippet, or developer insight..."></textarea>
+                        <textarea value={content} onChange={(e) => {
+                            setContent(e.target.value)
+                            if (error.content) setError(prev => ({ ...prev, content: "" }));
+                        }} name="content" id="content" className='w-full h-22 border-2 rounded-xl resize-none p-3 text-sm font-[Albert_Sans] font-medium' placeholder="Share your latest project, code snippet, or developer insight..."></textarea>
                         {error.content && <p className="text-red-500 font-medium text-xs">{error.content}</p>}
 
                         <div className='flex justify-between items-center p-2 flex-col md:flex-row gap-3'>

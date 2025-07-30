@@ -1,4 +1,4 @@
-import { Plus, Upload } from "lucide-react"
+import { Plus, Upload, X } from "lucide-react"
 import { useRef, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io"
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import { uploadImage } from "../utils/uploadImage";
 import axios from "axios";
 import userStore from "../store/userStore";
 import Button from "../components/Button";
+import Badge from "../components/Badge";
 
 
 
@@ -196,10 +197,12 @@ const EditProfilePage = () => {
 
                         <div className="flex flex-wrap gap-2 mt-3">
                             {skills.map((skill, index) => (
-                                <span key={index} className="bg-zinc-800 text-zinc-200 px-3 py-1 rounded-md flex items-center gap-2 text-sm font-medium">
-                                    {skill}
-                                    <button onClick={() => setSkills(skills.filter((_, i) => i !== index))} className="text-red-500 hover:text-red-700 transition-all duration-300">&times;</button>
-                                </span>
+                                <Badge key={index} text={skill} onClick={() => setSkills(skills.filter((_, i) => i !== index))} deleteIcon={<X size={15}/>} />
+
+                                // <span key={index} className="bg-zinc-800 text-zinc-200 px-3 py-1 rounded-md flex items-center gap-2 text-sm font-medium">
+                                //     {skill}
+                                //     <button onClick={() => setSkills(skills.filter((_, i) => i !== index))} className="text-red-500 hover:text-red-700 transition-all duration-300">&times;</button>
+                                // </span>
                             ))}
                         </div>
 
