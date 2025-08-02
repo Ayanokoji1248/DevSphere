@@ -1,4 +1,4 @@
-# 🌐 DevSphere
+# 🌐 DevSphere - Social Media for developers
 
 **DevSphere** is an **ongoing full-stack social media platform for developers**, designed to foster collaboration, sharing, and professional networking in the tech community — inspired by platforms like Dev.to and Hashnode.
 
@@ -27,6 +27,13 @@ This project is currently under active development. Features and UI are being bu
   - Profile with username, bio, skills
   - Follow/unfollow other developers
 
+- ✅ **Ai Code Reviewer Took** 
+  - User can add the code snippet and review their code
+
+- ✅ **Project Management**
+  - Create and showcase a project
+  - Delete and Editing is in progress
+
 - 🧪 **Private Messaging** *(Planned)*
 - 🛡 **Admin Panel** *(Planned)*
 - 📊 **Analytics & Notifications** *(Planned)*
@@ -45,7 +52,7 @@ This project is currently under active development. Features and UI are being bu
 - [Express.js](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/)
 - [Zod](https://github.com/colinhacks/zod) for validation
-- [Cloudinary](https://cloudinary.com/) for media uploads
+- [Supabase](https://supabase.com/) for media uploads
 - [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) for auth
 
 ---
@@ -93,7 +100,7 @@ npm run dev
 In `client/utils/index.ts`:
 
 ```ts
-export const BACKEND_URL = "http://localhost:5000";
+export const BACKEND_URL = "http://localhost:3000";
 ```
 
 ---
@@ -118,9 +125,15 @@ DevSphere/
 ---
 
 ## 📸 Screenshots
-
-*(Coming soon...)*
 UI is being built — screenshots will be added as the UI components stabilize.
+
+<img width="1918" height="1042" alt="image" src="https://github.com/user-attachments/assets/2a91dcce-d4e6-41d8-9dd4-e73897f00038" />
+<img width="1911" height="975" alt="image" src="https://github.com/user-attachments/assets/72524776-49f0-407f-a259-cb1be70477a8" />
+<img width="1592" height="812" alt="image" src="https://github.com/user-attachments/assets/554df601-14a8-4dc6-a81b-b090be64bd85" />
+<img width="1593" height="848" alt="image" src="https://github.com/user-attachments/assets/55556031-2cb3-4bb0-979e-29cfb2d371f4" />
+<img width="1592" height="861" alt="image" src="https://github.com/user-attachments/assets/21a7785e-c537-4801-9215-b06d313583be" />
+<img width="1588" height="822" alt="image" src="https://github.com/user-attachments/assets/5a82d12e-d830-4750-bf28-64db952623e6" />
+
 
 ---
 
@@ -138,7 +151,7 @@ UI is being built — screenshots will be added as the UI components stabilize.
 
 ## 🧑‍💻 Author
 
-**Axel Blaze (aka Ayanokoji1248)**
+**Krish Prajapati (aka Ayanokoji1248)**
 🔗 [GitHub Profile](https://github.com/Ayanokoji1248)
 
 ---
