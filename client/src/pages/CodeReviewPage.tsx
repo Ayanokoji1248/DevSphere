@@ -16,6 +16,8 @@ import { BACKEND_URL } from "../utils";
 import { ArrowLeft } from "lucide-react";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import { useLoadingStore } from "../store/loadingStore";
+import Loader from "../components/Loader";
 
 type LanguageOptions = "javascript" | "python" | "java" | "c" | "cpp";
 
@@ -28,7 +30,8 @@ const CodeReviewPage = () => {
 }`);
     const [language, setLanguage] = useState<LanguageOptions>("javascript");
     const [review, setReview] = useState("");
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
+    const { setLoading, loading } = useLoadingStore()
 
     const languageMap: Record<LanguageOptions, Prism.Grammar> = {
         javascript: languages.javascript,
@@ -85,11 +88,12 @@ const CodeReviewPage = () => {
                 <div className="flex flex-col md:flex-row w-full gap-4 pb-5">
                     {/* Code Editor */}
                     <div
-                        className={`w-full md:w-1/2 border border-gray-700 h-[550px] overflow-hidden rounded-md p-2 relative ${loading ? "bg-gray-700/60" : ""
-                            }`}
+                        className={`w-full md:w-1/2 border border-gray-700 h-[550px] overflow-hidden rounded-md p-2 relative`}
                     >
                         {loading &&
-                            <p className="absolute z-20 top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] text-lg font-medium font-[Albert_Sans] tracking-tight">Reviewing...</p>
+                            <div className="w-full h-full bg-transparent absolute z-[99] flex justify-center items-center">
+                                <Loader />
+                            </div>
                         }
                         <Editor
                             className={`bg-zinc-900 ${loading && "blur-xs"}`}
@@ -126,8 +130,12 @@ const CodeReviewPage = () => {
                         }}
                     >
                         <h2 className="text-lg font-semibold mb-2">Code Review Output:</h2>
-                        <div className="max-w-none overflow-auto">
-                            {loading && <p>Loading...</p>}
+                        {loading &&
+                            <div className="w-full h-fit flex justify-center items-center">
+                                <Loader />
+                            </div>
+                        }
+                        <div className="max-w-none overflow-auto relative">
                             <ReactMarkdown
                                 children={review}
                                 components={{

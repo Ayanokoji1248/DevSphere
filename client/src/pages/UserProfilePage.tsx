@@ -13,14 +13,18 @@ import projectStore from "../store/projectStore"
 import Button from "../components/Button"
 import toast from "react-hot-toast"
 import useLikePost from "../hooks/useLikePost"
+import { useLoadingStore } from "../store/loadingStore"
+import Loader from "../components/Loader"
 
 const UserProfilePage = () => {
     const navigate = useNavigate();
 
+    const { setLoading, loading } = useLoadingStore()
+
     const tabs = ["Projects", "Posts"]
     const [activeTab, setActiveTab] = useState("Projects");
 
-    const { user, loading, setUser } = userStore();
+    const { user, setUser } = userStore();
     const { removePost } = postStore()
     const { removeProject } = projectStore()
 
@@ -79,22 +83,6 @@ const UserProfilePage = () => {
         setUserPosts((prev) => prev.map((post) => (
             post._id === id ? { ...post, likeCount: newCount } : post
         )))
-        // try {
-        //     const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-        //         withCredentials: true
-        //     })
-        //     updatePostLikeCount(id, response.data.likeCount)
-        //     setUserPosts((prev) =>
-        //         prev.map((post) =>
-        //             post._id === id
-        //                 ? { ...post, likeCount: response.data.likeCount }
-        //                 : post
-        //         )
-        //     );
-
-        // } catch (error) {
-        //     console.log(error)
-        // }
     }
 
     const deleteProject = async (id: string) => {
@@ -112,12 +100,29 @@ const UserProfilePage = () => {
     }
 
     useEffect(() => {
-        getAllUserProject();
-        getAllUserPosts()
+        const fetchAll = async () => {
+            setLoading(true)
+            try {
+                await Promise.all([
+                    getAllUserProject(),
+                    getAllUserPosts()
+                ])
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchAll()
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (loading) {
-        return <div className="text-white">loading...</div>
+        return <div className="text-white">
+            <Loader />
+        </div>
     }
 
     return (
@@ -238,7 +243,10 @@ const UserProfilePage = () => {
             <div className="w-full flex justify-between items-center">
                 {activeTab === "Projects" &&
                     <div className="w-full h-full flex flex-col justify-between items-center gap-5 mt-2">
-                        {projects.map((project) => (
+                        {projects.length == 0 &&
+                            <p className="text-sm text-zinc-500 font-medium">No Projects Created.</p>
+                        }
+                        {projects.length > 0 && projects.map((project) => (
                             <ProjectCard
                                 _id={project._id}
                                 user={project.user}
@@ -255,8 +263,10 @@ const UserProfilePage = () => {
                     </div>}
                 {activeTab === "Posts" &&
                     <div className="w-full h-full flex flex-col gap-5 mt-2">
-
-                        {userPosts.map((post) => {
+                        {userPosts.length === 0 &&
+                            <p className="text-sm text-zinc-500 font-medium">No Posts Created.</p>
+                        }
+                        {userPosts.length > 0 && userPosts.map((post) => {
 
                             return < PostCard
                                 key={post._id}

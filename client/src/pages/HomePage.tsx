@@ -1,4 +1,4 @@
-import { CodeXml, Link } from "lucide-react"
+import { CodeXml, Link, Loader } from "lucide-react"
 import { useState, type FormEvent } from "react"
 import { TbPhoto } from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
@@ -11,10 +11,13 @@ import PostCard from "../components/PostCard"
 import Button from "../components/Button"
 import { postSchemaValidation } from "../schemas/post.schema"
 import useLikePost from "../hooks/useLikePost"
+import { useLoadingStore } from "../store/loadingStore"
 
 
 const HomePage = () => {
     const navigate = useNavigate()
+
+    const { setLoading, loading } = useLoadingStore()
 
     const [content, setContent] = useState("")
     const { user, setUser } = userStore();
@@ -54,6 +57,7 @@ const HomePage = () => {
             }
             setError({})
 
+            setLoading(true)
             const response = await axios.post(`${BACKEND_URL}/post/create`, {
                 content
             }, { withCredentials: true })
@@ -62,6 +66,7 @@ const HomePage = () => {
             setContent("")
             setUser(response.data.updatedUser)
             toast.success("Post Created")
+            setLoading(false);
         } catch (error) {
             console.log(error)
             toast.error("Something went wrong", {
@@ -69,18 +74,6 @@ const HomePage = () => {
             })
         }
     }
-
-    // const likeUnlikeHandler = async (id: string) => {
-    //     try {
-    //         const response = await axios.post(`${BACKEND_URL}/post/like-unlike/${id}`, {}, {
-    //             withCredentials: true
-    //         })
-    //         // console.log(response.data)
-    //         updatePostLikeCount(id, response.data.likeCount)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
 
     return (
         <div className='w-full min-h-screen pb-6'>
@@ -101,7 +94,6 @@ const HomePage = () => {
 
                         <div className='flex justify-between items-center p-2 flex-col md:flex-row gap-3'>
                             <div className='flex gap-2 md:gap-5 md:flex-row flex-wrap md:flex-nowrap'>
-                                {/* <button onClick={() => navigate('/create-post')} className='text-sm font-[Albert_Sans] font-medium md:px-4 px-2 py-2 rounded-md border-2 flex items-center gap-2 hover:border-green-500 cursor-pointer transition-all duration-300 hover:bg-green-700/30'><CodeXml size={18} /> Code</button> */}
                                 <Button
                                     text="Code"
                                     variant="outline"
@@ -112,7 +104,6 @@ const HomePage = () => {
                                     leftIcon={<CodeXml size={18} />}
                                     onClick={() => navigate('/create-post')}
                                 />
-                                {/* <button onClick={() => navigate('/create-post')} className='text-sm font-[Albert_Sans] font-medium md:px-4 px-2 py-2 rounded-md border-2 flex gap-2 items-center hover:border-blue-500 hover:bg-blue-700/30 cursor-pointer transition-all duration-300'><TbPhoto size={18} /> Media</button> */}
                                 <Button
                                     variant="outline"
                                     size="md"
@@ -121,7 +112,6 @@ const HomePage = () => {
                                     leftIcon={<TbPhoto size={18} />}
                                     onClick={() => navigate('/create-post')}
                                 />
-                                {/* <button onClick={() => navigate('/create-post')} className='text-sm font-[Albert_Sans] font-medium md:px-4 px-2 py-2 rounded-md border-2 flex items-center gap-3 cursor-pointer hover:border-pink-500 hover:bg-pink-700/30 transition-all duration-300'><Link size={18} /> Link</button> */}
                                 <Button
                                     text="Link"
                                     variant="outline"
@@ -131,7 +121,6 @@ const HomePage = () => {
                                     onClick={() => navigate('/create-post')}
                                 />
                             </div>
-                            {/* <button onClick={handleSubmit} className='bg-[#9400FF] w-full text-white cursor-pointer px-4 md:px-6 py-2 text-lg font-medium rounded-md hover:bg-[#7E30E1] transition-all duration-300 hover:-translate-y-0.5'>Post</button> */}
                             <Button
                                 onClick={(e) => handleSubmit(e as FormEvent)}
                                 text="Post" variant="primary" size="md" className="font-semibold  rounded-md" widthFull={true} />
@@ -142,6 +131,10 @@ const HomePage = () => {
 
 
             <div id="posts" className="mt-8 flex flex-col gap-5 text-white">
+
+                {loading && <div className="w-full h-full">
+                    <Loader />
+                </div>}
 
                 {posts.map((post) => (
 

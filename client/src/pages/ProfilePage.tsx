@@ -10,11 +10,15 @@ import { BACKEND_URL } from "../utils";
 import type { PostProp, ProjectProp } from "../utils/interfaces";
 import toast, { Toaster } from "react-hot-toast";
 import useLikePost from "../hooks/useLikePost";
+import { useLoadingStore } from "../store/loadingStore";
+import Loader from "../components/Loader";
 
 
 const ProfilePage = () => {
     const navigate = useNavigate();
     const { id } = useParams()
+
+    const { setLoading, loading } = useLoadingStore();
 
     const tabs = ["Projects", "Posts"]
     const [activeTab, setActiveTab] = useState("Projects");
@@ -87,14 +91,30 @@ const ProfilePage = () => {
     }
 
     useEffect(() => {
-        getUserInfo()
-        getUserProject();
-        getUserPosts()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id])
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                await Promise.all([
+                    getUserInfo(),
+                    getUserProject(),
+                    getUserPosts()
+                ]);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    if (!user) {
-        return <div className="text-white">loading...</div>
+        fetchData();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, setLoading]);
+
+    if (loading || !user) {
+        return <div className="text-white">
+            <Loader />
+        </div>
     }
     return (
         <div className="min-h-screen text-white rounded-md border-zinc-600 relative font-[Albert_Sans] flex flex-col gap-2 pb-5 px-3">
@@ -226,7 +246,11 @@ const ProfilePage = () => {
             <div className="w-full flex justify-between items-center">
                 {activeTab === "Projects" &&
                     <div className="w-full h-full flex flex-col justify-between items-center gap-5 mt-2">
-                        {projects.map((project) => (
+                        {projects.length === 0 &&
+                            <p className="text-sm text-zinc-500 font-medium">No Projects Created.</p>
+                        }
+
+                        {projects.length > 0 && projects.map((project) => (
                             <ProjectCard
                                 _id={project._id}
                                 user={project.user}
@@ -242,8 +266,10 @@ const ProfilePage = () => {
                     </div>}
                 {activeTab === "Posts" &&
                     <div className="w-full h-full flex flex-col gap-5 mt-2">
-
-                        {userPosts.map((post) => {
+                        {userPosts.length === 0 &&
+                            <p className="text-sm text-zinc-500 font-medium">No Posts Created.</p>
+                        }
+                        {userPosts.length > 0 && userPosts.map((post) => {
 
                             return < PostCard
                                 key={post._id}
