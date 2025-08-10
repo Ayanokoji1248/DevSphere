@@ -81,7 +81,7 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
                         <Heart size={18} /> {likeCount}
                     </button>
                     <div className="flex items-center text-xs sm:text-sm gap-1 hover:text-blue-500 cursor-pointer transition-all duration-300">
-                        <MessageCircle size={18} /> {commentCount}
+                        <MessageCircle size={18} /> {commentCount || 0}
                     </div>
                     <div className="flex items-center text-xs sm:text-sm gap-1 hover:text-green-500 cursor-pointer transition-all duration-300">
                         <Share size={18} /> 35

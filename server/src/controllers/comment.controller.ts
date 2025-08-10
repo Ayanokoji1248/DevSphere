@@ -3,6 +3,7 @@ import z from "zod"
 import commentModel from "../models/comment.model"
 import mongoose from "mongoose"
 import postModel from "../models/post.model"
+import { idText } from "typescript"
 
 const commentZodSchema = z.object({
     comment: z.string().min(1, "Required").max(100, "Atmost 100 character")
@@ -105,5 +106,72 @@ export const getAllComments = async (req: Request, res: Response, next: NextFunc
         res.status(500).json({
             message: "Internal Server Error"
         })
+    }
+}
+
+
+export const deleteComment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const commentId = req.params.id;
+        const userId = req.user.id;
+
+        if (!commentId || !mongoose.Types.ObjectId.isValid(commentId)) {
+            res.status(400).json({
+                message: "Invalid Comment Id"
+            })
+            return
+        }
+
+        const comment = await commentModel.findById(commentId);
+
+        if (!comment) {
+            res.status(404).json({
+                message: "Comment Not Found"
+            })
+            return
+        }
+
+        if (comment.user.toString() !== userId.toString()) {
+            res.status(401).json({
+                message: "Unauthorized",
+            })
+            return
+        }
+
+        const postId = comment.post;
+
+        if (!postId) {
+            res.status(404).json({
+                message: "Invalid Post Id"
+            })
+            return
+        }
+
+        const post = await postModel.findById(postId);
+
+        if (!post) {
+            res.status(404).json({
+                message: "Post Not Found"
+            })
+            return;
+        }
+
+        const updatedCommentCount = await postModel.findByIdAndUpdate(postId, {
+            $inc: { commentCount: -1 }
+        }, { new: true });
+        await commentModel.findByIdAndDelete(commentId);
+
+        res.status(200).json({
+            message: "Comment Deleted Successfully",
+            updatedCount: updatedCommentCount.commentCount
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+        return
     }
 }

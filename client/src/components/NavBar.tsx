@@ -58,7 +58,7 @@ const NavBar = () => {
                     <NavLink
                         to="/projects"
                         className={({ isActive }) =>
-                            `tracking-tighter font-medium ${isActive ? "font-bold" : ""}`
+                            `tracking-tighter font-medium ${isActive ? "font-bold border-b-2" : ""}`
                         }
                     >
                         Projects
@@ -67,7 +67,7 @@ const NavBar = () => {
                     <NavLink
                         to="/search"
                         className={({ isActive }) =>
-                            `tracking-tighter font-medium ${isActive ? "font-bold" : ""}`
+                            `tracking-tighter font-medium ${isActive ? "font-bold border-b-2" : ""}`
                         }
                     >
                         Search
@@ -76,7 +76,7 @@ const NavBar = () => {
                     <NavLink
                         to="/code-review"
                         className={({ isActive }) =>
-                            `tracking-tighter font-medium ${isActive ? "font-bold" : ""}`
+                            `tracking-tighter font-medium ${isActive ? "font-bold border-b-2" : ""}`
                         }
                     >
                         Code Review

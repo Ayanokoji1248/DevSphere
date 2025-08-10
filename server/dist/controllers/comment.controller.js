@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllComments = exports.createComment = void 0;
+exports.deleteComment = exports.getAllComments = exports.createComment = void 0;
 const zod_1 = __importDefault(require("zod"));
 const comment_model_1 = __importDefault(require("../models/comment.model"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -102,3 +102,58 @@ const getAllComments = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getAllComments = getAllComments;
+const deleteComment = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const commentId = req.params.id;
+        const userId = req.user.id;
+        if (!commentId || !mongoose_1.default.Types.ObjectId.isValid(commentId)) {
+            res.status(400).json({
+                message: "Invalid Comment Id"
+            });
+            return;
+        }
+        const comment = yield comment_model_1.default.findById(commentId);
+        if (!comment) {
+            res.status(404).json({
+                message: "Comment Not Found"
+            });
+            return;
+        }
+        if (comment.user.toString() !== userId.toString()) {
+            res.status(401).json({
+                message: "Unauthorized",
+            });
+            return;
+        }
+        const postId = comment.post;
+        if (!postId) {
+            res.status(404).json({
+                message: "Invalid Post Id"
+            });
+            return;
+        }
+        const post = yield post_model_1.default.findById(postId);
+        if (!post) {
+            res.status(404).json({
+                message: "Post Not Found"
+            });
+            return;
+        }
+        const updatedCommentCount = yield post_model_1.default.findByIdAndUpdate(postId, {
+            $inc: { commentCount: -1 }
+        }, { new: true });
+        yield comment_model_1.default.findByIdAndDelete(commentId);
+        res.status(200).json({
+            message: "Comment Deleted Successfully",
+            updatedCount: updatedCommentCount.commentCount
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+        return;
+    }
+});
+exports.deleteComment = deleteComment;

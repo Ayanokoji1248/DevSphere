@@ -5,15 +5,17 @@ import { BACKEND_URL } from "../utils"
 import PostCard from "../components/PostCard"
 import { type CommentProp, type PostProp } from "../utils/interfaces"
 import userStore from "../store/userStore"
-import { IoIosArrowBack } from "react-icons/io"
 import Button from "../components/Button"
 import useLikePost from "../hooks/useLikePost"
 import postStore from "../store/postStore"
+import toast from "react-hot-toast"
+import { ArrowLeft } from "lucide-react"
 
 const PostPage = () => {
     const navigate = useNavigate()
     const { id } = useParams()
     const { user } = userStore()
+    const { updateCommentCount } = postStore();
     const [post, setPost] = useState<PostProp | null>(null)
     const { updatePost } = postStore()
     const [comment, setComment] = useState("")
@@ -60,6 +62,24 @@ const PostPage = () => {
         }
     }
 
+    const deleteComment = async (id: string) => {
+        try {
+            const response = await axios.delete(`${BACKEND_URL}/comment/${id}`, {
+                withCredentials: true
+            })
+            setComments((prev) => prev.filter((comment) => comment._id !== id))
+
+            setPost(prev => prev ? { ...prev, commentCount: response.data.updateCommentCount } : prev);
+
+            updateCommentCount(post?._id as string, response.data.updatedCount)
+
+            console.log(response.data)
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong")
+        }
+    }
+
     useEffect(() => {
         if (id) {
             getParticularPost(id)
@@ -69,9 +89,13 @@ const PostPage = () => {
 
     return (
         <div className="w-full text-white flex flex-col gap-3 pb-10 font-[Albert_Sans]">
-            <button onClick={() => navigate('/home')} className="cursor-pointer hover:bg-zinc-800 transition-all duration-300 hover:-translate-y-0.5 p-2 border-[1px] w-fit rounded-md">
-                <IoIosArrowBack className="" size={22} />
-            </button>
+            <Button
+                text="Back"
+                variant="black"
+                size="sm"
+                leftIcon={<ArrowLeft size={18} />}
+                onClick={() => navigate('/home')}
+            />
 
             {post && (
                 <PostCard
@@ -102,7 +126,7 @@ const PostPage = () => {
                 <h1 className="font-medium tracking-tighter text-zinc-400">All Comments</h1>
             </div>
             <div className="comments flex flex-col gap-6">
-                {comments.map((comment) => (
+                {comments.length > 0 && comments.map((comment) => (
 
                     <div className="flex gap-4">
                         <div className="w-10 h-10 bg-zinc-500 rounded-full overflow-auto">
@@ -123,12 +147,17 @@ const PostPage = () => {
                                         variant="danger"
                                         size="sm"
                                         className="text-sm rounded-md font-medium"
+                                        onClick={() => deleteComment(comment._id)}
                                     />
                                 </div>
                             }
                         </div>
                     </div>
                 ))}
+
+                {comments.length == 0 &&
+                    <p className="text-sm text-center text-zinc-500 font-medium">No comments yet</p>
+                }
 
             </div>
         </div >

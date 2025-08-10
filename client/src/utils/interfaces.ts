@@ -45,6 +45,7 @@ export interface PostProp {
 
 
 export interface CommentProp {
+    _id: string,
     comment: string,
     user: {
         _id: string,
