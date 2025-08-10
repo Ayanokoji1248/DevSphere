@@ -21,7 +21,7 @@ const like_model_1 = __importDefault(require("../models/like.model"));
 const postValidationSchema = zod_1.default.object({
     content: zod_1.default.string().trim().min(5, "Atleast 5 character long"),
     code: zod_1.default.string().optional(),
-    image: zod_1.default.string().url().optional(),
+    image: zod_1.default.string().url().nullable().optional(),
     link: zod_1.default.string().url().optional(),
     tags: zod_1.default.array(zod_1.default.string()).optional()
 });

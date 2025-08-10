@@ -8,7 +8,7 @@ import likeModel from "../models/like.model";
 const postValidationSchema = z.object({
     content: z.string().trim().min(5, "Atleast 5 character long"),
     code: z.string().optional(),
-    image: z.string().url().optional(),
+    image: z.string().url().nullable().optional(),
     link: z.string().url().optional(),
     tags: z.array(z.string()).optional()
 })
