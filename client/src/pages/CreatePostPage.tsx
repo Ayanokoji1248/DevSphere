@@ -1,7 +1,6 @@
 import axios from "axios";
-import { PlusIcon, X } from "lucide-react";
+import { ArrowLeft, PlusIcon, X } from "lucide-react";
 import { useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
 import postStore from "../store/postStore";
@@ -110,10 +109,13 @@ const CreatePostPage = () => {
         <div className="pb-5">
             <Toaster />
             <div className="text-white border-2 border-zinc-500 rounded-xl min-h-screen p-5 pb-2 w-full">
-                <div className="bg-zinc-900 rounded-md w-fit p-2 border-[1px] cursor-pointer hover:bg-zinc-800 transition-all duration-300 hover:-translate-y-0.5" onClick={() => navigate('/home')}>
-                    <IoIosArrowBack size={22} />
-                </div>
-
+                <Button
+                    text="Back"
+                    variant="black"
+                    size="sm"
+                    leftIcon={<ArrowLeft size={18} />}
+                    onClick={() => navigate('/home')}
+                />
 
                 <div className=" p-5 font-[Albert_Sans]">
                     <h1 className="text-3xl font-[Albert_Sans] tracking-tighter font-bold">Content</h1>

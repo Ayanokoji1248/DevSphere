@@ -1,7 +1,6 @@
-import { IoIosArrowBack } from "react-icons/io"
 import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom"
-import { Plus, UploadIcon, X } from "lucide-react";
+import { ArrowLeft, Plus, UploadIcon, X } from "lucide-react";
 import { useRef, useState, type ChangeEvent } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../utils";
@@ -88,9 +87,13 @@ const CreateProjectPage = () => {
             <div className="max-w-7xl min-h-screen mx-auto pt-22 text-white ">
 
                 <div>
-                    <button onClick={() => navigate('/projects')} className="w-fit p-2 border-[1px] border-zinc-600 rounded-md bg-black hover:bg-zinc-800 transition-all duration-300 cursor-pointer hover:-translate-y-0.5">
-                        <IoIosArrowBack size={22} />
-                    </button>
+                    <Button
+                        text="Back"
+                        variant="black"
+                        size="sm"
+                        leftIcon={<ArrowLeft size={18} />}
+                        onClick={() => navigate('/home')}
+                    />
                 </div>
                 <div className="p-8 mt-3 max-w-3xl bg-zinc-900 rounded-md mx-auto">
 

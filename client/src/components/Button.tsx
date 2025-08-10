@@ -7,6 +7,7 @@ interface ButtonProp {
     "info" | //blue
     "danger" | //danger
     "green" |
+    "black" |
     "gradient" |
     "outline",
     size: "sm" | "md" | "lg",
@@ -24,6 +25,7 @@ const variantStyle = {
     danger: "bg-red-500 hover:bg-red-600",
     gradient: "bg-purple",
     outline: "border-2 rounded-md",
+    black: "bg-zinc-950 border-[1px] border-zinc-600 px-4 py-2 rounded-md hover:bg-zinc-900 transition flex items-center gap-2 font-semibold text-sm"
 }
 
 const sizeStyle = {

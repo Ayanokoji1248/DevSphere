@@ -1,6 +1,5 @@
-import { Plus, Upload, X } from "lucide-react"
+import { ArrowLeft, Plus, Upload, X } from "lucide-react"
 import { useRef, useState } from "react";
-import { IoIosArrowBack } from "react-icons/io"
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../utils";
 import { uploadImage } from "../utils/uploadImage";
@@ -98,9 +97,16 @@ const EditProfilePage = () => {
     }
 
     return (
-        <div className="text-white border-[1px] border-zinc-700 rounded-md p-3 pb-5 font-[Albert_Sans]">
+        <div className="text-white rounded-md p-3 pb-5 font-[Albert_Sans]">
             <div>
-                <button onClick={() => navigate('/profile')} className="p-2 w-fit bg-zinc-900 rounded-md border-[1px] border-zinc-600 hover:bg-zinc-800 transition-all duration-300 cursor-pointer"><IoIosArrowBack /></button>
+                {/* <button onClick={() => navigate('/profile')} className="p-2 w-fit bg-zinc-900 rounded-md border-[1px] border-zinc-600 hover:bg-zinc-800 transition-all duration-300 cursor-pointer"><IoIosArrowBack /></button> */}
+                <Button
+                    text="Back"
+                    variant="black"
+                    size="sm"
+                    leftIcon={<ArrowLeft size={18} />}
+                    onClick={() => navigate('/profile')}
+                />
             </div>
 
             <div className="mt-5 flex flex-col gap-3">
@@ -197,7 +203,7 @@ const EditProfilePage = () => {
 
                         <div className="flex flex-wrap gap-2 mt-3">
                             {skills.map((skill, index) => (
-                                <Badge key={index} text={skill} onClick={() => setSkills(skills.filter((_, i) => i !== index))} deleteIcon={<X size={15}/>} />
+                                <Badge key={index} text={skill} onClick={() => setSkills(skills.filter((_, i) => i !== index))} deleteIcon={<X size={15} />} />
 
                                 // <span key={index} className="bg-zinc-800 text-zinc-200 px-3 py-1 rounded-md flex items-center gap-2 text-sm font-medium">
                                 //     {skill}

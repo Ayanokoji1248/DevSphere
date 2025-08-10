@@ -13,10 +13,16 @@ import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import Prism from "prismjs";
 import { BACKEND_URL } from "../utils";
+import { ArrowLeft } from "lucide-react";
+import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 type LanguageOptions = "javascript" | "python" | "java" | "c" | "cpp";
 
 const CodeReviewPage = () => {
+
+    const navigate = useNavigate();
+
     const [code, setCode] = useState(`function greet(name) {
   return \`Hello \${name}\`;
 }`);
@@ -53,16 +59,20 @@ const CodeReviewPage = () => {
         <div className="w-full min-h-screen bg-black overflow-auto">
             <NavBar />
             <div className="text-white pt-20 max-w-7xl mx-auto px-4">
-                <button className="bg-gray-800 px-4 py-2 rounded hover:bg-gray-700 transition">
-                    ← Back
-                </button>
+                <Button
+                    text="Back"
+                    variant="black"
+                    size="sm"
+                    leftIcon={<ArrowLeft size={18} />}
+                    onClick={() => navigate('/home')}
+                />
 
                 <div className="flex gap-5 items-center my-4">
                     <h1 className="text-xl font-semibold font-[Albert_Sans]">Select Language</h1>
                     <select
                         value={language}
                         onChange={(e) => setLanguage(e.target.value as LanguageOptions)}
-                        className="bg-gray-800 text-white px-4 py-2 rounded"
+                        className="bg-zinc-800 border-[1px] border-zinc-700 text-white px-4 py-2 rounded"
                     >
                         <option value="javascript">JavaScript</option>
                         <option value="python">Python</option>

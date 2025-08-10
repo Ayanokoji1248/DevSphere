@@ -1,7 +1,6 @@
-import { IoIosArrowBack } from "react-icons/io"
 import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom"
-import { PlusIcon } from "lucide-react"
+import { ArrowLeft, PlusIcon } from "lucide-react"
 import projectStore from "../store/projectStore"
 import ProjectCard from "../components/ProjectCard"
 import Button from "../components/Button"
@@ -17,9 +16,13 @@ const ProjectPage = () => {
             <div className="pt-24 max-w-7xl mx-auto text-white">
                 <div className="flex items-center justify-between">
 
-                    <button onClick={() => navigate('/home')} className="w-fit p-2 border-[1px] border-zinc-600 rounded-md bg-black hover:bg-zinc-800 transition-all duration-300 cursor-pointer hover:-translate-y-0.5">
-                        <IoIosArrowBack size={22} />
-                    </button>
+                    <Button
+                        text="Back"
+                        variant="black"
+                        size="sm"
+                        leftIcon={<ArrowLeft size={18} />}
+                        onClick={() => navigate('/home')}
+                    />
 
                     {/* <button onClick={() => navigate('/create-project')} className="p-2 flex gap-2 bg-white text-black font-medium tracking-tight rounded-md transition-all duration-300 hover:bg-zinc-200 cursor-pointer hover:-translate-y-0.5">
                         <PlusIcon className="text-black" /> Create new Project
