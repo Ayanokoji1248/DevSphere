@@ -30,12 +30,5 @@ app.use('/api/post/', postRouter)
 app.use('/api/project', projectRouter)
 app.use('/api/comment', commentRouter)
 app.use('/api/ai', aiRouter)
-async function main() {
 
-    await dbConnect();
-    app.listen(3000, () => {
-        console.log("Server running on port 3000")
-    })
-}
-
-main()
+export default app;
