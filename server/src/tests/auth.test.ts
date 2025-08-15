@@ -110,3 +110,61 @@ describe("POST /api/auth/register", () => {
         expect(res.body).toHaveProperty("message", "Internal Server Error");
     });
 });
+
+
+describe("POST /api/auth/login", () => {
+    it("should return validation error", async () => {
+        const res = await request(app).post('/api/auth/login').send({
+            email: "example.com",
+            password: "krish@12",
+        })
+
+        expect(res.body).toHaveProperty("errors");
+        expect(res.statusCode).toBe(400)
+    })
+
+    it("should return user not found", async () => {
+        const res = await request(app).post("/api/auth/login").send({
+            email: "krish12@gmail.com",
+            password: "krish12"
+        })
+
+        expect(res.statusCode).toBe(400);
+        expect(res.body).toHaveProperty("message", "Invalid Credentials")
+    })
+
+    it("should return invalid credentials", async () => {
+        const hashedPassword = await bcrypt.hash("krish12", 10)
+        await userModal.create({
+            username: "krish",
+            fullName: "Krish Prajapati",
+            email: "krish12@gmail.com",
+            password: hashedPassword
+        })
+        const res = await request(app).post("/api/auth/login").send({
+            email: "krish12@gmail.com",
+            password: "krish125"
+        })
+
+        expect(res.statusCode).toBe(400);
+        expect(res.body).toHaveProperty("message", "Invalid Credentials")
+    })
+
+    it("should login the user", async () => {
+        const hashedPassword = await bcrypt.hash("krish12", 10)
+        await userModal.create({
+            username: "krish",
+            fullName: "Krish Prajapati",
+            email: "krish12@gmail.com",
+            password: hashedPassword
+        })
+        const res = await request(app).post("/api/auth/login").send({
+            email: "krish12@gmail.com",
+            password: "krish12"
+        })
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).not.toHaveProperty("password");
+        expect(res.headers["set-cookie"]).toBeDefined();
+    })
+})
