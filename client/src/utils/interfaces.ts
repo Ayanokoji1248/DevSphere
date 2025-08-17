@@ -7,6 +7,7 @@ export interface ProjectProp {
     status?: "Planning" | "In Progress" | "Completed",
     tech: string[],
     projectLink?: string,
+    githubLink?: string,
     projectImage?: string,
     user?: {
         _id: string,

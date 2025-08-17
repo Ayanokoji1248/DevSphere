@@ -71,8 +71,6 @@ const ProjectPage = () => {
                                     projectImage={project.projectImage}
                                     user={project.user}
                                     isMyProject={false}
-
-
                                 />
                             </Link>
                         ))}
