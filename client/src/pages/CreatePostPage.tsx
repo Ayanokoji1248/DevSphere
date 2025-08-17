@@ -12,11 +12,16 @@ import Editor from "react-simple-code-editor";
 import hljs from "highlight.js";
 import "prismjs/themes/prism-tomorrow.css"; // ✅ Prism theme
 import { postSchemaValidation } from "../schemas/post.schema";
+import { useLoadingStore } from "../store/loadingStore";
+import Loader from "../components/Loader";
+import Badge from "../components/Badge";
 
 
 
 const CreatePostPage = () => {
     const navigate = useNavigate()
+
+    const { loading, setLoading } = useLoadingStore();
 
     const { addPost } = postStore();
     const { setUser, user } = userStore();
@@ -52,7 +57,7 @@ const CreatePostPage = () => {
 
     const handlePostSubmit = async () => {
         try {
-
+            setLoading(true)
 
             let imageUrl: string | null = null
             if (!user) {
@@ -103,10 +108,18 @@ const CreatePostPage = () => {
         } catch (error) {
             console.log(error)
         }
+        finally {
+            setLoading(false)
+        }
     }
 
     return (
-        <div className="pb-5">
+        <div className="pb-5 relative">
+            {loading &&
+                <div className="absolute w-full h-full bg-zinc-700/50 z-10 flex justify-center items-center overflow-hidden">
+                    <Loader />
+                </div>
+            }
             <Toaster />
             <div className="text-white border-2 border-zinc-500 rounded-xl min-h-screen p-5 pb-2 w-full">
                 <Button
@@ -229,10 +242,11 @@ const CreatePostPage = () => {
                     {tags.length > 0 &&
                         <div id="tags" className="flex flex-wrap  gap-2">
                             {tags.map((tag, idx) => (
-                                <div key={idx} className="p-3 w-fit bg-zinc-700 border-[1px] rounded-full font-medium font-[Albert_Sans] py-1 flex items-center justify-between gap-2">
-                                    <p className="">{tag}</p>
-                                    <button onClick={() => handleDeleteTag(idx)} className="hover:bg-zinc-900 rounded-full transition-all  duration-300 p-1 cursor-pointer"><X size={18} /></button>
-                                </div>
+                                <Badge text={tag} onClick={() => handleDeleteTag(idx)} deleteIcon={<X size={15} />} />
+                                // <div key={idx} className="p-3 w-fit bg-zinc-700 border-[1px] rounded-full font-medium font-[Albert_Sans] py-1 flex items-center justify-between gap-2">
+                                //     <p className="">{tag}</p>
+                                //     <button onClick={() => handleDeleteTag(idx)} className="hover:bg-zinc-900 rounded-full transition-all  duration-300 p-1 cursor-pointer"><X size={18} /></button>
+                                // </div>
                             ))}
                         </div>
                     }
@@ -248,6 +262,7 @@ const CreatePostPage = () => {
                         size="md"
                         widthFull={true}
                         className="rounded-md font-medium"
+                        disabled={loading}
                     />
                 </div>
             </div>

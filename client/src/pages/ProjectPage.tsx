@@ -1,5 +1,5 @@
 import NavBar from "../components/NavBar"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { ArrowLeft, PlusIcon } from "lucide-react"
 import projectStore from "../store/projectStore"
 import ProjectCard from "../components/ProjectCard"
@@ -13,7 +13,7 @@ const ProjectPage = () => {
     return (
         <div className="bg-black min-h-screen font-[Albert_Sans]">
             <NavBar />
-            <div className="pt-24 max-w-7xl mx-auto text-white">
+            <div className="pt-24 max-w-7xl mx-auto text-white flex flex-col gap-6">
                 <div className="flex items-center justify-between">
 
                     <Button
@@ -39,17 +39,21 @@ const ProjectPage = () => {
 
                 </div>
 
+                <div className="">
+                    <h1 className="text-4xl font-semibold">Discover Projects</h1>
+                    <p>Explore amazing projects built by developers worldwide</p>
+                </div>
 
-                <div className="mt-10">
+                <div className="">
                     <div className="flex rounded-md overflow-auto border-[1px] border-zinc-600">
                         <input type="text" className="w-full p-2 outline-none font-medium text-sm tracking-normal" placeholder="Search Project" />
                         <button className="bg-white text-black p-2  px-4 font-medium tracking-tight transition-all duration-300 cursor-pointer hover:bg-zinc-200">Search</button>
                     </div>
                 </div>
 
-                <div className="mt-6">
+                <div className="">
                     <div>
-                        <h1 className="text-4xl tracking-tight font-bold">All Projects</h1>
+                        <h1 className="text-3xl tracking-tight font-medium">All Projects</h1>
                     </div>
 
                     <div id="projects" className="mt-2 flex flex-wrap gap-10 justify-center p-5">
@@ -57,16 +61,20 @@ const ProjectPage = () => {
                         {/* <ProjectCard /> */}
 
                         {projects.map((project) => (
-                            <ProjectCard
-                                _id={project._id}
-                                projectName={project.projectName}
-                                shortDesc={project.shortDesc}
-                                longDesc={project.longDesc}
-                                tech={project.tech}
-                                projectImage={project.projectImage}
-                                user={project.user}
-                                isMyProject={false}
-                            />
+                            <Link to={`/project/${project._id}`}>
+                                <ProjectCard
+                                    _id={project._id}
+                                    projectName={project.projectName}
+                                    shortDesc={project.shortDesc}
+                                    longDesc={project.longDesc}
+                                    tech={project.tech}
+                                    projectImage={project.projectImage}
+                                    user={project.user}
+                                    isMyProject={false}
+
+
+                                />
+                            </Link>
                         ))}
 
                     </div>

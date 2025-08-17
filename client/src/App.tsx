@@ -19,6 +19,8 @@ import CreateProjectPage from "./pages/CreateProjectPage"
 import ProfilePage from "./pages/ProfilePage"
 import PostPage from "./pages/PostPage"
 import CodeReviewPage from "./pages/CodeReviewPage"
+import IndexPage from "./pages/IndexPage"
+import ParticularProjectPage from "./pages/ParticularProjectPage"
 
 
 const App = () => {
@@ -92,6 +94,8 @@ const App = () => {
   return (
     <Routes>
 
+      <Route path="/" element={<IndexPage />} />
+
       <Route element={<AuthLayout />}>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -110,6 +114,7 @@ const App = () => {
       </Route>
 
       <Route path="/projects" element={<ProjectPage />} />
+      <Route path="/project/:id" element={<ParticularProjectPage />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/create-project" element={<CreateProjectPage />} />

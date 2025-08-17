@@ -11,7 +11,9 @@ interface ButtonProp {
     "gradient" |
     "outline",
     size: "sm" | "md" | "lg",
+    type?: "submit" | "reset" | "button",
     widthFull?: boolean,
+    disabled?: boolean,
     className?: string,
     onClick?: (e: FormEvent) => void,
     leftIcon?: ReactNode
@@ -34,9 +36,9 @@ const sizeStyle = {
     lg: "p-2 py-2.5",
 }
 
-const Button = ({ variant, text, size, widthFull, className, onClick, leftIcon }: ButtonProp) => {
+const Button = ({ variant, text, size, widthFull, className, onClick, leftIcon, type, disabled }: ButtonProp) => {
     return (
-        <button onClick={onClick} className={`${variantStyle[variant]} ${sizeStyle[size]} ${className} ${widthFull ? "w-full" : "w-fit"} 
+        <button disabled={disabled} type={type} onClick={onClick} className={`${variantStyle[variant]} ${sizeStyle[size]} ${className} ${widthFull ? "w-full" : "w-fit"} 
         cursor-pointer transition-all duration-300 hover:-translate-y-0.5 font-[Albert_Sans] tracking-tight`}>{leftIcon && leftIcon}{text}</button>
     )
 }

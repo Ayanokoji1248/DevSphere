@@ -256,6 +256,8 @@ const UserProfilePage = () => {
                                 projectImage={project.projectImage}
                                 isMyProject={true}
                                 deleteProject={() => deleteProject(project._id)}
+
+                                widthFull={true}
                             />
                         ))}
 
