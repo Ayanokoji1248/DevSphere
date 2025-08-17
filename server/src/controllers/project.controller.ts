@@ -13,7 +13,7 @@ const projectValidateSchema = z.object({
     tech: z.array(z.string()),
     githubLink: z.string().optional(),
     projectLink: z.string().optional(),
-    projectImage: z.string().url("Invalid Url").trim().optional()
+    projectImage: z.string().url("Invalid Url").trim().nullable().optional()
 })
 
 export const createProject = async (req: Request, res: Response, next: NextFunction) => {
@@ -105,6 +105,43 @@ export const getAllProjects = async (req: Request, res: Response, next: NextFunc
         res.status(500).json({
             message: "Internal Server Error"
         })
+    }
+}
+
+export const getParticularProject = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            res.status(400).json({
+                message: "Invalid Id"
+            })
+            return;
+        }
+
+        const project = await projectModel.findById(id).populate("user", "_id username fullName profilePic");
+
+        if (!project) {
+            res.status(404).json({
+                message: "Project Not Found",
+            })
+            return
+        }
+
+        res.status(200).json({
+            message: "Project Found",
+            project
+        })
+        return
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+        return
     }
 }
 
