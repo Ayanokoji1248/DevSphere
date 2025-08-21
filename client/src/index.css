@@ -1,34 +1,13 @@
 @import "tailwindcss";
 
+@plugin 'tailwind-scrollbar' {
+    nocompatible: true;
+}
+
 :global(pre span.token) {
     background-color: transparent !important;
 }
 
 pre span.token {
     background: transparent !important;
-}
-
-/* globals.css or app.css */
-
-@theme {
-    @keyframes float {
-        0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 1;
-            border-radius: 0;
-        }
-
-        100% {
-            transform: translateY(-1000px) rotate(720deg);
-            opacity: 0;
-            border-radius: 50%;
-        }
-    }
-
-    /* Create the animation utility */
-    --animate-float: float 8s linear infinite;
-}
-
-@utility animate-float {
-    animation: var(--animate-float);
 }

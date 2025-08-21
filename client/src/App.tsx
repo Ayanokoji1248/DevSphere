@@ -126,8 +126,8 @@ const App = () => {
         </Route>
         <Route path="/user/:id" element={<ProfilePage />} />
         <Route path="/post/:id" element={<PostPage />} />
-        {/* <Route path="/message" element={<MessagingPage />} /> */}
-        <Route path="/message/*" element={<MessagingPage />} />
+        <Route path="/message" element={<MessagingPage />} />
+        <Route path="/message/:id" element={<MessagingPage />} />
       </Route>
 
       <Route path="/projects" element={<ProjectPage />} />

@@ -14,7 +14,7 @@ const MainLayout = () => {
     const [activeTab, setActiveTab] = useState("");
 
     return (
-        <div className="bg-black">
+        <div className="bg-black relative">
             <NavBar />
             <div className="md:w-[90%] h-fit border-white mx-auto flex gap-5 relative">
                 <div className="md:w-[25%] min-h-screen p-3 pt-8 px-4 hidden md:block">
