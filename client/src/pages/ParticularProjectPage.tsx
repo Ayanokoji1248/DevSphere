@@ -49,21 +49,21 @@ const ParticularProjectPage = () => {
                     </div>
                 }
 
-                <div className="mt-8 flex pb-5 relative">
-                    <div className="px-8 py-10 bg-zinc-900 rounded-tl-2xl rounded-bl-2xl w-[50%] h-fit flex flex-col justify-start gap-6 sticky top-15">
+                <div className="mt-8 flex flex-col pb-5 relative sm:flex-row">
+                    <div className="px-5 sm:px-8 py-10 bg-zinc-900 rounded-tl-2xl rounded-bl-2xl w-full sm:w-[50%] h-fit flex flex-col justify-start gap-6 sm:sticky top-15">
                         <div className="flex flex-col gap-3">
                             <h1 className="text-4xl font-medium font-[Albert_Sans] tracking-tight">{project?.projectName}</h1>
                             <p className="tracking-tight max-w-lg text-zinc-300">{project?.longDesc}</p>
                         </div>
                         <div className="flex gap-3 items-center">
                             <h1 className="font-bold tracking-tight">Teach Used:</h1>
-                            <div className="flex gap-2">
+                            <div className="flex flex-wrap items-start justify-start gap-2">
                                 {project?.tech.map((tech, idx) => (
                                     <Badge key={idx} text={tech} />
                                 ))}
                             </div>
                         </div>
-                        <div className="flex gap-6">
+                        <div className="flex flex-col sm:flex-row  gap-6">
 
                             <div>
                                 <h1 className="text-md tracking-tight font-bold">Category : <span className="font-medium">{project?.category}</span></h1>
@@ -96,7 +96,7 @@ const ParticularProjectPage = () => {
 
 
 
-                    <div className="w-[50%]">
+                    <div className="w-full sm:w-[50%]">
                         <img src={project?.projectImage} alt="Project Image" />
                     </div>
 

@@ -5,9 +5,9 @@ import type { ReactNode } from "react";
 
 const AuthLayout = () => {
     return (
-        <div className="w-full flex">
+        <div className="w-full min-h-screen flex flex-col sm:flex-row ">
             {/* Left Section with Gradient & Floating Circles */}
-            <div className="relative bg-[linear-gradient(-20deg,#b721ff_0%,#21d4fd_100%)] w-[50%] h-screen p-12 px-24 flex flex-col gap-5 overflow-hidden">
+            <div className="relative bg-[linear-gradient(-20deg,#b721ff_0%,#21d4fd_100%)] sm:w-[50%] min-h-full p-12 px-5 sm:px-24 flex flex-col gap-5 overflow-hidden">
 
                 {/* Floating Circles Background */}
                 <ul className="absolute inset-0 overflow-hidden z-0">
@@ -33,8 +33,8 @@ const AuthLayout = () => {
                         </div>
                     </div>
 
-                    <div className="w-108 flex flex-col gap-3 mt-8">
-                        <h1 className="text-6xl font-bold tracking-tighter font-[Albert_Sans] text-white">
+                    <div className="sm:w-108 flex flex-col sm:gap-6 gap-5 mt-8">
+                        <h1 className="sm:text-6xl text-5xl font-bold tracking-tighter font-[Albert_Sans] text-white">
                             Join the future of <span className="text-yellow-400">developer collaboration</span>
                         </h1>
                         <p className="text-white font-medium font-[Albert_Sans] text-xl tracking-tighter leading-tight">
@@ -42,7 +42,7 @@ const AuthLayout = () => {
                         </p>
                     </div>
 
-                    <div className="flex flex-col gap-5 mt-3">
+                    <div className="flex flex-col gap-5 sm:mt-10 mt-6">
                         <Feature icon={<CodeXml size={22} />} text="Share your coding journey" />
                         <Feature icon={<Users size={22} />} text="Connect with like-minded developers" />
                         <Feature icon={<Star size={22} />} text="Showcase your best projects" />
@@ -52,7 +52,7 @@ const AuthLayout = () => {
             </div>
 
             {/* Right Section */}
-            <div className="h-screen w-[50%] flex justify-center items-center bg-black">
+            <div className="min-h-full w-full sm:w-[50%] flex justify-center items-center bg-black">
                 <Outlet />
             </div>
         </div>

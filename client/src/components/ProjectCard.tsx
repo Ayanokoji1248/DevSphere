@@ -10,7 +10,7 @@ const ProjectCard = ({ projectName, projectImage, shortDesc, tech, isMyProject, 
     const navigate = useNavigate()
     return (
 
-        <div className={`${widthFull && "w-full"} w-md min-h-108 font-[Albert_Sans] flex flex-col gap-2 rounded-xl overflow-auto border-2 border-zinc-700`}>
+        <div className={`${widthFull && "w-full"} sm:w-md min-h-108 font-[Albert_Sans] flex flex-col gap-2 rounded-xl overflow-auto border-2 border-zinc-700`}>
             <img className="w-full h-58 object-center object-cover" src={projectImage} alt={projectImage} />
             <div className="flex flex-col gap-3 p-4 pt-2">
                 <div className="flex flex-col gap-2">
