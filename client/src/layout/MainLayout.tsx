@@ -62,7 +62,7 @@ const MainLayout = () => {
                                             setActiveTab(follow._id)
                                             navigate(`/message/${follow._id}`)
                                         }}
-                                        className={`w-full flex items-center gap-5 hover:bg-neutral-800 transition-all duration-300 cursor-pointer p-2 px-3.5 rounded-md ${activeTab === follow._id ? "bg-neutral-800" : "bg-zinc-900"} `}>
+                                        className={`w-full flex items-center gap-5 hover:bg-neutral-900 transition-all duration-300 cursor-pointer p-2 px-3.5 rounded-md ${activeTab === follow._id ? "bg-neutral-900" : "bg-[#030303] border-[1px] border-zinc-700 shadow-[1px_1px_5px_0px] shadow-zinc-700"} `}>
                                         <div className="w-12 h-12 bg-white rounded-full overflow-auto">
                                             <img src={follow.profilePic} alt="" />
                                         </div>

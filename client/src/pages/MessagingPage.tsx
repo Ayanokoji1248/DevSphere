@@ -9,10 +9,11 @@ const MessagingPage = () => {
 
             <ChatWindow />
 
-            <div className="w-full flex">
-                <input className="w-full border-[1px] border-zinc-500 font-medium text-md p-3 outline-none" type="text" />
-                <button className="bg-violet-800 px-4 tracking-tight font-medium">Submit</button>
-            </div>
+            <form className="flex w-full">
+                <input className="w-full border-[1px] border-zinc-500 font-medium text-md p-3 outline-none rounded-l-md" type="text" />
+                <button className="bg-violet-800 rounded-r-md px-4 tracking-tight font-medium">Submit</button>
+            </form>
+
         </div>
     )
 }

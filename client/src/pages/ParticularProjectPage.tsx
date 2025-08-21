@@ -33,6 +33,7 @@ const ParticularProjectPage = () => {
 
     useEffect(() => {
         getProject()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -52,7 +53,7 @@ const ParticularProjectPage = () => {
                 <div className="mt-8 flex flex-col pb-5 relative sm:flex-row">
                     <div className="px-5 sm:px-8 py-10 bg-zinc-900 rounded-tl-2xl rounded-bl-2xl w-full sm:w-[50%] h-fit flex flex-col justify-start gap-6 sm:sticky top-15">
                         <div className="flex flex-col gap-3">
-                            <h1 className="text-4xl font-medium font-[Albert_Sans] tracking-tight">{project?.projectName}</h1>
+                            <h1 className="text-5xl font-bold font-[Albert_Sans] tracking-tight">{project?.projectName}</h1>
                             <p className="tracking-tight max-w-lg text-zinc-300">{project?.longDesc}</p>
                         </div>
                         <div className="flex gap-3 items-center">
@@ -65,10 +66,10 @@ const ParticularProjectPage = () => {
                         </div>
                         <div className="flex flex-col sm:flex-row  gap-6">
 
-                            <div>
+                            <div className="bg-blue-700/40 p-2 py-1 rounded-md">
                                 <h1 className="text-md tracking-tight font-bold">Category : <span className="font-medium">{project?.category}</span></h1>
                             </div>
-                            <div>
+                            <div className="bg-emerald-700/40 p-2 py-1 rounded-md">
                                 <h1 className="text-md tracking-tight font-bold">Status : <span className="font-medium">{project?.status}</span></h1>
                             </div>
                         </div>
