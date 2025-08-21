@@ -28,5 +28,5 @@ app.use('/api/user/', user_route_1.default);
 app.use('/api/post/', post_route_1.default);
 app.use('/api/project', project_route_1.default);
 app.use('/api/comment', comment_route_1.default);
-app.use('/api/ai', ai_route_1.default);
+app.use('/api/ai/', ai_route_1.default);
 exports.default = app;

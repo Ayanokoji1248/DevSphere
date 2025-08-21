@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userFollowAndUnfollow = exports.getUserProject = exports.getUserPost = exports.updateUserProfile = exports.getUserProfile = exports.getUser = void 0;
+exports.getUserFollowing = exports.userFollowAndUnfollow = exports.getUserProject = exports.getUserPost = exports.updateUserProfile = exports.getUserProfile = exports.getUser = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const zod_1 = __importDefault(require("zod"));
@@ -248,9 +248,11 @@ const userFollowAndUnfollow = (req, res, next) => __awaiter(void 0, void 0, void
         yield user_model_1.default.findByIdAndUpdate(currentUserId, { $inc: { followingCount: 1 } });
         yield user_model_1.default.findByIdAndUpdate(followUserId, { $inc: { followerCount: 1 } });
         const user = yield user_model_1.default.findById(currentUserId).select("-password");
+        const followedUser = yield user_model_1.default.findById(followUserId).select("_id fullName username profilePic");
         res.status(200).json({
             message: "User Followed",
-            updatedUser: user
+            updatedUser: user,
+            followedUser
         });
         return;
     }
@@ -261,3 +263,23 @@ const userFollowAndUnfollow = (req, res, next) => __awaiter(void 0, void 0, void
     }
 });
 exports.userFollowAndUnfollow = userFollowAndUnfollow;
+const getUserFollowing = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        const userFollowing = yield follow_model_1.default.find({
+            follower: userId
+        }).populate('following', "_id profilePic username fullName").select("following");
+        const followingList = userFollowing.map(f => f.following);
+        res.status(200).json({
+            message: "user following list",
+            userFollowing: followingList,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: error
+        });
+    }
+});
+exports.getUserFollowing = getUserFollowing;

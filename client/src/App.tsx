@@ -21,11 +21,12 @@ import PostPage from "./pages/PostPage"
 import CodeReviewPage from "./pages/CodeReviewPage"
 import IndexPage from "./pages/IndexPage"
 import ParticularProjectPage from "./pages/ParticularProjectPage"
+import MessagingPage from "./pages/MessagingPage"
 
 
 const App = () => {
 
-  const { setUser, setLoading } = userStore()
+  const { setUser, setLoading, setUserFollowing } = userStore()
   const { setPosts } = postStore();
   const { setProjects } = projectStore()
   const getCurrentUser = async () => {
@@ -41,7 +42,7 @@ const App = () => {
     }
   }
 
-  const getAllBlogs = async () => {
+  const getAllPosts = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/post/all`, {
         withCredentials: true
@@ -69,14 +70,28 @@ const App = () => {
     }
   }
 
+  const getUserFollowingList = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/user/following`, {
+        withCredentials: true
+      });
+      console.log(response.data)
+      setUserFollowing(response.data.userFollowing)
+      // setFollowingUserList(response.data.userFollowing);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     const fetechData = async () => {
       setLoading(true)
       try {
         await Promise.all([
           getCurrentUser(),
-          getAllBlogs(),
+          getAllPosts(),
           getAllProjects(),
+          getUserFollowingList()
         ])
 
       } catch (error) {
@@ -111,6 +126,8 @@ const App = () => {
         </Route>
         <Route path="/user/:id" element={<ProfilePage />} />
         <Route path="/post/:id" element={<PostPage />} />
+        {/* <Route path="/message" element={<MessagingPage />} /> */}
+        <Route path="/message/*" element={<MessagingPage />} />
       </Route>
 
       <Route path="/projects" element={<ProjectPage />} />

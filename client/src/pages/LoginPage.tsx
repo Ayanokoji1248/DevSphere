@@ -9,7 +9,7 @@ import Button from "../components/Button"
 
 const LoginPage = () => {
 
-    const { setUser } = userStore();
+    const { setUser, setUserFollowing } = userStore();
 
     const navigate = useNavigate();
 
@@ -17,6 +17,20 @@ const LoginPage = () => {
     const [password, setPassword] = useState("")
 
     const [error, setError] = useState<{ [key: string]: string }>({})
+
+
+    const getUserFollowingList = async () => {
+        try {
+            const response = await axios.get(`${BACKEND_URL}/user/following`, {
+                withCredentials: true
+            });
+            // console.log(response.data)
+            setUserFollowing(response.data.userFollowing)
+            // setFollowingUserList(response.data.userFollowing);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     const handleLogin = async (e: FormEvent) => {
@@ -47,6 +61,7 @@ const LoginPage = () => {
             }, { withCredentials: true })
             // console.log(response.data.user)
             setUser(response.data.user)
+            getUserFollowingList()
             setEmail("");
             setPassword("")
             toast.success("Login Successful", {

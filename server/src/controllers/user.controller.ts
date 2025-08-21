@@ -272,9 +272,12 @@ export const userFollowAndUnfollow = async (req: Request, res: Response, next: N
         await userModal.findByIdAndUpdate(followUserId, { $inc: { followerCount: 1 } });
         const user = await userModal.findById(currentUserId).select("-password");
 
+        const followedUser = await userModal.findById(followUserId).select("_id fullName username profilePic")
+
         res.status(200).json({
             message: "User Followed",
-            updatedUser: user
+            updatedUser: user,
+            followedUser
         });
         return
 
@@ -284,3 +287,27 @@ export const userFollowAndUnfollow = async (req: Request, res: Response, next: N
         return
     }
 };
+
+
+export const getUserFollowing = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.user.id;
+
+        const userFollowing = await followModel.find({
+            follower: userId
+        }).populate('following', "_id profilePic username fullName").select("following");
+
+        const followingList = userFollowing.map(f => f.following);
+
+        res.status(200).json({
+            message: "user following list",
+            userFollowing: followingList,
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: error
+        })
+    }
+}

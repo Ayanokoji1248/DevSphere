@@ -23,7 +23,7 @@ const ProfilePage = () => {
     const tabs = ["Projects", "Posts"]
     const [activeTab, setActiveTab] = useState("Projects");
 
-    const { user: currentUser, setIsFollowing, isFollowing, setUser: setCurrentUser } = userStore()
+    const { user: currentUser, setIsFollowing, isFollowing, setUser: setCurrentUser, addUserFollowing, removeUserFollowing } = userStore()
 
     const [user, setUser] = useState<userProp>();
 
@@ -84,6 +84,12 @@ const ProfilePage = () => {
             setIsFollowing(!isFollowing)
             // console.log(response.data);
             setCurrentUser(response.data.updatedUser)
+            if (!isFollowing) {
+                addUserFollowing(response.data.followedUser)
+            }
+            else {
+                removeUserFollowing(id);
+            }
             toast.success(response.data.message)
         } catch (error) {
             console.log(error)
