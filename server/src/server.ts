@@ -16,36 +16,38 @@ async function main() {
         }
     })
 
-    const onlineUsers = new Map<string, string>()
+    const users = new Map<string, string> // userId->socket.id
 
     io.on("connection", (socket) => {
-        console.log("A user is connected", socket.id);
+        console.log("A user is connected with socket id: ", socket.id);
 
         socket.on("join", (userId: string) => {
-            onlineUsers.set(userId, socket.id);
-            console.log(`User ${userId} connected with socket ${socket.id}`)
+            users.set(userId, socket.id);
+            console.log(`User ${userId} connected with socket ${socket.id}`);
         })
 
-        socket.on("private_message", ({ senderId, receiverId, message }) => {
-            const receiverSocketId = onlineUsers.get(receiverId);
 
-            if (receiverSocketId) {
-                io.to(receiverSocketId).emit("private_message", {
-                    senderId,
-                    message,
+        socket.on("message", ({ from, to, message }) => {
+            const receiverSocket = users.get(to);
+
+            if (receiverSocket) {
+                io.to(receiverSocket).emit("message", {
+                    from, message
                 });
+                console.log(`Message from ${from} to ${to} : ${message}`);
             }
         })
 
         socket.on("disconnect", () => {
-            console.log("User disconnected: ", socket.id);
+            console.log("Client disconnected: ", socket.id);
 
-            for (let [userId, sockId] of onlineUsers.entries()) {
-                if (sockId == socket.id) {
-                    onlineUsers.delete(userId);
-                    break;
+            for (let [userId, socketId] of users) {
+                if (socketId === socket.id) {
+                    users.delete(userId);
+                    console.log(`User ${userId} disconnected`);
                 }
             }
+
         })
 
     })
