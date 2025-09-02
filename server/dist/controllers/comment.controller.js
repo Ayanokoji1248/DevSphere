@@ -17,11 +17,18 @@ const zod_1 = __importDefault(require("zod"));
 const comment_model_1 = __importDefault(require("../models/comment.model"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const post_model_1 = __importDefault(require("../models/post.model"));
+// Removed unused import: import { idText } from "typescript"
 const commentZodSchema = zod_1.default.object({
     comment: zod_1.default.string().min(1, "Required").max(100, "Atmost 100 character")
 });
 const createComment = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // --- FIX: Proactively check if req.user exists ---
+        // This prevents errors if the user is not authenticated.
+        if (!req.user) {
+            res.status(401).json({ message: "Authentication required" });
+            return;
+        }
         const { comment } = req.body;
         const postId = req.params.id;
         const userId = req.user.id;
@@ -73,7 +80,6 @@ exports.createComment = createComment;
 const getAllComments = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const postId = req.params.id;
-        // const userId = req.user.id
         if (!postId || !mongoose_1.default.Types.ObjectId.isValid(postId)) {
             res.status(400).json({
                 message: "Invalid Post ID"
@@ -83,9 +89,12 @@ const getAllComments = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         const comments = yield comment_model_1.default.find({
             post: postId
         }).populate("user", "_id username fullName profilePic").sort({ createdAt: -1 });
+        // This check is fine, but it's often better to return an empty array
+        // than a 400 error. The client can then decide how to display "No Comments".
         if (comments.length === 0) {
-            res.status(400).json({
-                message: "No Comments Found"
+            res.status(200).json({
+                message: "No Comments Found",
+                comments: []
             });
             return;
         }
@@ -93,17 +102,25 @@ const getAllComments = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             message: "All Comments",
             comments
         });
+        return;
     }
     catch (error) {
         console.log(error);
         res.status(500).json({
             message: "Internal Server Error"
         });
+        return;
     }
 });
 exports.getAllComments = getAllComments;
 const deleteComment = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
+        // --- FIX: Proactively check if req.user exists ---
+        if (!req.user) {
+            res.status(401).json({ message: "Authentication required" });
+            return;
+        }
         const commentId = req.params.id;
         const userId = req.user.id;
         if (!commentId || !mongoose_1.default.Types.ObjectId.isValid(commentId)) {
@@ -119,7 +136,9 @@ const deleteComment = (req, res, next) => __awaiter(void 0, void 0, void 0, func
             });
             return;
         }
-        if (comment.user.toString() !== userId.toString()) {
+        // --- CONFIRMATION: This is the correct way to handle the 'comment.user' error ---
+        // The optional chaining (?.) prevents a crash if comment.user is null.
+        if (((_a = comment.user) === null || _a === void 0 ? void 0 : _a.toString()) !== userId.toString()) {
             res.status(401).json({
                 message: "Unauthorized",
             });
@@ -128,7 +147,7 @@ const deleteComment = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         const postId = comment.post;
         if (!postId) {
             res.status(404).json({
-                message: "Invalid Post Id"
+                message: "Invalid Post Id, comment is not associated with a post"
             });
             return;
         }
@@ -139,14 +158,23 @@ const deleteComment = (req, res, next) => __awaiter(void 0, void 0, void 0, func
             });
             return;
         }
-        const updatedCommentCount = yield post_model_1.default.findByIdAndUpdate(postId, {
+        const updatedPost = yield post_model_1.default.findByIdAndUpdate(postId, {
             $inc: { commentCount: -1 }
         }, { new: true });
+        // --- FIX: Check if the post was actually found and updated ---
+        // This solves the "'updatedPost' is possibly 'null'" error.
+        if (!updatedPost) {
+            res.status(404).json({
+                message: "Post not found while updating comment count"
+            });
+            return;
+        }
         yield comment_model_1.default.findByIdAndDelete(commentId);
         res.status(200).json({
             message: "Comment Deleted Successfully",
-            updatedCount: updatedCommentCount.commentCount
+            updatedCount: updatedPost.commentCount
         });
+        return;
     }
     catch (error) {
         console.log(error);
