@@ -4,12 +4,34 @@ import { ArrowLeft, PlusIcon } from "lucide-react"
 import projectStore from "../store/projectStore"
 import ProjectCard from "../components/ProjectCard"
 import Button from "../components/Button"
+import { useState } from "react"
+import axios from "axios"
+import { BACKEND_URL } from "../utils"
+import { type ProjectProp } from "../utils/interfaces"
 
 
-
+// useDebounce hook
 const ProjectPage = () => {
     const navigate = useNavigate()
     const { projects } = projectStore();
+    const [searchProject, setSearchProject] = useState("");
+
+    const [projectFound, setProjectFound] = useState<ProjectProp[]>([]);
+
+    const handleSearchProject = async (projectName: string) => {
+        try {
+            if (projectName.length === 0) {
+                setProjectFound([]);
+            }
+            const res = await axios.get(`${BACKEND_URL}/project/?search=${projectName}`, { withCredentials: true })
+            console.log(res.data.projects)
+            setProjectFound(res.data.projects);
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div className="bg-black min-h-screen font-[Albert_Sans]">
             <NavBar />
@@ -46,10 +68,38 @@ const ProjectPage = () => {
 
                 <div className="">
                     <div className="flex rounded-md overflow-auto border-[1px] border-zinc-600">
-                        <input type="text" className="w-full p-2 outline-none font-medium text-sm tracking-normal" placeholder="Search Project" />
-                        <button className="bg-white text-black p-2  px-4 font-medium tracking-tight transition-all duration-300 cursor-pointer hover:bg-zinc-200">Search</button>
+                        <input value={searchProject} onChange={(e) => {
+                            setSearchProject(e.target.value)
+                            handleSearchProject(e.target.value)
+                        }
+                        } type="text" className="w-full p-2 outline-none font-medium text-sm tracking-normal" placeholder="Search Project" />
+                        <button onClick={() => handleSearchProject(searchProject)} className="bg-white text-black p-2  px-4 font-medium tracking-tight transition-all duration-300 cursor-pointer hover:bg-zinc-200">Search</button>
                     </div>
                 </div>
+
+                {projectFound.length > 0 ? (
+                    <div>
+                        <div>
+                            <h1>Search Query: {searchProject.length === 0 ? "" : searchProject}</h1>
+
+                        </div>
+
+                        {projectFound.map((project) => (
+                            <ProjectCard
+                                key={project._id}
+                                _id={project._id}
+                                projectName={project.projectName}
+                                projectImage={project.projectImage}
+                                shortDesc={project.shortDesc}
+                                tech={project.tech}
+                                user={project.user}
+                                isMyProject={false}
+                            />
+                        ))}
+                    </div>
+                ) : searchProject.length > 0 ? (
+                    <h1>No Projects Found</h1>
+                ) : null}
 
                 <div className="">
                     <div>

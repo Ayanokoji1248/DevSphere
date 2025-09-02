@@ -8,5 +8,6 @@ projectRouter.post('/create', user_middleware_1.userMiddleware, project_controll
 projectRouter.get('/user-project', user_middleware_1.userMiddleware, project_controller_1.getAllUserProject);
 projectRouter.get("/all-project", project_controller_1.getAllProjects);
 projectRouter.get("/:id", project_controller_1.getParticularProject);
+projectRouter.get('/', project_controller_1.searchProject);
 projectRouter.delete("/:id", user_middleware_1.userMiddleware, project_controller_1.deleteProject);
 exports.default = projectRouter;

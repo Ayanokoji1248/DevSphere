@@ -44,21 +44,22 @@ const ProjectCard = ({ projectName, projectImage, shortDesc, tech, isMyProject, 
                     </div>
                 }
 
-                {!isMyProject && <div className="mt-5 flex items-center gap-3">
-                    <div onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/user/${user?._id}`)
-                    }} className="w-10 h-10 bg-white rounded-full overflow-hidden cursor-pointer">
-                        <img src={user?.profilePic} alt="" />
-                    </div>
-                    <div onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/user/${user?._id}`)
-                    }} className="flex flex-col gap-1 cursor-pointer">
-                        <h1 className="leading-none font-semibold">{user?.fullName}</h1>
-                        <h2 className="leading-none text-sm text-gray-500 font-medium ">@{user?.username}</h2>
-                    </div>
-                </div>}
+                {isMyProject &&
+                    <div className="mt-5 flex items-center gap-3">
+                        <div onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/user/${user?._id}`)
+                        }} className="w-10 h-10 bg-white rounded-full overflow-hidden cursor-pointer">
+                            <img src={user?.profilePic} alt="" />
+                        </div>
+                        <div onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/user/${user?._id}`)
+                        }} className="flex flex-col gap-1 cursor-pointer">
+                            <h1 className="leading-none font-semibold">{user?.fullName}</h1>
+                            <h2 className="leading-none text-sm text-gray-500 font-medium ">@{user?.username}</h2>
+                        </div>
+                    </div>}
             </div>
         </div>
 

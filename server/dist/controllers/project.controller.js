@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProject = exports.getParticularProject = exports.getAllProjects = exports.getAllUserProject = exports.createProject = void 0;
+exports.searchProject = exports.deleteProject = exports.getParticularProject = exports.getAllProjects = exports.getAllUserProject = exports.createProject = void 0;
 const zod_1 = __importDefault(require("zod"));
 const project_model_1 = __importDefault(require("../models/project.model"));
 const user_model_1 = __importDefault(require("../models/user.model"));
@@ -184,3 +184,32 @@ const deleteProject = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.deleteProject = deleteProject;
+const searchProject = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { search } = req.query;
+        if (!search || typeof search !== 'string') {
+            res.status(404).json({
+                message: "Search Query not found"
+            });
+            return;
+        }
+        const projects = yield project_model_1.default.find({
+            $or: [
+                { projectName: { $regex: search, $options: "i" } },
+                { shortDesc: { $regex: search, $options: "i" } },
+                { longDesc: { $regex: search, $options: "i" } },
+            ]
+        });
+        res.status(200).json({
+            message: "Project Found",
+            projects
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+});
+exports.searchProject = searchProject;

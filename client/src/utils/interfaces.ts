@@ -15,7 +15,7 @@ export interface ProjectProp {
         fullName: string,
         profilePic: string,
     }
-    isMyProject: boolean,
+    isMyProject?: boolean,
     widthFull?: boolean,
 
     deleteProject?: () => void

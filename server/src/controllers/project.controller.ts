@@ -195,3 +195,35 @@ export const deleteProject = async (req: Request, res: Response, next: NextFunct
         return
     }
 }
+
+export const searchProject = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { search } = req.query;
+
+        if (!search || typeof search !== 'string') {
+            res.status(404).json({
+                message: "Search Query not found"
+            });
+            return
+        }
+
+        const projects = await projectModel.find({
+            $or: [
+                { projectName: { $regex: search, $options: "i" } },
+                { shortDesc: { $regex: search, $options: "i" } },
+                { longDesc: { $regex: search, $options: "i" } },
+            ]
+        });
+
+        res.status(200).json({
+            message: "Project Found",
+            projects
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+}
