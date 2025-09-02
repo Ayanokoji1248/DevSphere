@@ -64,7 +64,7 @@ const ProfilePage = () => {
             const response = await axios.get(`${BACKEND_URL}/user/${id}/post`, {
                 withCredentials: true
             });
-            // console.log(response.data);
+            console.log(response.data);
             setUserPosts(response.data.posts)
         } catch (error) {
             console.log(error)

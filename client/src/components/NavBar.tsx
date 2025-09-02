@@ -112,6 +112,10 @@ const NavBar = () => {
                                         setModalOpen(false);
                                     }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Edit Profile</button>
                                     <button onClick={() => {
+                                        navigate('/code-review')
+                                        setModalOpen(false);
+                                    }} className="p-2 hover:bg-zinc-800 transition-all duration-300 cursor-pointer w-full rounded-md text-sm font-medium">Code Reviewer</button>
+                                    <button onClick={() => {
                                         logoutUser()
                                         navigate('/register')
                                         setModalOpen(false);

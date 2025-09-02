@@ -39,6 +39,7 @@ const MainLayout = () => {
                                 variant="outline"
                                 widthFull={true}
                                 className="text-lg font-medium hover:bg-zinc-900"
+                                onClick={()=>navigate('/projects')}
                             />
                             {/* <button className="p-2 text-lg font-medium font-[Albert_Sans] tracking-tighter border-2 text-white rounded-md cursor-pointer">Message</button> */}
                             <Button variant="outline" size="md" widthFull={true} text="Message" className="font-medium text-lg hover:bg-zinc-900" onClick={() => navigate('/message')} />

@@ -89,13 +89,15 @@ const PostPage = () => {
 
     return (
         <div className="w-full text-white flex flex-col gap-3 pb-10 font-[Albert_Sans]">
-            <Button
-                text="Back"
-                variant="black"
-                size="sm"
-                leftIcon={<ArrowLeft size={18} />}
-                onClick={() => navigate('/home')}
-            />
+            <div className="px-2">
+                <Button
+                    text="Back"
+                    variant="black"
+                    size="sm"
+                    leftIcon={<ArrowLeft size={18} />}
+                    onClick={() => navigate('/home')}
+                />
+            </div>
 
             {post && (
                 <PostCard
@@ -113,52 +115,54 @@ const PostPage = () => {
                 // commentUpdate={() => commentPost(post._id)}
                 />
             )}
+            <div className="px-3 flex flex-col gap-2">
 
-            <div>
-                <h1 className="text-xl font-semibold tracking-tighter text-zinc-400">Comments:</h1>
-            </div>
-            <div className="flex flex-col gap-3">
-                <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="comment" id="comment" className="h-20 w-full outline-none border-[1px] rounded-md border-zinc-500 p-2 text-sm font-medium" placeholder="Enter your review"></textarea>
-                <Button text="Submit" variant="info" size="md" className="rounded-md text-sm font-medium" onClick={() => commentPost(id as string)} />
-            </div>
+                <div>
+                    <h1 className="text-xl font-semibold tracking-tighter text-zinc-400">Comments:</h1>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="comment" id="comment" className="h-20 w-full outline-none border-[1px] rounded-md border-zinc-500 p-2 text-sm font-medium" placeholder="Enter your review"></textarea>
+                    <Button text="Submit" variant="info" size="md" className="rounded-md text-sm font-medium" onClick={() => commentPost(id as string)} />
+                </div>
 
-            <div>
-                <h1 className="font-medium tracking-tighter text-zinc-400">All Comments</h1>
-            </div>
-            <div className="comments flex flex-col gap-6">
-                {comments.length > 0 && comments.map((comment) => (
+                <div>
+                    <h1 className="font-medium tracking-tighter text-zinc-400">All Comments</h1>
+                </div>
+                <div className="comments flex flex-col gap-6">
+                    {comments.length > 0 && comments.map((comment) => (
 
-                    <div className="flex gap-4">
-                        <div className="w-10 h-10 bg-zinc-500 rounded-full overflow-auto">
-                            <img src={comment.user.profilePic} alt="" />
-                        </div>
-                        <div className="leading-4 flex flex-col">
-                            <div className="flex gap-2 items-center">
-                                <h1 className="font-semibold">{comment.user.fullName}</h1>
-                                <p className="text-zinc-500 font-medium text-sm">@{comment.user.username}</p>
+                        <div className="flex gap-4">
+                            <div className="w-10 h-10 bg-zinc-500 rounded-full overflow-auto">
+                                <img src={comment.user.profilePic} alt="" />
                             </div>
-                            <p className="text-sm">{comment.comment}</p>
-                            {
-                                user?._id === comment.user._id &&
-                                < div className="mt-2">
-                                    {/* <button className="bg-red-500 text-sm font-medium p-0.5 px-1 rounded-md cursor-pointer hover:bg-red-600 transition-all duration-300">Delete</button> */}
-                                    <Button
-                                        text="Delete"
-                                        variant="danger"
-                                        size="sm"
-                                        className="text-sm rounded-md font-medium"
-                                        onClick={() => deleteComment(comment._id)}
-                                    />
+                            <div className="leading-4 flex flex-col">
+                                <div className="flex gap-2 items-center">
+                                    <h1 className="font-semibold">{comment.user.fullName}</h1>
+                                    <p className="text-zinc-500 font-medium text-sm">@{comment.user.username}</p>
                                 </div>
-                            }
+                                <p className="text-sm">{comment.comment}</p>
+                                {
+                                    user?._id === comment.user._id &&
+                                    < div className="mt-2">
+                                        {/* <button className="bg-red-500 text-sm font-medium p-0.5 px-1 rounded-md cursor-pointer hover:bg-red-600 transition-all duration-300">Delete</button> */}
+                                        <Button
+                                            text="Delete"
+                                            variant="danger"
+                                            size="sm"
+                                            className="text-sm rounded-md font-medium"
+                                            onClick={() => deleteComment(comment._id)}
+                                        />
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
 
-                {comments.length == 0 &&
-                    <p className="text-sm text-center text-zinc-500 font-medium">No comments yet</p>
-                }
+                    {comments.length == 0 &&
+                        <p className="text-sm text-center text-zinc-500 font-medium">No comments yet</p>
+                    }
 
+                </div>
             </div>
         </div >
     )

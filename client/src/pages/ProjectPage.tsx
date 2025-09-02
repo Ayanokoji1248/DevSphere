@@ -36,7 +36,7 @@ const ProjectPage = () => {
         <div className="bg-black min-h-screen font-[Albert_Sans]">
             <NavBar />
             <div className="pt-24 max-w-7xl mx-auto text-white flex flex-col gap-6">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between px-3">
 
                     <Button
                         text="Back"
@@ -61,12 +61,12 @@ const ProjectPage = () => {
 
                 </div>
 
-                <div className="">
+                <div className="px-3">
                     <h1 className="text-4xl font-semibold">Discover Projects</h1>
                     <p>Explore amazing projects built by developers worldwide</p>
                 </div>
 
-                <div className="">
+                <div className="px-3">
                     <div className="flex rounded-md overflow-auto border-[1px] border-zinc-600">
                         <input value={searchProject} onChange={(e) => {
                             setSearchProject(e.target.value)
@@ -102,7 +102,7 @@ const ProjectPage = () => {
                 ) : null}
 
                 <div className="">
-                    <div>
+                    <div className="px-3">
                         <h1 className="text-3xl tracking-tight font-medium">All Projects</h1>
                     </div>
 

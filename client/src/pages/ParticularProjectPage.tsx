@@ -40,7 +40,7 @@ const ParticularProjectPage = () => {
         <div className="w-full min-h-screen bg-black font-[Albert_Sans]">
             <NavBar />
             <div className="max-w-7xl mx-auto pt-22 text-white">
-                <div>
+                <div className="px-2">
                     <Button text="Back" variant="black" size="sm" leftIcon={<ArrowLeft size={18} />} onClick={() => navigate('/projects')} />
                 </div>
 
@@ -64,22 +64,26 @@ const ParticularProjectPage = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="flex flex-col sm:flex-row  gap-6">
+                        <div className="flex flex-col sm:flex-row gap-6">
 
-                            <div className="bg-blue-700/40 p-2 py-1 rounded-md">
+                            <div className="bg-blue-700/40 p-2 py-1 rounded-md w-fit">
                                 <h1 className="text-md tracking-tight font-bold">Category : <span className="font-medium">{project?.category}</span></h1>
                             </div>
-                            <div className="bg-emerald-700/40 p-2 py-1 rounded-md">
+                            <div className="bg-emerald-700/40 p-2 py-1 rounded-md w-fit">
                                 <h1 className="text-md tracking-tight font-bold">Status : <span className="font-medium">{project?.status}</span></h1>
                             </div>
                         </div>
 
                         <div className="flex gap-5">
                             {project?.projectLink &&
-                                <Button text="Live Project" variant="outline" size="sm" className="px-3 font-semibold hover:bg-[#0D1422] hover:text-blue-500" />
+                                <a href={project.projectLink}>
+                                    <Button text="Live Project" variant="outline" size="sm" className="px-3 font-semibold hover:bg-[#0D1422] hover:text-blue-500 "  />
+                                </a>
                             }
                             {project?.githubLink &&
-                                <Button text="Github" variant="outline" size="sm" className="px-3 font-semibold hover:bg-[#0B1B13] hover:border-green-700 hover:text-green-500 flex items-center gap-2" leftIcon={<GithubIcon size={18} />} />
+                                <a href={project.githubLink} target="_blank">
+                                    <Button text="Github" variant="outline" size="sm" className="px-3 font-semibold hover:bg-[#0B1B13] hover:border-green-700 hover:text-green-500 flex items-center gap-2" leftIcon={<GithubIcon size={18} />} />
+                                </a>
                             }
                         </div>
                         <div>
