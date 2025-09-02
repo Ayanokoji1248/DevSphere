@@ -15,7 +15,7 @@ dotenv.config();
 
 // you should add origin here and other config too
 app.use(cors({
-    origin: "https://dev-sphere-zeta.vercel.app/",
+    origin: "https://dev-sphere-zeta.vercel.app",
     credentials: true, // this is most important because we are using cookie based authentication
 }))
 app.use(express.json())
