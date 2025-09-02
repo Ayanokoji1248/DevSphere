@@ -57,7 +57,8 @@ export const userRegister = async (req: Request, res: Response, next: NextFuncti
 
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "strict"
+            sameSite: "none",
+            secure: true
         })
 
         const { password: _, ...userData } = user.toObject()
@@ -115,7 +116,8 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
 
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "strict"
+            sameSite: "none",
+            secure: true,
         })
 
         const { password: _, ...userData } = user.toObject()
