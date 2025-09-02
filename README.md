@@ -3,6 +3,8 @@
 **DevSphere** is an **ongoing full-stack social media platform for developers**, designed to foster collaboration, sharing, and professional networking in the tech community — inspired by platforms like Dev.to and Hashnode.
 
 ---
+(still ongoing)
+#### Live Demo  - https://dev-sphere-zeta.vercel.app/ 
 
 ## 🚧 Project Status
 
