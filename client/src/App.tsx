@@ -22,6 +22,7 @@ import CodeReviewPage from "./pages/CodeReviewPage"
 import IndexPage from "./pages/IndexPage"
 import ParticularProjectPage from "./pages/ParticularProjectPage"
 import MessagingPage from "./pages/MessagingPage"
+import SearchPage from "./pages/SearchPage"
 
 
 const App = () => {
@@ -138,6 +139,8 @@ const App = () => {
       </Route>
 
       <Route path="/code-review" element={<CodeReviewPage />} />
+
+      <Route path="/search" element={<SearchPage />} />
 
     </Routes >
   )
