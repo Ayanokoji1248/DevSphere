@@ -7,6 +7,8 @@ import axios from "axios";
 import userStore from "../store/userStore";
 import Button from "../components/Button";
 import Badge from "../components/Badge";
+import { useLoadingStore } from "../store/loadingStore";
+import Loader from "../components/Loader";
 
 
 
@@ -23,7 +25,7 @@ type FormDataState = {
     address: string;
 };
 const EditProfilePage = () => {
-
+    const { loading, setLoading } = useLoadingStore();
 
     const navigate = useNavigate();
 
@@ -63,6 +65,7 @@ const EditProfilePage = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         if (!user) {
             throw new Error("User not found");
         }
@@ -87,17 +90,28 @@ const EditProfilePage = () => {
             requestData.bannerImage = bannerImageUrl;
         }
 
+        try {
+            const response = await axios.put(`${BACKEND_URL}/user/edit-profile`, requestData, {
+                withCredentials: true
+            });
+            // console.log(response.data.updatedUser);
+            setUser(response.data.updatedUser);
+            navigate('/profile');
 
-        const response = await axios.put(`${BACKEND_URL}/user/edit-profile`, requestData, {
-            withCredentials: true
-        });
-        console.log(response.data.updatedUser);
-        setUser(response.data.updatedUser);
-        navigate('/profile');
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+            navigate('/profile')
+        }
+        finally {
+            setLoading(false)
+        }
     }
 
     return (
         <div className="text-white rounded-md p-3 pb-5 font-[Albert_Sans]">
+
+
             <div>
                 {/* <button onClick={() => navigate('/profile')} className="p-2 w-fit bg-zinc-900 rounded-md border-[1px] border-zinc-600 hover:bg-zinc-800 transition-all duration-300 cursor-pointer"><IoIosArrowBack /></button> */}
                 <Button
@@ -110,6 +124,11 @@ const EditProfilePage = () => {
             </div>
 
             <div className="mt-5 flex flex-col gap-3">
+                {loading &&
+                    <div className="absolute z-30 w-full min-h-[140vh] flex justify-center items-center bg-zinc-700/50">
+                        <Loader />
+                    </div>
+                }
                 <div>
                     <h1 className="font-bold text-2xl tracking-tighter">Edit Profile</h1>
                 </div>
@@ -226,6 +245,7 @@ const EditProfilePage = () => {
                 text="Edit Profile"
                 widthFull={true}
                 className="rounded-md font-bold tracking-tight mt-4"
+                disabled={loading}
             />
         </div>
     )
