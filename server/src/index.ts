@@ -38,10 +38,10 @@ app.use(cookieParser())
 
 
 app.use("/api/auth", authRouter)
-app.use('/api/user/', userRouter)
-app.use('/api/post/', postRouter)
+app.use('/api/user', userRouter)
+app.use('/api/post', postRouter)
 app.use('/api/project', projectRouter)
 app.use('/api/comment', commentRouter)
-app.use('/api/ai/', aiRouter)
+app.use('/api/ai', aiRouter)
 
 export default app;
