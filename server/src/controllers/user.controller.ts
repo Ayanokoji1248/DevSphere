@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import userModal from "../models/user.model";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import z from "zod";
 import postModel from "../models/post.model";
-import _ from "passport-local-mongoose";
 import projectModel from "../models/project.model";
 import followModel from "../models/follow.model";
 
