@@ -139,8 +139,7 @@ const CodeReviewPage = () => {
                             <ReactMarkdown
                                 children={review}
                                 components={{
-                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                    code({ node, className, children }) {
+                                    code({ className, children }) {
                                         const match = /language-(\w+)/.exec(className || "");
                                         return match ? (
                                             <pre className="bg-[#1e1e1e] text-white p-4 rounded-md overflow-auto">
