@@ -13,7 +13,12 @@ const IndexPage = () => {
     );
 };
 
-const Header = ({ navigate }) => (
+
+interface HeaderProps {
+    navigate: (path: string) => void;
+}
+
+const Header = ({ navigate }: HeaderProps) => (
     <header className="flex justify-between items-center p-6 border-b border-gray-800">
         <h1 className="text-2xl font-bold">Dev Sphere</h1>
         <button
@@ -25,7 +30,7 @@ const Header = ({ navigate }) => (
     </header>
 );
 
-const Hero = ({ navigate }) => (
+const Hero = ({ navigate }: HeaderProps) => (
     <section className="text-center py-32 px-6 bg-gradient-to-b from-black to-gray-900">
         <h2 className="text-5xl font-bold mb-4">Welcome to Dev Sphere</h2>
         <p className="text-xl mb-8">
