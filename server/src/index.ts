@@ -13,11 +13,24 @@ const app = express()
 
 dotenv.config();
 
-// you should add origin here and other config too
-app.use(cors({
-    origin: "https://dev-sphere-zeta.vercel.app",
-    credentials: true, // this is most important because we are using cookie based authentication
-}))
+const allowedOrigins = [
+    "http://localhost:3000",
+    "https://dev-sphere-zeta.vercel.app",
+];
+
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        credentials: true,
+    })
+);
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
