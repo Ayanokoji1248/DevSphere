@@ -18,12 +18,11 @@ const allowedOrigins = [
     "https://dev-sphere-zeta.vercel.app",
 ];
 
-app.use(
-    cors({
-        origin: allowedOrigins,
-        credentials: true,
-    })
-);
+app.use(cors({
+    origin: ["http://localhost:5173", "https://your-frontend-domain.com"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true
+}));
 
 // Handle preflight OPTIONS requests
 app.options("/", cors({

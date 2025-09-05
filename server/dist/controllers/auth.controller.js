@@ -70,7 +70,8 @@ const userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         const token = jsonwebtoken_1.default.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET);
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "strict"
+            sameSite: "none",
+            secure: true
         });
         const _a = user.toObject(), { password: _ } = _a, userData = __rest(_a, ["password"]);
         res.status(201).json({
@@ -117,7 +118,8 @@ const userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         }, process.env.JWT_SECRET);
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "strict"
+            sameSite: "none",
+            secure: true,
         });
         const _a = user.toObject(), { password: _ } = _a, userData = __rest(_a, ["password"]);
         res.status(200).json({
