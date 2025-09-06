@@ -14,18 +14,16 @@ const project_route_1 = __importDefault(require("./routes/project.route"));
 const comment_route_1 = __importDefault(require("./routes/comment.route"));
 const ai_route_1 = __importDefault(require("./routes/ai.route"));
 const app = (0, express_1.default)();
-dotenv_1.default.config();
-const allowedOrigins = [
-    "http://localhost:3000",
-    "https://dev-sphere-zeta.vercel.app",
-];
+const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.development";
+dotenv_1.default.config({ path: envFile });
 app.use((0, cors_1.default)({
-    origin: allowedOrigins,
-    credentials: true,
+    origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true
 }));
 // Handle preflight OPTIONS requests
 app.options("/", (0, cors_1.default)({
-    origin: allowedOrigins,
+    origin: process.env.FRONTEND_URL,
     credentials: true,
 }));
 app.use(express_1.default.json());

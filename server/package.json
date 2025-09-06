@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -b",
     "start": "node ./dist/server.js",
-    "dev": "tsc -b && node ./dist/server.js",
+    "dev": "cross-env NODE_ENV=development tsc -b && node ./dist/server.js",
     "test": "cross-env NODE_ENV=test jest --testTimeout=5000"
   },
   "keywords": [],
@@ -16,7 +16,6 @@
     "@google/genai": "^1.11.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
-    "cross-env": "^10.0.0",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "jest": "^30.0.5",
@@ -38,6 +37,7 @@
     "@types/socket.io": "^3.0.2",
     "@types/supertest": "^6.0.3",
     "cors": "^2.8.5",
+    "cross-env": "^10.0.0",
     "ts-jest": "^29.4.1"
   }
 }

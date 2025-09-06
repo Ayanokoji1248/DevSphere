@@ -11,22 +11,21 @@ import commentRouter from "./routes/comment.route";
 import aiRouter from "./routes/ai.route";
 const app = express()
 
-dotenv.config();
+const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.development"
 
-const allowedOrigins = [
-    "http://localhost:3000",
-    "https://dev-sphere-zeta.vercel.app",
-];
+dotenv.config({ path: envFile });
+
+
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://your-frontend-domain.com"],
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
 }));
 
 // Handle preflight OPTIONS requests
 app.options("/", cors({
-    origin: allowedOrigins,
+    origin: process.env.FRONTEND_URL,
     credentials: true,
 }));
 
