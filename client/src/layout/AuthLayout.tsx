@@ -1,27 +1,16 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom";
 import { TbWorld } from "react-icons/tb";
 import { CodeXml, Users, Star, Zap } from "lucide-react";
 import type { ReactNode } from "react";
+import Floating from "../components/Floating";
 
 const AuthLayout = () => {
     return (
-        <div className="w-full min-h-screen flex flex-col sm:flex-row ">
+        <div className="w-full min-h-screen flex flex-col sm:flex-row">
             {/* Left Section with Gradient & Floating Circles */}
             <div className="relative bg-[linear-gradient(-20deg,#b721ff_0%,#21d4fd_100%)] sm:w-[50%] min-h-full p-12 px-5 sm:px-24 flex flex-col gap-5 overflow-hidden">
 
-                {/* Floating Circles Background */}
-                <ul className="absolute inset-0 overflow-hidden z-0">
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[25%] w-[80px] h-[80px]" style={{ animationDelay: "0s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[10%] w-[20px] h-[20px]" style={{ animationDelay: "2s", animationDuration: "12s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[70%] w-[20px] h-[20px]" style={{ animationDelay: "4s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[40%] w-[60px] h-[60px]" style={{ animationDelay: "0s", animationDuration: "18s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[65%] w-[20px] h-[20px]" style={{ animationDelay: "0s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[75%] w-[110px] h-[110px]" style={{ animationDelay: "3s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[35%] w-[150px] h-[150px]" style={{ animationDelay: "7s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[50%] w-[25px] h-[25px]" style={{ animationDelay: "15s", animationDuration: "45s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[20%] w-[15px] h-[15px]" style={{ animationDelay: "2s", animationDuration: "35s" }}></li>
-                    <li className="absolute list-none bg-white/20 bottom-[-150px] animate-float left-[85%] w-[150px] h-[150px]" style={{ animationDelay: "0s", animationDuration: "11s" }}></li>
-                </ul>
+                <Floating />
 
                 {/* Content Above Circles */}
                 <div className="relative z-10">
@@ -59,7 +48,7 @@ const AuthLayout = () => {
     );
 };
 
-const Feature = ({ icon, text }: { icon: ReactNode, text: string }) => (
+const Feature = ({ icon, text }: { icon: ReactNode; text: string }) => (
     <div className="flex items-center gap-2">
         <div className="p-1.5 bg-zinc-100/30 shadow w-fit rounded-md text-white">
             {icon}
