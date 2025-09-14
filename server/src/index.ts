@@ -24,8 +24,9 @@ app.use(cors({
 }));
 
 // Handle preflight OPTIONS requests
-app.options("/", cors({
+app.options(/.*/, cors({
     origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
 }));
 

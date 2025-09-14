@@ -22,8 +22,9 @@ app.use((0, cors_1.default)({
     credentials: true
 }));
 // Handle preflight OPTIONS requests
-app.options("/", (0, cors_1.default)({
+app.options(/.*/, (0, cors_1.default)({
     origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
 }));
 app.use(express_1.default.json());
