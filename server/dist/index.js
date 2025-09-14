@@ -30,6 +30,11 @@ app.options(/.*/, (0, cors_1.default)({
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_parser_1.default)());
+app.use((req, res, next) => {
+    console.log("Incoming Origin:", req.headers.origin);
+    console.log("Allowed Origin:", process.env.FRONTEND_URL);
+    next();
+});
 app.use("/api/auth", auth_route_1.default);
 app.use('/api/user', user_route_1.default);
 app.use('/api/post', post_route_1.default);
