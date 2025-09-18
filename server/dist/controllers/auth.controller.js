@@ -76,7 +76,8 @@ const userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         const _a = user.toObject(), { password: _ } = _a, userData = __rest(_a, ["password"]);
         res.status(201).json({
             message: "User Created",
-            user: userData
+            user: userData,
+            token
         });
     }
     catch (error) {
@@ -123,7 +124,8 @@ const userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         });
         const _a = user.toObject(), { password: _ } = _a, userData = __rest(_a, ["password"]);
         res.status(200).json({
-            user: userData
+            user: userData,
+            token
         });
         return;
     }

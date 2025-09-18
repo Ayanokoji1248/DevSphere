@@ -65,7 +65,8 @@ export const userRegister = async (req: Request, res: Response, next: NextFuncti
 
         res.status(201).json({
             message: "User Created",
-            user: userData
+            user: userData,
+            token
         })
 
     } catch (error) {
@@ -123,7 +124,8 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
         const { password: _, ...userData } = user.toObject()
 
         res.status(200).json({
-            user: userData
+            user: userData,
+            token
         })
         return
 

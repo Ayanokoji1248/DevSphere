@@ -1,15 +1,13 @@
-import axios, { isAxiosError } from "axios"
 import { useState, type FormEvent } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
-import { BACKEND_URL } from "../utils"
 import toast, { Toaster } from "react-hot-toast"
-import userStore from "../store/userStore"
 import { userLogin } from "../schemas/auth.schema"
 import Button from "../components/Button"
+import { useAuthStore } from "../store/authStore"
 
 const LoginPage = () => {
 
-    const { setUser, setUserFollowing } = userStore();
+    const { login } = useAuthStore()
 
     const navigate = useNavigate();
 
@@ -19,67 +17,50 @@ const LoginPage = () => {
     const [error, setError] = useState<{ [key: string]: string }>({})
 
 
-    const getUserFollowingList = async () => {
-        try {
-            const response = await axios.get(`${BACKEND_URL}/user/following`, {
-                withCredentials: true
-            });
-            // console.log(response.data)
-            setUserFollowing(response.data.userFollowing)
-            // setFollowingUserList(response.data.userFollowing);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
+    // const getUserFollowingList = async () => {
+    //     try {
+    //         const response = await axios.get(`${BACKEND_URL}/user/following`, {
+    //             withCredentials: true
+    //         });
+    //         // console.log(response.data)
+    //         setUserFollowing(response.data.userFollowing)
+    //         // setFollowingUserList(response.data.userFollowing);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     const handleLogin = async (e: FormEvent) => {
         e.preventDefault();
-        try {
 
-            const result = userLogin.safeParse({
-                email,
-                password
-            });
+        const result = userLogin.safeParse({
+            email,
+            password
+        });
 
-            if (!result.success) {
-                const fieldErrors: { [key: string]: string } = {}
-                result.error.issues.forEach((err) => {
-                    if (err.path[0]) {
-                        fieldErrors[err.path[0] as string] = err.message
-                    }
-                })
-
-                setError(fieldErrors);
-                return
-            }
-            setError({})
-
-            const response = await axios.post(`${BACKEND_URL}/auth/login`, {
-                email,
-                password
-            }, { withCredentials: true })
-            // console.log(response.data.user)
-            setUser(response.data.user)
-            getUserFollowingList()
-            setEmail("");
-            setPassword("")
-            toast.success("Login Successful", {
-                duration: 1000
+        if (!result.success) {
+            const fieldErrors: { [key: string]: string } = {}
+            result.error.issues.forEach((err) => {
+                if (err.path[0]) {
+                    fieldErrors[err.path[0] as string] = err.message
+                }
             })
-            setTimeout(() => {
-                navigate('/home')
-            }, 1500)
-        } catch (error) {
-            if (isAxiosError(error)) {
-                toast.error(error.response?.data.message || "Something Went Wrong", {
-                    duration: 2000
-                })
-            }
-            console.log(error)
-            setEmail("")
-            setPassword("")
+
+            setError(fieldErrors);
+            return
         }
+
+        try {
+            await login(email, password);
+            toast.success("Login Successful", { duration: 1000 });
+            setTimeout(() => navigate('/home'), 1200);
+        } catch (err) {
+            console.log(err);
+            toast.error("Something went wrong", { duration: 2000 })
+        }
+        setEmail("");
+        setPassword("");
+
     }
 
     return (
