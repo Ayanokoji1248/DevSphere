@@ -1,4 +1,6 @@
+import axios from "axios";
 import { create } from "zustand";
+import { BACKEND_URL } from "../utils";
 
 interface postProp {
     _id: string,
@@ -21,9 +23,9 @@ interface postProp {
 
 type postStoreType = {
     posts: postProp[],
-    singlePost: postProp | null;
-    setSinglePost: (newPost: postProp) => void
-    setPosts: (posts: postProp[]) => void
+    loading: boolean,
+    fetchPosts: () => void
+
     addPost: (newPost: postProp) => void
     removePost: (id: string) => void
     updatePost: (id: string, updatedPost: postProp) => void
@@ -36,9 +38,18 @@ type postStoreType = {
 
 const postStore = create<postStoreType>((set) => ({
     posts: [],
-    singlePost: null,
-    setSinglePost: (newPost) => set({ singlePost: newPost }),
-    setPosts: (posts) => set({ posts }),
+    loading: false,
+    fetchPosts: async () => {
+        set({ loading: true });
+        try {
+            const res = await axios.get(`${BACKEND_URL}/post/all`, { withCredentials: true });
+            set({ posts: res.data.posts.reverse() })
+        } catch (error) {
+            console.error("Failed to fetech posts", error);
+        } finally {
+            set({ loading: false })
+        }
+    },
     addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
 
     removePost: (id: string) => set((state) => ({

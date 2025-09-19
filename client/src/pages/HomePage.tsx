@@ -1,5 +1,5 @@
-import { CodeXml, Link, Loader } from "lucide-react"
-import { useState, type FormEvent } from "react"
+import { CodeXml, Link } from "lucide-react"
+import { useEffect, useState, type FormEvent } from "react"
 import { TbPhoto } from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
 import userStore from "../store/userStore"
@@ -11,17 +11,14 @@ import PostCard from "../components/PostCard"
 import Button from "../components/Button"
 import { postSchemaValidation } from "../schemas/post.schema"
 import useLikePost from "../hooks/useLikePost"
-import { useLoadingStore } from "../store/loadingStore"
 
 
 const HomePage = () => {
     const navigate = useNavigate()
 
-    const { setLoading, loading } = useLoadingStore()
-
     const [content, setContent] = useState("")
     const { user, setUser } = userStore();
-    const { posts, addPost } = postStore()
+    const { posts, loading, fetchPosts, addPost } = postStore()
 
     const { likeUnlikeHandler } = useLikePost()
 
@@ -35,7 +32,6 @@ const HomePage = () => {
             })
         }
         try {
-            // console.log(content)
             const result = postSchemaValidation.safeParse({
                 content
             });
@@ -57,16 +53,13 @@ const HomePage = () => {
             }
             setError({})
 
-            setLoading(true)
             const response = await axios.post(`${BACKEND_URL}/post/create`, {
                 content
             }, { withCredentials: true })
-            console.log(response.data)
             addPost(response.data.post)
-            setContent("")
             setUser(response.data.updatedUser)
+            setContent("")
             toast.success("Post Created")
-            setLoading(false);
         } catch (error) {
             console.log(error)
             toast.error("Something went wrong", {
@@ -74,6 +67,12 @@ const HomePage = () => {
             })
         }
     }
+
+    useEffect(() => {
+        fetchPosts()
+    }, [fetchPosts])
+
+    if (loading) return <p className="text-white">Loading posts...</p>
 
     return (
         <div className='w-full min-h-screen pb-6'>
@@ -131,10 +130,6 @@ const HomePage = () => {
 
 
             <div id="posts" className="mt-8 flex flex-col gap-5 text-white">
-
-                {loading && <div className="w-full h-full">
-                    <Loader />
-                </div>}
 
                 {posts.map((post) => (
 

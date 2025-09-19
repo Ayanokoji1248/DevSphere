@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { BACKEND_URL } from "../utils";
 import userStore from "./userStore";
+import postStore from "./postStore";
 
 type AuthState = {
     token: string | null;
@@ -23,6 +24,7 @@ export const useAuthStore = create<AuthState>()(
                     const response = await axios.post(`${BACKEND_URL}/auth/login`, { email, password }, { withCredentials: true });
                     const user = response.data.user;
                     userStore.getState().setUser(user);
+                    await postStore.getState().fetchPosts();
                     const token = response.data.token;
                     set({ token: token, isAuthenticated: true });
                     return true;
