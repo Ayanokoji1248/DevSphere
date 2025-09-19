@@ -4,7 +4,7 @@ import { ArrowLeft, PlusIcon } from "lucide-react"
 import projectStore from "../store/projectStore"
 import ProjectCard from "../components/ProjectCard"
 import Button from "../components/Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { BACKEND_URL } from "../utils"
 import { type ProjectProp } from "../utils/interfaces"
@@ -13,7 +13,7 @@ import { type ProjectProp } from "../utils/interfaces"
 // useDebounce hook
 const ProjectPage = () => {
     const navigate = useNavigate()
-    const { projects } = projectStore();
+    const { fetchProjects, projects, loading } = projectStore();
     const [searchProject, setSearchProject] = useState("");
 
     const [projectFound, setProjectFound] = useState<ProjectProp[]>([]);
@@ -32,6 +32,11 @@ const ProjectPage = () => {
         }
     }
 
+    useEffect(() => {
+        fetchProjects()
+    }, [fetchProjects])
+
+    if (loading) return <p className="text-white">Loading projects...</p>;
     return (
         <div className="bg-black min-h-screen font-[Albert_Sans]">
             <NavBar />

@@ -39,7 +39,6 @@ export const useAuthStore = create<AuthState>()(
             restoreSession: async () => {
                 try {
                     const res = await axios.get(`${BACKEND_URL}/user/me`, { withCredentials: true });
-                    console.log(res)
                     userStore.getState().setUser(res.data.user);
                     userStore.getInitialState().setLoading(false);
                     return true

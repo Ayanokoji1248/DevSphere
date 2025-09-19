@@ -6,15 +6,10 @@ import HomePage from "./pages/HomePage"
 import MainLayout from "./layout/MainLayout"
 import CreatePostPage from "./pages/CreatePostPage"
 import { useEffect } from "react"
-import axios from "axios"
-import { BACKEND_URL } from "./utils"
-import userStore from "./store/userStore"
 import ProtectedRoute from "./components/ProtectedRoute"
-import postStore from "./store/postStore"
 import UserProfilePage from "./pages/UserProfilePage"
 import EditProfilePage from "./pages/EditProfilePage"
 import ProjectPage from "./pages/ProjectPage"
-import projectStore from "./store/projectStore"
 import CreateProjectPage from "./pages/CreateProjectPage"
 import ProfilePage from "./pages/ProfilePage"
 import PostPage from "./pages/PostPage"
@@ -29,62 +24,60 @@ import { useAuthStore } from "./store/authStore"
 const App = () => {
 
   const { restoreSession } = useAuthStore();
-  const { setUser, setLoading, setUserFollowing } = userStore()
-  const { setPosts } = postStore();
-  const { setProjects } = projectStore()
-  const getCurrentUser = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/user/me`, {
-        withCredentials: true
-      })
 
-      console.log(response.data.user)
-      setUser(response.data.user)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const getCurrentUser = async () => {
+  //   try {
+  //     const response = await axios.get(`${BACKEND_URL}/user/me`, {
+  //       withCredentials: true
+  //     })
 
-  const getAllPosts = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/post/all`, {
-        withCredentials: true
-      })
-      // console.log(response.data.posts)
-      setPosts(response.data.posts.reverse())
-    } catch (error) {
-      console.log(error)
-    }
-    finally {
-      setLoading(false)
-    }
-  }
+  //     console.log(response.data.user)
+  //     setUser(response.data.user)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  // const getAllPosts = async () => {
+  //   try {
+  //     const response = await axios.get(`${BACKEND_URL}/post/all`, {
+  //       withCredentials: true
+  //     })
+  //     // console.log(response.data.posts)
+  //     setPosts(response.data.posts.reverse())
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  //   finally {
+  //     setLoading(false)
+  //   }
+  // }
 
 
-  const getAllProjects = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/project/all-project`, {
-        withCredentials: true
-      })
-      console.log(response.data)
-      setProjects(response.data.projects.reverse())
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const getAllProjects = async () => {
+  //   try {
+  //     const response = await axios.get(`${BACKEND_URL}/project/all-project`, {
+  //       withCredentials: true
+  //     })
+  //     console.log(response.data)
+  //     setProjects(response.data.projects.reverse())
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  const getUserFollowingList = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/user/following`, {
-        withCredentials: true
-      });
-      console.log(response.data)
-      setUserFollowing(response.data.userFollowing)
-      // setFollowingUserList(response.data.userFollowing);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const getUserFollowingList = async () => {
+  //   try {
+  //     const response = await axios.get(`${BACKEND_URL}/user/following`, {
+  //       withCredentials: true
+  //     });
+  //     console.log(response.data)
+  //     setUserFollowing(response.data.userFollowing)
+  //     // setFollowingUserList(response.data.userFollowing);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   // useEffect(() => {
   //   const fetechData = async () => {
