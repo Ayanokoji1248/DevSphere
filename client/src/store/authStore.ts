@@ -9,6 +9,7 @@ type AuthState = {
     token: string | null;
     isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<boolean>
+    restoreSession: () => Promise<boolean>
     logout: () => void;
 }
 
@@ -32,7 +33,24 @@ export const useAuthStore = create<AuthState>()(
                     throw error;
                 }
             },
-            logout: () => set({ token: null, isAuthenticated: false })
+
+            restoreSession: async () => {
+                try {
+                    const res = await axios.get(`${BACKEND_URL}/user/me`, { withCredentials: true });
+                    console.log(res)
+                    userStore.getState().setUser(res.data.user);
+                    userStore.getInitialState().setLoading(false);
+                    return true
+                } catch (error) {
+                    console.log(error)
+                    useAuthStore.getState().logout()
+                    return false;
+                }
+            },
+            logout: () => {
+                userStore.getState().setUser(null);
+                set({ token: null, isAuthenticated: false })
+            }
         }),
         {
             name: "auth-storage"

@@ -3,9 +3,10 @@ import userStore from "../store/userStore";
 import Loader from "./Loader";
 
 const ProtectedRoute = () => {
+
     const { user, loading } = userStore();
     if (loading) {
-        return <div className="w-full h-full flex justify-center items-center text-white p-5 font-bold">
+        return <div className="absolute z-[99] w-full h-screen flex justify-center items-center text-white p-5 font-bold">
             <Loader />
         </div>
     }

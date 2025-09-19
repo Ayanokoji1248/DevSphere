@@ -23,10 +23,12 @@ import IndexPage from "./pages/IndexPage"
 import ParticularProjectPage from "./pages/ParticularProjectPage"
 import MessagingPage from "./pages/MessagingPage"
 import SearchPage from "./pages/SearchPage"
+import { useAuthStore } from "./store/authStore"
 
 
 const App = () => {
 
+  const { restoreSession } = useAuthStore();
   const { setUser, setLoading, setUserFollowing } = userStore()
   const { setPosts } = postStore();
   const { setProjects } = projectStore()
@@ -84,28 +86,32 @@ const App = () => {
     }
   }
 
+  // useEffect(() => {
+  //   const fetechData = async () => {
+  //     setLoading(true)
+  //     try {
+  //       await Promise.all([
+  //         getCurrentUser(),
+  //         getAllPosts(),
+  //         getAllProjects(),
+  //         getUserFollowingList()
+  //       ])
+
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //     finally {
+  //       setLoading(false)
+  //     }
+  //   }
+
+  //   fetechData()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
+
   useEffect(() => {
-    const fetechData = async () => {
-      setLoading(true)
-      try {
-        await Promise.all([
-          getCurrentUser(),
-          getAllPosts(),
-          getAllProjects(),
-          getUserFollowingList()
-        ])
-
-      } catch (error) {
-        console.log(error)
-      }
-      finally {
-        setLoading(false)
-      }
-    }
-
-    fetechData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    restoreSession();
+  }, [restoreSession])
 
   return (
     <Routes>
