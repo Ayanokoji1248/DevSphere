@@ -70,7 +70,7 @@ const HomePage = () => {
 
     useEffect(() => {
         fetchPosts()
-    }, [fetchPosts])
+    }, [])
 
     if (loading) return <p className="text-white">Loading posts...</p>
 
