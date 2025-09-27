@@ -20,7 +20,7 @@ const PostCard = ({ isMyPost, _id, user, content, code, image, link, tags, likeC
                 >
 
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-auto border-2 border-zinc-600">
-                        <img src={user.profilePic} alt="profile pic" />
+                        <img src={user.profilePic} alt="profile pic" className="w-full h-full object-cover object-center" />
                     </div>
                 </NavLink>
             </div>

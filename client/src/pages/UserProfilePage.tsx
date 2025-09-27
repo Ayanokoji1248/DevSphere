@@ -7,7 +7,7 @@ import { type PostProp, type ProjectProp } from "../utils/interfaces"
 import axios from "axios"
 import { BACKEND_URL } from "../utils"
 import PostCard from "../components/PostCard"
-import { useNavigate } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import postStore from "../store/postStore"
 import projectStore from "../store/projectStore"
 import Button from "../components/Button"
@@ -164,19 +164,26 @@ const UserProfilePage = () => {
             }
 
             {/* Location and link */}
-            <div className="mt-2 flex flex-wrap gap-4">
-                {user?.address &&
-                    <div className="flex items-center gap-2">
-                        <TbLocation size={18} className="text-blue-500" />
-                        <p className="text-zinc-500 font-medium tracking-tight text-sm">{user.address}</p>
-                    </div>
-                }
-                {user?.portfolioLink &&
-                    <div className="flex items-center gap-2">
-                        <Link size={18} className="text-emerald-500" />
-                        <p className="tracking-tight text-sm font-medium text-blue-500 break-all">{user.portfolioLink}</p>
-                    </div>
-                }
+            <div className="flex items-center justify-between">
+
+                <div className="mt-2 flex flex-wrap gap-4">
+                    {user?.address &&
+                        <div className="flex items-center gap-2">
+                            <TbLocation size={18} className="text-blue-500" />
+                            <p className="text-zinc-500 font-medium tracking-tight text-sm">{user.address}</p>
+                        </div>
+                    }
+                    {user?.portfolioLink &&
+                        <div className="flex items-center gap-2">
+                            <Link size={18} className="text-emerald-500" />
+                            <p className="tracking-tight text-sm font-medium text-blue-500 break-all">{user.portfolioLink}</p>
+                        </div>
+                    }
+                </div>
+
+                <div>
+                    <NavLink to={"/edit-profile"} className="text-sm leading-0 tracking-tight font-medium p-2 rounded-md bg-indigo-500 hover:bg-indigo-600 transition-all duration-300">Edit Profile</NavLink>
+                </div>
             </div>
 
             {/* Stats */}

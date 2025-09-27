@@ -7,7 +7,7 @@ export const userProfile = z.object({
         val == "" ? undefined : val,
         z.string("Headline is required")
     ),
-    bio: z.string().min(10, "Atleast 10 character").max(50, "Atmost 50 character"),
+    bio: z.string().min(10, "Atleast 10 characters").max(100, "Atmost 100 characters"),
     portfolioLink: z.preprocess((val) =>
         val == "" ? undefined : val,
         z.string().url("Invalid Url").optional()

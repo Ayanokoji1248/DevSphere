@@ -81,7 +81,7 @@ const HomePage = () => {
                 <div className='p-5 flex gap-5'>
                     <div className=''>
                         <div className='md:w-12 md:h-12 w-10 h-10 flex shrink-0 bg-zinc-300 rounded-full overflow-auto'>
-                            <img src={user?.profilePic} alt="" />
+                            <img src={user?.profilePic} alt="" className="w-full h-full object-center object-cover" />
                         </div>
                     </div>
                     <div className='w-full'>
