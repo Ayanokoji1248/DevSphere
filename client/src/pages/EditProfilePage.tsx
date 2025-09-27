@@ -81,11 +81,9 @@ const EditProfilePage = () => {
                 }
             });
             setErrors(formattedErrors);
-            console.log(result.data)
             return;
         } else {
             setErrors({});
-            console.log(result.data)
         }
 
         setErrors({});
@@ -102,8 +100,6 @@ const EditProfilePage = () => {
             ? await uploadImage(bannerImage, `bannerImage`, user)
             : null;
 
-        console.log(profileImageUrl)
-        console.log(bannerImageUrl)
         const requestData: FormDataState = {
             ...formData,
             skills,
@@ -122,7 +118,6 @@ const EditProfilePage = () => {
                 requestData,
                 { withCredentials: true }
             );
-            console.log(response.data)
             setUser(response.data.updatedUser);
             navigate("/profile");
         } catch (error) {
